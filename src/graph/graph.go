@@ -12,8 +12,23 @@ const (
 	GRAPHURL = "http://graph.facebook.com/"
 )
 
-type Args struct {
-	Metadata bool
+type Metadata struct {
+	Connections Connections
+	// Name, Description
+	Fields map[string]string
+}
+
+type Connections struct {
+	Albums   string
+	Statuses string
+	Links    string
+	Posts    string
+	Notes    string
+	Videos   string
+	Feed     string
+	Photos   string
+	Tagged   string
+	Events   string
 }
 
 type Page struct {
@@ -58,6 +73,10 @@ func (p *Person) String() string {
 		"\n"
 }
 
+func FetchPageIntrospect(id string) (page Page, err os.Error) {
+	return FetchPage(id + "?metadata=1")
+}
+
 func FetchPage(id string) (page Page, err os.Error) {
 	body, err := fetchBody(id)
 	if err != nil {
@@ -93,9 +112,15 @@ func FetchPage(id string) (page Page, err os.Error) {
 			page.Founded = value.(string)
 		case "company_overview":
 			page.CompanyOverview = value.(string)
+		case "metadata":
+			parseMetaData(value)
 		}
 	}
 	return
+}
+
+func FetchPersonIntrospect(name string) (person Person, err os.Error) {
+	return FetchPerson(name + "?metadata=1")
 }
 
 func FetchPerson(name string) (person Person, err os.Error) {
@@ -123,11 +148,65 @@ func FetchPerson(name string) (person Person, err os.Error) {
 			person.LastName = value.(string)
 		case "id":
 			person.ID = value.(string)
+		case "metadata":
+			parseMetaData(value)
 		}
 	}
 	return
 }
 
+func parseMetaData(value interface{}) (metadata Metadata) {
+	data := value.(map[string]interface{})
+	for key, v := range data {
+		switch key {
+		case "connections":
+			metadata.Connections = parseConnections(v)
+		case "fields":
+			metadata.Fields = parseFields(v)
+		}
+	}
+	return
+}
+
+func parseConnections(value interface{}) (connections Connections) {
+	data := value.(map[string]interface{})
+	for key, v := range data {
+		switch key {
+		case "feed":
+			connections.Feed = v.(string)
+		case "posts":
+			connections.Posts = v.(string)
+		case "tagged":
+			connections.Tagged = v.(string)
+		case "statuses":
+			connections.Statuses = v.(string)
+		case "links":
+			connections.Links = v.(string)
+		case "notes":
+			connections.Notes = v.(string)
+		case "photos":
+			connections.Photos = v.(string)
+		case "albums":
+			connections.Albums = v.(string)
+		case "events":
+			connections.Events = v.(string)
+		case "videos":
+			connections.Videos = v.(string)
+		}
+	}
+	return
+}
+
+func parseFields(value interface{}) (fields map[string]string) {
+	fields = make(map[string]string)
+	var field map[string]interface{}
+	data := value.([]interface{})
+	for _, c := range data {
+		field = c.(map[string]interface{})
+		fields[field["name"].(string)] = field["description"].(string)
+	}
+	return
+}
 
 func getJsonMap(body []byte) (data map[string]interface{}, err os.Error) {
 	var values interface{}
