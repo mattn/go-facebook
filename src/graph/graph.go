@@ -5,6 +5,7 @@ import(
   "io/ioutil"
   "json"
   "os"
+  "strconv"
 )
 
 const (
@@ -30,6 +31,15 @@ type Page struct {
   FanCount float64
 }
 
+func (p *Page) String() string {
+  return "ID: " + p.ID + "\tName: " + p.Name + "\tPicture: " + p.Picture +
+	"\tLink: " + p.Link + "\tCategory: " + p.Category + "\tWebsite: " +
+	p.Website + "\tUsername: " + p.Username + "\tFounded: " + p.Founded +
+	"\tCompany overview: " + p.CompanyOverview + "\tMission: " + p.Mission +
+	"\tProducts: " + p.Products + "\tFan count:" +
+	strconv.Ftoa64(p.FanCount, 'e', -1) + "\n";
+}
+
 type Person struct {
   ID string
   Name string
@@ -39,6 +49,13 @@ type Person struct {
   Gender string
   Locale string
   UpdatedTime string
+}
+
+func (p *Person) String() string {
+  return "ID: " + p.ID + "\tName: " + p.Name + "\tFirst name: " + p.FirstName +
+	"\tLast name: " + p.LastName + "\tLink: " + p.Link + "\tGender: " +
+	p.Gender + "\tLocale: " + p.Locale + "\tUpdated time: " + p.UpdatedTime +
+	"\n";
 }
 
 func FetchPage(id string) (page Page, err os.Error) {
