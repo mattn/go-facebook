@@ -6,6 +6,7 @@ import (
 	"json"
 	"os"
 	"strconv"
+	"fmt"
 )
 
 const (
@@ -19,16 +20,33 @@ type Metadata struct {
 }
 
 type Connections struct {
-	Albums   string
-	Statuses string
-	Links    string
-	Posts    string
-	Notes    string
-	Videos   string
-	Feed     string
-	Photos   string
-	Tagged   string
-	Events   string
+	Albums     string
+	Statuses   string
+	Links      string
+	Posts      string
+	Notes      string
+	Videos     string
+	Feed       string
+	Photos     string
+	Tagged     string
+	Events     string
+	Home       string
+	Friends    string
+	Activities string
+	Interests  string
+	Music      string
+	Books      string
+	Movies     string
+	Television string
+	Likes      string
+	Groups     string
+	InBox      string
+	OutBox     string
+	Updates    string
+	Accounts   string
+	CheckIns   string
+	Picture    string
+	Family     string
 }
 
 type Page struct {
@@ -56,14 +74,23 @@ func (p *Page) String() string {
 }
 
 type Person struct {
-	ID          string
-	Name        string
-	FirstName   string
-	LastName    string
-	Link        string
-	Gender      string
-	Locale      string
-	UpdatedTime string
+	ID              string
+	Name            string
+	FirstName       string
+	LastName        string
+	Link            string
+	Gender          string
+	Locale          string
+	UpdatedTime     string
+	Website         string
+	Picture         string
+	FanCount        float64
+	Mission         string
+	Category        string
+	Username        string
+	Products        string
+	Founded         string
+	CompanyOverview string
 }
 
 func (p *Person) String() string {
@@ -112,8 +139,12 @@ func FetchPage(id string) (page Page, err os.Error) {
 			page.Founded = value.(string)
 		case "company_overview":
 			page.CompanyOverview = value.(string)
+		case "type":
+			// TODO: Look into type
 		case "metadata":
 			parseMetaData(value)
+		default:
+			debugInterface(value, key, "Page")
 		}
 	}
 	return
@@ -140,7 +171,7 @@ func FetchPerson(name string) (person Person, err os.Error) {
 			person.Name = value.(string)
 		case "link":
 			person.Link = value.(string)
-		case "Gender":
+		case "gender":
 			person.Gender = value.(string)
 		case "first_name":
 			person.FirstName = value.(string)
@@ -148,8 +179,30 @@ func FetchPerson(name string) (person Person, err os.Error) {
 			person.LastName = value.(string)
 		case "id":
 			person.ID = value.(string)
+		case "website":
+			person.Website = value.(string)
+		case "picture":
+			person.Picture = value.(string)
+		case "mission":
+			person.Mission = value.(string)
+		case "category":
+			person.Category = value.(string)
+		case "username":
+			person.Username = value.(string)
+		case "products":
+			person.Products = value.(string)
+		case "founded":
+			person.Founded = value.(string)
+		case "company_overview":
+			person.CompanyOverview = value.(string)
+		case "fan_count":
+			person.FanCount = value.(float64)
+		case "type":
+			// TODO: Look into type
 		case "metadata":
 			parseMetaData(value)
+		default:
+			debugInterface(value, key, "Person")
 		}
 	}
 	return
@@ -163,6 +216,8 @@ func parseMetaData(value interface{}) (metadata Metadata) {
 			metadata.Connections = parseConnections(v)
 		case "fields":
 			metadata.Fields = parseFields(v)
+		default:
+			debugInterface(v, key, "Metadata")
 		}
 	}
 	return
@@ -192,6 +247,42 @@ func parseConnections(value interface{}) (connections Connections) {
 			connections.Events = v.(string)
 		case "videos":
 			connections.Videos = v.(string)
+		case "home":
+			connections.Home = v.(string)
+		case "friends":
+			connections.Home = v.(string)
+		case "activities":
+			connections.Activities = v.(string)
+		case "interests":
+			connections.Interests = v.(string)
+		case "music":
+			connections.Music = v.(string)
+		case "books":
+			connections.Books = v.(string)
+		case "movies":
+			connections.Movies = v.(string)
+		case "television":
+			connections.Television = v.(string)
+		case "likes":
+			connections.Likes = v.(string)
+		case "groups":
+			connections.Groups = v.(string)
+		case "inbox":
+			connections.InBox = v.(string)
+		case "outbox":
+			connections.OutBox = v.(string)
+		case "updates":
+			connections.Updates = v.(string)
+		case "accounts":
+			connections.Accounts = v.(string)
+		case "checkins":
+			connections.CheckIns = v.(string)
+		case "picture":
+			connections.Picture = v.(string)
+		case "family":
+			connections.Family = v.(string)
+		default:
+			debugInterface(v, key, "Connections")
 		}
 	}
 	return
@@ -227,4 +318,13 @@ func fetchBody(method string) (body []byte, err os.Error) {
 
 	body, err = ioutil.ReadAll(resp.Body)
 	return
+}
+
+func debugInterface(value interface{}, key, funcName string) {
+	var str string
+	switch value.(type) {
+	case float64:
+		str = strconv.Ftoa64(value.(float64), 'e', -1)
+	}
+	fmt.Printf("%s: Unknown pair: %s : %s\n", funcName, key, str)
 }
