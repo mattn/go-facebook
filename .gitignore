@@ -1,0 +1,11 @@
+# misc files (build, temp,...)
+*.6
+*.8
+*.o
+*.so
+*.out
+_obj
+_test
+*.go~
+*.md~
+*.bash~
