@@ -1,5 +1,9 @@
 package facebook
 
+import (
+	"os"
+)
+
 // A user profile.
 // http://developers.facebook.com/docs/reference/api/user
 type User struct {
