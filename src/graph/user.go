@@ -22,7 +22,7 @@ type User struct {
 	// Birthday
 	Birthday string
 	// Work history list
-	Work string
+	Work []Workplace
 	// Education history list
 	Education string
 	// The contact email adress
@@ -108,7 +108,7 @@ func FetchUser(name string) (user User, err os.Error) {
 		case "birthday":
 			user.Birthday = value.(string)
 		case "work":
-			user.Work = value.(string)
+			user.Work = parseWork(value.([]interface{}))
 		case "education":
 			user.Education = value.(string)
 		case "email":
