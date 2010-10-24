@@ -36,3 +36,53 @@ func (p *Page) String() string {
 		"\tProducts: " + p.Products + "\tFan count:" +
 		strconv.Ftoa64(p.FanCount, 'e', -1) + "\n"
 }
+
+func FetchPageIntrospect(id string) (page Page, err os.Error) {
+	return FetchPage(id + "?metadata=1")
+}
+
+func FetchPage(id string) (page Page, err os.Error) {
+	body, err := fetchBody(id)
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(body)
+	if err != nil {
+		return
+	}
+	for key, value := range data {
+		switch key {
+		case "website":
+			page.Website = value.(string)
+		case "picture":
+			page.Picture = value.(string)
+		case "fan_count":
+			page.FanCount = value.(float64)
+		case "mission":
+			page.Mission = value.(string)
+		case "category":
+			page.Category = value.(string)
+		case "name":
+			page.Name = value.(string)
+		case "username":
+			page.Username = value.(string)
+		case "link":
+			page.Link = value.(string)
+		case "id":
+			page.ID = value.(string)
+		case "products":
+			page.Products = value.(string)
+		case "founded":
+			page.Founded = value.(string)
+		case "company_overview":
+			page.CompanyOverview = value.(string)
+		case "type":
+			// TODO: Look into type
+		case "metadata":
+			parseMetaData(value)
+		default:
+			debugInterface(value, key, "Page")
+		}
+	}
+	return
+}
