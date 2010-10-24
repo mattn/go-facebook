@@ -51,11 +51,13 @@ type User struct {
 	SignificantOther string
 	// Timezone
 	Timezone string
+	
+	// Connections
+	Picture Picture
 
-	// Not documented in the API but streamed
+	// Not documented in the API but streamed probably Connections
 	Locale          string
 	UpdatedTime     string
-	Picture         string
 	FanCount        float64
 	Mission         string
 	Category        string

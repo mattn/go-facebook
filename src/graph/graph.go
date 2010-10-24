@@ -126,12 +126,14 @@ func FetchUser(name string) (user User, err os.Error) {
 			user.SignificantOther = value.(string)
 		case "timezone":
 			user.Timezone = value.(string)
+			
+		// Connections
+		case "picture":
+			user.Picture = NewPicture(value.(string))
 
 		// Not documented in the API but streamed	
 		case "locale":
 			user.Locale = value.(string)
-		case "picture":
-			user.Picture = value.(string)
 		case "mission":
 			user.Mission = value.(string)
 		case "category":

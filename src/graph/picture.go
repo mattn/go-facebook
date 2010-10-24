@@ -5,3 +5,8 @@ type Picture struct {
 	// Link to the profile picture
 	URL string
 }
+
+func NewPicture(url string) (pic Picture) {
+	pic.URL = url
+	return
+}
