@@ -4,19 +4,28 @@ import (
 	"strconv"
 )
 
+// A Facebook Page.
+// http://developers.facebook.com/docs/reference/api/page
 type Page struct {
-	ID              string
-	Name            string
-	Picture         string
+	// ID
+	ID string
+	// Name
+	Name string
+	// Profile picture
+	Picture string
+	// Category
+	Category string
+	// Number of fans the page has
+	FanCount float64
+
+	// Undocumented properties but streamed
 	Link            string
-	Category        string
 	Website         string
 	Username        string
 	Founded         string
 	CompanyOverview string
 	Mission         string
 	Products        string
-	FanCount        float64
 }
 
 func (p *Page) String() string {
