@@ -1,4 +1,5 @@
 # misc files (build, temp,...)
+*~
 *.6
 *.8
 *.o
