@@ -6,39 +6,59 @@ import (
 
 // Tests
 
-func TestPage(t *testing.T) {
-	id := "19292868552"
-	t.Logf("Fetching facebook page %s\n", id)
-	_, err := FetchPage(id)
-	if err != nil {
-		t.Errorf("Error: %s\n", err.String())
-	}
+type PageTest struct {
+	ID   string
+	Name string
 }
 
-func TestPageIntrospect(t *testing.T) {
-	id := "19292868552"
-	t.Logf("Fetching and introspecting facebook page %s\n", id)
-	_, err := FetchPageIntrospect(id)
-	if err != nil {
-		t.Errorf("Error: %s\n", err.String())
+type UserTest struct {
+	Name string
+}
+
+var PageTests = []PageTest{
+	PageTest{"19292868552", "Facebook Platform"},
+	PageTest{"40796308305", "Coca-Cola"},
+}
+
+var UserTests = []UserTest{
+	UserTest{"btaylor"},
+}
+
+func TestPage(t *testing.T) {
+	for _, v := range PageTests {
+		t.Logf("Fetching facebook page %s\n", v.ID)
+		p, err := FetchPage(v.ID)
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		if p.Name != v.Name {
+			t.Errorf("Error: %s expected %s \n", p.Name, v.Name)
+		}
+
+		t.Logf("Fetching and introspecting facebook page %s\n", v.ID)
+		p, err = FetchPageIntrospect(v.ID)
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		if p.Name != v.Name {
+			t.Errorf("Error: %s expected %s \n", p.Name, v.Name)
+		}
 	}
 }
 
 func TestUser(t *testing.T) {
-	name := "btaylor"
-	t.Logf("Fetching facebook user %s\n", name)
-	_, err := FetchUser(name)
-	if err != nil {
-		t.Errorf("Error: %s\n", err.String())
-	}
-}
+	for _, v := range UserTests {
+		t.Logf("Fetching facebook user %s\n", v.Name)
+		_, err := FetchUser(v.Name)
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
 
-func TestUserIntrospect(t *testing.T) {
-	id := "btaylor"
-	t.Logf("Fetching and introspecting facebook user %s\n", id)
-	_, err := FetchUserIntrospect(id)
-	if err != nil {
-		t.Errorf("Error: %s\n", err.String())
+		t.Logf("Fetching and introspecting facebook user %s\n", v.Name)
+		_, err = FetchUserIntrospect(v.Name)
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
 	}
 }
 
