@@ -73,16 +73,61 @@ func (p *Page) String() string {
 		strconv.Ftoa64(p.FanCount, 'e', -1) + "\n"
 }
 
+// A user profile.
+// http://developers.facebook.com/docs/reference/api/user
 type User struct {
-	ID              string
-	Name            string
-	FirstName       string
-	LastName        string
-	Link            string
-	Gender          string
+	// Identification
+	ID string
+	// First name
+	FirstName string
+	// Last name
+	LastName string
+	// Full name
+	Name string
+	// A link to the profile
+	Link string
+	// The Blurb that appears under the profile picture
+	About string
+	// Birthday
+	Birthday string
+	// Work history list
+	Work string
+	// Education history list
+	Education string
+	// The contact email adress
+	Email string
+	// Link to the personal website
+	Website string
+	// Hometown
+	Hometown string
+	// Current location
+	Location string
+	// Biography
+	Bio string
+	// Favorite quotes
+	Quotes string
+	// Gender	
+	Gender string
+	// Genders the user is interested in
+	InterestedIn string
+	// Types of relationships the user is seeking for
+	MeetingFor string
+	// Relationship status
+	RelationshipStatus string
+	// Religion
+	Religion string
+	// Political view
+	Political string
+	// Verification status
+	Verified string
+	// The user's significant other
+	SignificantOther string
+	// Timezone
+	Timezone string
+
+	// Not documented in the API but streamed
 	Locale          string
 	UpdatedTime     string
-	Website         string
 	Picture         string
 	FanCount        float64
 	Mission         string
@@ -165,22 +210,58 @@ func FetchUser(name string) (user User, err os.Error) {
 	}
 	for key, value := range data {
 		switch key {
-		case "locale":
-			user.Locale = value.(string)
-		case "name":
-			user.Name = value.(string)
-		case "link":
-			user.Link = value.(string)
-		case "gender":
-			user.Gender = value.(string)
+		case "id":
+			user.ID = value.(string)
 		case "first_name":
 			user.FirstName = value.(string)
 		case "last_name":
 			user.LastName = value.(string)
-		case "id":
-			user.ID = value.(string)
+		case "name":
+			user.Name = value.(string)
+		case "link":
+			user.Link = value.(string)
+		case "about":
+			user.About = value.(string)
+		case "birthday":
+			user.Birthday = value.(string)
+		case "work":
+			user.Work = value.(string)
+		case "education":
+			user.Education = value.(string)
+		case "email":
+			user.Email = value.(string)
 		case "website":
 			user.Website = value.(string)
+		case "hometown":
+			user.Hometown = value.(string)
+		case "location":
+			user.Location = value.(string)
+		case "bio":
+			user.Bio = value.(string)
+		case "quotes":
+			user.Quotes = value.(string)
+		case "gender":
+			user.Gender = value.(string)
+		case "interested_in":
+			user.InterestedIn = value.(string)
+		case "meeting_for":
+			user.MeetingFor = value.(string)
+		case "relationship_status":
+			user.RelationshipStatus = value.(string)
+		case "religion":
+			user.Religion = value.(string)
+		case "political":
+			user.Political = value.(string)
+		case "verified":
+			user.Verified = value.(string)
+		case "significant_other":
+			user.SignificantOther = value.(string)
+		case "timezone":
+			user.Timezone = value.(string)
+
+		// Not documented in the API but streamed	
+		case "locale":
+			user.Locale = value.(string)
 		case "picture":
 			user.Picture = value.(string)
 		case "mission":
@@ -199,6 +280,8 @@ func FetchUser(name string) (user User, err os.Error) {
 			user.FanCount = value.(float64)
 		case "type":
 			// TODO: Look into type
+
+			// Parse metadata if requested
 		case "metadata":
 			parseMetaData(value)
 		default:
