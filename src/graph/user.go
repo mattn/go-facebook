@@ -51,7 +51,7 @@ type User struct {
 	SignificantOther string
 	// Timezone
 	Timezone string
-	
+
 	// Connections
 	Picture Picture
 
@@ -137,7 +137,7 @@ func FetchUser(name string) (user User, err os.Error) {
 			user.SignificantOther = value.(string)
 		case "timezone":
 			user.Timezone = value.(string)
-			
+
 		// Connections
 		case "picture":
 			user.Picture = NewPicture(value.(string))

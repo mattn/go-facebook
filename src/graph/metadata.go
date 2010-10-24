@@ -20,3 +20,14 @@ func parseMetaData(value interface{}) (metadata Metadata) {
 	}
 	return
 }
+
+func parseFields(value interface{}) (fields map[string]string) {
+	fields = make(map[string]string)
+	var field map[string]interface{}
+	data := value.([]interface{})
+	for _, c := range data {
+		field = c.(map[string]interface{})
+		fields[field["name"].(string)] = field["description"].(string)
+	}
+	return
+}
