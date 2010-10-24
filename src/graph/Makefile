@@ -7,6 +7,7 @@ user.go\
 page.go\
 connections.go\
 metadata.go\
-picture.go
+picture.go\
+hometown.go
 
 include $(GOROOT)/src/Make.pkg
