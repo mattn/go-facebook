@@ -1,11 +1,11 @@
 package facebook
 
-type Hometown struct {
+type Town struct {
 	ID   string
 	Name string
 }
 
-func parseHometown(value map[string]interface{}) (ht Hometown) {
+func parseTown(value map[string]interface{}) (ht Town) {
 	for k, v := range value {
 		switch k {
 		case "id":
