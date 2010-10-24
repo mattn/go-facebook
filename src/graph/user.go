@@ -73,3 +73,101 @@ func (u *User) String() string {
 		u.Gender + "\tLocale: " + u.Locale + "\tUpdated time: " + u.UpdatedTime +
 		"\n"
 }
+
+func FetchUserIntrospect(name string) (user User, err os.Error) {
+	return FetchUser(name + "?metadata=1")
+}
+
+func FetchUser(name string) (user User, err os.Error) {
+	body, err := fetchBody(name)
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(body)
+	if err != nil {
+		return
+	}
+	for key, value := range data {
+		switch key {
+		case "id":
+			user.ID = value.(string)
+		case "first_name":
+			user.FirstName = value.(string)
+		case "last_name":
+			user.LastName = value.(string)
+		case "name":
+			user.Name = value.(string)
+		case "link":
+			user.Link = value.(string)
+		case "about":
+			user.About = value.(string)
+		case "birthday":
+			user.Birthday = value.(string)
+		case "work":
+			user.Work = value.(string)
+		case "education":
+			user.Education = value.(string)
+		case "email":
+			user.Email = value.(string)
+		case "website":
+			user.Website = value.(string)
+		case "hometown":
+			user.Hometown = value.(string)
+		case "location":
+			user.Location = value.(string)
+		case "bio":
+			user.Bio = value.(string)
+		case "quotes":
+			user.Quotes = value.(string)
+		case "gender":
+			user.Gender = value.(string)
+		case "interested_in":
+			user.InterestedIn = value.(string)
+		case "meeting_for":
+			user.MeetingFor = value.(string)
+		case "relationship_status":
+			user.RelationshipStatus = value.(string)
+		case "religion":
+			user.Religion = value.(string)
+		case "political":
+			user.Political = value.(string)
+		case "verified":
+			user.Verified = value.(string)
+		case "significant_other":
+			user.SignificantOther = value.(string)
+		case "timezone":
+			user.Timezone = value.(string)
+			
+		// Connections
+		case "picture":
+			user.Picture = NewPicture(value.(string))
+
+		// Not documented in the API but streamed	
+		case "locale":
+			user.Locale = value.(string)
+		case "mission":
+			user.Mission = value.(string)
+		case "category":
+			user.Category = value.(string)
+		case "username":
+			user.Username = value.(string)
+		case "products":
+			user.Products = value.(string)
+		case "founded":
+			user.Founded = value.(string)
+		case "company_overview":
+			user.CompanyOverview = value.(string)
+		case "fan_count":
+			user.FanCount = value.(float64)
+		case "type":
+			// TODO: Look into type
+
+			// Parse metadata if requested
+		case "metadata":
+			parseMetaData(value)
+		default:
+			debugInterface(value, key, "Person")
+		}
+	}
+	return
+}
