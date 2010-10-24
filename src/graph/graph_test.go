@@ -24,19 +24,19 @@ func TestPageIntrospect(t *testing.T) {
 	}
 }
 
-func TestPerson(t *testing.T) {
+func TestUser(t *testing.T) {
 	name := "btaylor"
-	t.Logf("Fetching facebook person %s\n", name)
-	_, err := FetchPerson(name)
+	t.Logf("Fetching facebook user %s\n", name)
+	_, err := FetchUser(name)
 	if err != nil {
 		t.Errorf("Error: %s\n", err.String())
 	}
 }
 
-func TestPersonIntrospect(t *testing.T) {
+func TestUserIntrospect(t *testing.T) {
 	id := "btaylor"
-	t.Logf("Fetching and introspecting facebook person %s\n", id)
-	_, err := FetchPersonIntrospect(id)
+	t.Logf("Fetching and introspecting facebook user %s\n", id)
+	_, err := FetchUserIntrospect(id)
 	if err != nil {
 		t.Errorf("Error: %s\n", err.String())
 	}
@@ -46,7 +46,7 @@ func TestPersonIntrospect(t *testing.T) {
 
 func BenchmarkPage(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		FetchPerson("19292868552")
+		FetchPage("19292868552")
 	}
 }
 
@@ -56,14 +56,14 @@ func BenchmarkPageIntrospect(b *testing.B) {
 	}
 }
 
-func BenchmarkPerson(b *testing.B) {
+func BenchmarkUser(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		FetchPerson("btaylor")
+		FetchUser("btaylor")
 	}
 }
 
-func BenchmarkPersonIntrospect(b *testing.B) {
+func BenchmarkUserIntrospect(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		FetchPersonIntrospect("btaylor")
+		FetchUserIntrospect("btaylor")
 	}
 }

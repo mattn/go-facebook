@@ -73,7 +73,7 @@ func (p *Page) String() string {
 		strconv.Ftoa64(p.FanCount, 'e', -1) + "\n"
 }
 
-type Person struct {
+type User struct {
 	ID              string
 	Name            string
 	FirstName       string
@@ -93,10 +93,10 @@ type Person struct {
 	CompanyOverview string
 }
 
-func (p *Person) String() string {
-	return "ID: " + p.ID + "\tName: " + p.Name + "\tFirst name: " + p.FirstName +
-		"\tLast name: " + p.LastName + "\tLink: " + p.Link + "\tGender: " +
-		p.Gender + "\tLocale: " + p.Locale + "\tUpdated time: " + p.UpdatedTime +
+func (u *User) String() string {
+	return "ID: " + u.ID + "\tName: " + u.Name + "\tFirst name: " + u.FirstName +
+		"\tLast name: " + u.LastName + "\tLink: " + u.Link + "\tGender: " +
+		u.Gender + "\tLocale: " + u.Locale + "\tUpdated time: " + u.UpdatedTime +
 		"\n"
 }
 
@@ -150,11 +150,11 @@ func FetchPage(id string) (page Page, err os.Error) {
 	return
 }
 
-func FetchPersonIntrospect(name string) (person Person, err os.Error) {
-	return FetchPerson(name + "?metadata=1")
+func FetchUserIntrospect(name string) (user User, err os.Error) {
+	return FetchUser(name + "?metadata=1")
 }
 
-func FetchPerson(name string) (person Person, err os.Error) {
+func FetchUser(name string) (user User, err os.Error) {
 	body, err := fetchBody(name)
 	if err != nil {
 		return
@@ -166,37 +166,37 @@ func FetchPerson(name string) (person Person, err os.Error) {
 	for key, value := range data {
 		switch key {
 		case "locale":
-			person.Locale = value.(string)
+			user.Locale = value.(string)
 		case "name":
-			person.Name = value.(string)
+			user.Name = value.(string)
 		case "link":
-			person.Link = value.(string)
+			user.Link = value.(string)
 		case "gender":
-			person.Gender = value.(string)
+			user.Gender = value.(string)
 		case "first_name":
-			person.FirstName = value.(string)
+			user.FirstName = value.(string)
 		case "last_name":
-			person.LastName = value.(string)
+			user.LastName = value.(string)
 		case "id":
-			person.ID = value.(string)
+			user.ID = value.(string)
 		case "website":
-			person.Website = value.(string)
+			user.Website = value.(string)
 		case "picture":
-			person.Picture = value.(string)
+			user.Picture = value.(string)
 		case "mission":
-			person.Mission = value.(string)
+			user.Mission = value.(string)
 		case "category":
-			person.Category = value.(string)
+			user.Category = value.(string)
 		case "username":
-			person.Username = value.(string)
+			user.Username = value.(string)
 		case "products":
-			person.Products = value.(string)
+			user.Products = value.(string)
 		case "founded":
-			person.Founded = value.(string)
+			user.Founded = value.(string)
 		case "company_overview":
-			person.CompanyOverview = value.(string)
+			user.CompanyOverview = value.(string)
 		case "fan_count":
-			person.FanCount = value.(float64)
+			user.FanCount = value.(float64)
 		case "type":
 			// TODO: Look into type
 		case "metadata":
