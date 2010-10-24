@@ -30,7 +30,7 @@ type User struct {
 	// Link to the personal website
 	Website string
 	// Hometown
-	Hometown string
+	Hometown Hometown
 	// Current location
 	Location string
 	// Biography
@@ -116,7 +116,7 @@ func FetchUser(name string) (user User, err os.Error) {
 		case "website":
 			user.Website = value.(string)
 		case "hometown":
-			user.Hometown = value.(string)
+			user.Hometown = parseHometown(value.(map[string]interface{}))
 		case "location":
 			user.Location = value.(string)
 		case "bio":
