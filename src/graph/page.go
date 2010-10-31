@@ -3,6 +3,7 @@ package facebook
 import (
 	"strconv"
 	"os"
+	"time"
 )
 
 // A Facebook Page.
@@ -23,7 +24,7 @@ type Page struct {
 	Link            string
 	Website         string
 	Username        string
-	Founded         string
+	Founded         *time.Time
 	CompanyOverview string
 	Mission         string
 	Products        string
@@ -32,7 +33,7 @@ type Page struct {
 func (p *Page) String() string {
 	return "ID: " + p.ID + "\tName: " + p.Name + "\tPicture: " + p.Picture +
 		"\tLink: " + p.Link + "\tCategory: " + p.Category + "\tWebsite: " +
-		p.Website + "\tUsername: " + p.Username + "\tFounded: " + p.Founded +
+		p.Website + "\tUsername: " + p.Username + "\tFounded: " + p.Founded.String() +
 		"\tCompany overview: " + p.CompanyOverview + "\tMission: " + p.Mission +
 		"\tProducts: " + p.Products + "\tFan count:" +
 		strconv.Ftoa64(p.FanCount, 'e', -1) + "\n"
@@ -70,7 +71,7 @@ func FetchPage(id string) (page Page, err os.Error) {
 		case "products":
 			page.Products = value.(string)
 		case "founded":
-			page.Founded = value.(string)
+			page.Founded, err = parseTime(value.(string))
 		case "company_overview":
 			page.CompanyOverview = value.(string)
 		case "type":

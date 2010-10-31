@@ -2,6 +2,7 @@ package facebook
 
 import (
 	"os"
+	"time"
 )
 
 type Home struct {
@@ -26,7 +27,7 @@ func FetchHomeByURL(url string) (home Home, err os.Error) {
 	for key, value := range data {
 		switch key {
 		case "data":
-			home.News = parseNews(value.([]interface{}))
+			home.News, err = parseNews(value.([]interface{}))
 		case "paging":
 			home.Paging = parsePaging(value.(map[string]interface{}))
 		}
@@ -52,13 +53,13 @@ type News struct {
 	Message     string
 	Actions     []Link
 	Type        string
-	CreatedTime string
-	UpdatedTime string
+	CreatedTime *time.Time
+	UpdatedTime *time.Time
 	Likes       string
 	Comments    []Comment
 }
 
-func parseNews(value []interface{}) (news []News) {
+func parseNews(value []interface{}) (news []News, err os.Error) {
 	news = make([]News, len(value))
 	for i, v := range value {
 		wp := v.(map[string]interface{})
@@ -78,9 +79,9 @@ func parseNews(value []interface{}) (news []News) {
 			case "type":
 				news[i].Type = val.(string)
 			case "created_time":
-				news[i].CreatedTime = val.(string)
+				news[i].CreatedTime, err = time.Parse("RFC3339", val.(string)) // Eg.: 2010-10-21T22:54:34+0000
 			case "updated_time":
-				news[i].UpdatedTime = val.(string)
+				news[i].UpdatedTime, err = time.Parse("RFC3339", val.(string))
 			case "likes":
 				news[i].Likes = val.(string)
 			case "comments":

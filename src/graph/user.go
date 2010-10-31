@@ -2,6 +2,7 @@ package facebook
 
 import (
 	"os"
+	"time"
 )
 
 // A user profile.
@@ -20,7 +21,7 @@ type User struct {
 	// The Blurb that appears under the profile picture
 	About string
 	// Birthday
-	Birthday string
+	Birthday *time.Time
 	// Work history list
 	Work []Workplace
 	// Education history list
@@ -119,20 +120,20 @@ type User struct {
 
 	// Not documented in the API but streamed
 	Locale          string
-	UpdatedTime     string
+	UpdatedTime     *time.Time
 	FanCount        float64
 	Mission         string
 	Category        string
 	Username        string
 	Products        string
-	Founded         string
+	Founded         *time.Time
 	CompanyOverview string
 }
 
 func (u *User) String() string {
 	return "ID: " + u.ID + "\tName: " + u.Name + "\tFirst name: " + u.FirstName +
 		"\tLast name: " + u.LastName + "\tLink: " + u.Link + "\tGender: " +
-		u.Gender + "\tLocale: " + u.Locale + "\tUpdated time: " + u.UpdatedTime +
+		u.Gender + "\tLocale: " + u.Locale + "\tUpdated time: " + u.UpdatedTime.String() +
 		"\n"
 }
 
@@ -160,9 +161,9 @@ func FetchUser(name string) (user User, err os.Error) {
 		case "about":
 			user.About = value.(string)
 		case "birthday":
-			user.Birthday = value.(string)
+			user.Birthday, err = parseTime(value.(string))
 		case "work":
-			user.Work = parseWork(value.([]interface{}))
+			user.Work, err = parseWork(value.([]interface{}))
 		case "education":
 			user.Educations = parseEducations(value.([]interface{}))
 		case "email":
@@ -212,7 +213,7 @@ func FetchUser(name string) (user User, err os.Error) {
 		case "products":
 			user.Products = value.(string)
 		case "founded":
-			user.Founded = value.(string)
+			user.Founded, err = parseTime(value.(string))
 		case "company_overview":
 			user.CompanyOverview = value.(string)
 		case "fan_count":
