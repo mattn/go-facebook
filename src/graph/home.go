@@ -10,7 +10,12 @@ type Home struct {
 }
 
 func FetchHome(name string) (home Home, err os.Error) {
-	body, err := fetchBody(name + "/home")
+	home, err = FetchHomeByURL(name + "/home")
+	return
+}
+
+func FetchHomeByURL(url string) (home Home, err os.Error) {
+	body, err := fetchPage(url)
 	if err != nil {
 		return
 	}
