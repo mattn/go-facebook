@@ -62,7 +62,12 @@ func getJsonMap(body []byte) (data map[string]interface{}, err os.Error) {
 }
 
 func fetchBody(method string) (body []byte, err os.Error) {
-	resp, _, err := http.Get(GRAPHURL + method) // Response, final URL, error
+	body, err = fetchPage(GRAPHURL + method)
+	return
+}
+
+func fetchPage(url string) (body []byte, err os.Error) {
+	resp, _, err := http.Get(url) // Response, final URL, error
 	if err != nil {
 		return
 	}
