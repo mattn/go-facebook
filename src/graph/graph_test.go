@@ -36,15 +36,6 @@ func TestPage(t *testing.T) {
 		if p.Name != v.Name {
 			t.Errorf("Error: %s expected %s \n", p.Name, v.Name)
 		}
-
-		t.Logf("Fetching and introspecting facebook page %s\n", v.ID)
-		p, err = FetchPageIntrospect(v.ID)
-		if err != nil {
-			t.Errorf("Error: %s\n", err.String())
-		}
-		if p.Name != v.Name {
-			t.Errorf("Error: %s expected %s \n", p.Name, v.Name)
-		}
 	}
 }
 
@@ -52,15 +43,6 @@ func TestUser(t *testing.T) {
 	for _, v := range UserTests {
 		t.Logf("Fetching facebook user %s\n", v.Name)
 		u, err := FetchUser(v.Name)
-		if err != nil {
-			t.Errorf("Error: %s\n", err.String())
-		}
-		if u.ID != v.ID {
-			t.Errorf("Error: %s expected %s \n", u.ID, v.ID)
-		}
-
-		t.Logf("Fetching and introspecting facebook user %s\n", v.Name)
-		u, err = FetchUserIntrospect(v.Name)
 		if err != nil {
 			t.Errorf("Error: %s\n", err.String())
 		}
@@ -78,20 +60,8 @@ func BenchmarkPage(b *testing.B) {
 	}
 }
 
-func BenchmarkPageIntrospect(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		FetchPageIntrospect("19292868552")
-	}
-}
-
 func BenchmarkUser(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		FetchUser("btaylor")
-	}
-}
-
-func BenchmarkUserIntrospect(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		FetchUserIntrospect("btaylor")
 	}
 }

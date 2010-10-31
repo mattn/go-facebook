@@ -38,12 +38,8 @@ func (p *Page) String() string {
 		strconv.Ftoa64(p.FanCount, 'e', -1) + "\n"
 }
 
-func FetchPageIntrospect(id string) (page Page, err os.Error) {
-	return FetchPage(id + "?metadata=1")
-}
-
 func FetchPage(id string) (page Page, err os.Error) {
-	body, err := fetchBody(id)
+	body, err := fetchBody(id + "?metadata=1")
 	if err != nil {
 		return
 	}

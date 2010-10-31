@@ -136,12 +136,8 @@ func (u *User) String() string {
 		"\n"
 }
 
-func FetchUserIntrospect(name string) (user User, err os.Error) {
-	return FetchUser(name + "?metadata=1")
-}
-
 func FetchUser(name string) (user User, err os.Error) {
-	body, err := fetchBody(name)
+	body, err := fetchBody(name + "?metadata=1")
 	if err != nil {
 		return
 	}
