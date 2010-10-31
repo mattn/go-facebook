@@ -1,5 +1,45 @@
 package facebook
 
+import (
+	"os"
+)
+
+type Home struct {
+	News   []News
+	Paging Paging
+}
+
+func FetchHome(name string) (home Home, err os.Error) {
+	body, err := fetchBody(name + "/home")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(body)
+	if err != nil {
+		return
+	}
+	for key, value := range data {
+		switch key {
+		case "data":
+			home.News = parseNews(value.([]interface{}))
+		case "paging":
+			home.Paging = parsePaging(value.(map[string]interface{}))
+		}
+	}
+	return
+}
+
+type Paging struct {
+	Previous string
+	Next     string
+}
+
+func parsePaging(value map[string]interface{}) (paging Paging) {
+	paging.Previous = value["previous"].(string)
+	paging.Next = value["next"].(string)
+	return
+}
+
 type News struct {
 	ID          string
 	From        Object
@@ -13,7 +53,7 @@ type News struct {
 	Comments    []Comment
 }
 
-func parseHome(value []interface{}) (news []News) {
+func parseNews(value []interface{}) (news []News) {
 	news = make([]News, len(value))
 	for i, v := range value {
 		wp := v.(map[string]interface{})
