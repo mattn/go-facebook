@@ -1,9 +1,10 @@
-# graph.go
+# net/facebook
 
-graph.go implements the Facebook GraphAPI.
+net/facebook implements the Facebook GraphAPI.
+The package includes all none test go files in the folder src.
 
 ## Installation
-'sh make.bash' compiles, tests, benchmarks and installs graph.go.
+'sh make.bash' cleans, compiles and installs net/facebook.
 
 ## License
 
@@ -11,4 +12,4 @@ MIT-License, for more information look into the LICENSE file.
 
 ## About
 
-graph.go was written by [Marcel Hauf](http://github.com/Agon).
+net/facebook was written by [Marcel Hauf](http://github.com/Agon).
