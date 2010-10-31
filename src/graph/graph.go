@@ -24,6 +24,17 @@ func parseObject(value map[string]interface{}) (obj Object) {
 	return
 }
 
+type Link struct {
+	Name string
+	URL  string
+}
+
+func parseLink(value map[string]interface{}) (link Link) {
+	link.Name = value["name"].(string)
+	link.URL = value["link"].(string)
+	return
+}
+
 func getJsonMap(body []byte) (data map[string]interface{}, err os.Error) {
 	var values interface{}
 
