@@ -59,7 +59,7 @@ type User struct {
 	// ##### Connections #####
 	// TODO: Replace all strings with actual Connection structs
 	// The News Feed. Requires read_stream permission
-	Home string
+	Home Home
 	// Wall. Requires read_stream permission to see non-public posts.
 	Feed string
 	// Photos, videos and posts in which the user has been tagged. Requires read_stream permission.
@@ -117,7 +117,7 @@ type User struct {
 	 */
 	PlatformRequests string
 
-	// Not documented in the API but streamed probably Connections
+	// Not documented in the API but streamed
 	Locale          string
 	UpdatedTime     string
 	FanCount        float64
@@ -227,6 +227,13 @@ func FetchUser(name string) (user User, err os.Error) {
 			// Parse metadata if requested
 		case "metadata":
 			// TODO: get and parse connections
+			metadata := value.(map[string]interface{})
+			for k, v := range metadata["connections"].(map[string]interface{}) {
+				switch k {
+				case "home":
+					user.Home, err = FetchHomeByURL(v.(string)) // Pass URL
+				}
+			}
 		default:
 			debugInterface(value, key, "Person")
 		}
