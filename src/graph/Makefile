@@ -9,6 +9,7 @@ connections.go\
 metadata.go\
 picture.go\
 education.go\
-work.go
+work.go\
+friends.go
 
 include $(GOROOT)/src/Make.pkg
