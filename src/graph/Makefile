@@ -11,6 +11,7 @@ work.go\
 friends.go\
 home.go\
 paging.go\
-comment.go
+comment.go\
+news.go
 
 include $(GOROOT)/src/Make.pkg
