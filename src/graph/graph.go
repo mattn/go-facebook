@@ -13,6 +13,17 @@ const (
 	GRAPHURL = "http://graph.facebook.com/"
 )
 
+type Object struct {
+	ID   string
+	Name string
+}
+
+func parseObject(value map[string]interface{}) (obj Object) {
+	obj.ID = value["id"].(string)
+	obj.Name = value["name"].(string)
+	return
+}
+
 func getJsonMap(body []byte) (data map[string]interface{}, err os.Error) {
 	var values interface{}
 
