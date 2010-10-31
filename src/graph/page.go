@@ -80,7 +80,7 @@ func FetchPage(id string) (page Page, err os.Error) {
 		case "type":
 			// TODO: Look into type
 		case "metadata":
-			parseMetaData(value)
+			// TODO: get and parse connections
 		default:
 			debugInterface(value, key, "Page")
 		}

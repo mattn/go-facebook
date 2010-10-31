@@ -5,8 +5,6 @@ TARG=net/facebook
 GOFILES=graph.go\
 user.go\
 page.go\
-connections.go\
-metadata.go\
 picture.go\
 education.go\
 work.go\

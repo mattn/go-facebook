@@ -56,8 +56,25 @@ type User struct {
 	// Timezone
 	Timezone string
 
-	// Connections
+	// ##### Connections #####
+		// The News Feed. Requires read_stream permission
+	Home       string
+	// Wall. Requires read_stream permission to see non-public posts.
+	Feed       string
+	// Photos, videos and posts in which the user has been tagged. Requires read_stream permission.
+	Tagged     string
+	// Own posts. Requires read_stream permission to see non-public posts.
+	Posts      string
+	// Profile picture
 	Picture Picture
+	// Friends of the user
+	Friends    string
+	// Activities listed on the profile
+	Activities string
+	// Interests listed on the profile
+	Interests  string
+	// Music listed on the profile
+	Music      string
 
 	// Not documented in the API but streamed probably Connections
 	Locale          string
@@ -168,7 +185,7 @@ func FetchUser(name string) (user User, err os.Error) {
 
 			// Parse metadata if requested
 		case "metadata":
-			parseMetaData(value)
+			// TODO: get and parse connections
 		default:
 			debugInterface(value, key, "Person")
 		}
