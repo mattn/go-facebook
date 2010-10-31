@@ -57,24 +57,65 @@ type User struct {
 	Timezone string
 
 	// ##### Connections #####
-		// The News Feed. Requires read_stream permission
-	Home       string
+	// TODO: Replace all strings with actual Connection structs
+	// The News Feed. Requires read_stream permission
+	Home string
 	// Wall. Requires read_stream permission to see non-public posts.
-	Feed       string
+	Feed string
 	// Photos, videos and posts in which the user has been tagged. Requires read_stream permission.
-	Tagged     string
+	Tagged string
 	// Own posts. Requires read_stream permission to see non-public posts.
-	Posts      string
+	Posts string
 	// Profile picture
 	Picture Picture
 	// Friends of the user
-	Friends    string
-	// Activities listed on the profile
+	Friends string
+	// Activities listed on the profile page
 	Activities string
-	// Interests listed on the profile
-	Interests  string
-	// Music listed on the profile
-	Music      string
+	// Interests listed on the profile page
+	Interests string
+	// Music listed on the profile page
+	Music string
+	// Books listed on the profile page
+	Books string
+	// Movies listed on the profile page
+	Movies string
+	// Television listed on the profile pages
+	Television string
+	// Pages this user has liked. Requires user_likes or friend_likes permission
+	Likes string
+	// Photos this user is tagged in. Requires user_photo_video_tags, friend_photo_video_tags and user_photos or friend_photos permissions
+	Photos string
+	// Photo albums this user has created. Requires user_photos or friend_photos permission
+	Albums string
+	// Videos this user has been tagged in. Requires user_videos or friend_videos permission
+	Videos string
+	// Groups this user is a member of. Requires user_groups or friend_groups permission
+	Groups string
+	// Status updates. Requires read_stream permission
+	Statuses string
+	// Posted links. Requires read_stream permission
+	Links string
+	// Notes. Requires read_stream permission
+	Notes string
+	// Events this user is attending. Requires user_events or friend_events permission
+	Events string
+	// Threads in this user's inbox. Requires read_mailbox permission
+	InBox string
+	// Messages in this user's outbox. Requires read_mailbox permission
+	OutBox string
+	// Updates in this user's inbox. Requires read_mailbox permission
+	Updates string
+	/* The Facebook pages owned by the current user. If the manage_pages permission has been granted,
+	 * this connection also yields access_tokens that can be used to query the Graph API on behalf of the page.
+	 */
+	Accounts string
+	// Places the current user has checked-into.
+	Checkins string
+	/* The user's outstanding requests for the app associated with the access token.
+	 * The access token should be app secret signed and not user session signed. See more info here.
+	 */
+	PlatformRequests string
 
 	// Not documented in the API but streamed probably Connections
 	Locale          string
