@@ -24,6 +24,14 @@ func parseObject(value map[string]interface{}) (obj Object) {
 	return
 }
 
+func parseObjects(value []interface{}) (objs []Object) {
+	objs = make([]Object, len(value))
+	for i, v := range value {
+		objs[i] = parseObject(v.(map[string]interface{}))
+	}
+	return
+}
+
 type Link struct {
 	Name string
 	URL  string
@@ -32,6 +40,14 @@ type Link struct {
 func parseLink(value map[string]interface{}) (link Link) {
 	link.Name = value["name"].(string)
 	link.URL = value["link"].(string)
+	return
+}
+
+func parseLinks(value []interface{}) (links []Link) {
+	links = make([]Link, len(value))
+	for i, v := range value {
+		links[i] = parseLink(v.(map[string]interface{}))
+	}
 	return
 }
 
