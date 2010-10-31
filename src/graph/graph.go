@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"fmt"
+	"time"
 )
 
 const (
@@ -74,6 +75,17 @@ func fetchPage(url string) (body []byte, err os.Error) {
 	defer resp.Body.Close()
 
 	body, err = ioutil.ReadAll(resp.Body)
+	return
+}
+
+func parseTime(value string) (t *time.Time, err os.Error) {
+	t, err = time.Parse("RFC3339", value)
+	if err != nil {
+		t, err = time.Parse("January 2, 2006", value)
+		if err != nil {
+			t, err = time.Parse("Jan 2006", value)
+		}
+	}
 	return
 }
 
