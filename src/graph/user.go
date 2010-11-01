@@ -62,7 +62,7 @@ type User struct {
 	// The News Feed. Requires read_stream permission
 	Home Home
 	// Wall. Requires read_stream permission to see non-public posts.
-	Feed string
+	Feed Feed
 	// Photos, videos and posts in which the user has been tagged. Requires read_stream permission.
 	Tagged string
 	// Own posts. Requires read_stream permission to see non-public posts.
@@ -228,7 +228,9 @@ func FetchUser(name string) (user User, err os.Error) {
 			for k, v := range metadata["connections"].(map[string]interface{}) {
 				switch k {
 				case "home":
-					user.Home, err = FetchHomeByURL(v.(string)) // Pass URL
+					err = FetchData(user.Home, v.(string)) // Pass URL
+				case "feed":
+					err = FetchData(user.Feed, v.(string)) // Pass URL
 				}
 			}
 		default:

@@ -14,6 +14,7 @@ paging.go\
 comment.go\
 news.go\
 feed.go\
-privacy.go
+privacy.go\
+data.go
 
 include $(GOROOT)/src/Make.pkg
