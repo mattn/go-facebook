@@ -17,13 +17,13 @@ type UserTest struct {
 }
 
 var PageTests = []PageTest{
-	PageTest{"19292868552", "Facebook Platform"},
-	PageTest{"20531316728", "Facebook"},
-	PageTest{"40796308305", "Coca-Cola"},
+	{"19292868552", "Facebook Platform"},
+	{"20531316728", "Facebook"},
+	{"40796308305", "Coca-Cola"},
 }
 
 var UserTests = []UserTest{
-	UserTest{"220439", "btaylor"},
+	{"220439", "btaylor"},
 }
 
 func TestPage(t *testing.T) {
