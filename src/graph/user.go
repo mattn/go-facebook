@@ -64,7 +64,7 @@ type User struct {
 	// Wall. Requires read_stream permission to see non-public posts.
 	Feed Feed
 	// Photos, videos and posts in which the user has been tagged. Requires read_stream permission.
-	Tagged string
+	Tagged Tagged
 	// Own posts. Requires read_stream permission to see non-public posts.
 	Posts string
 	// Profile picture
@@ -231,6 +231,8 @@ func FetchUser(name string) (user User, err os.Error) {
 					err = FetchData(user.Home, v.(string)) // Pass URL
 				case "feed":
 					err = FetchData(user.Feed, v.(string)) // Pass URL
+				case "tagged":
+					err = FetchData(user.Tagged, v.(string)) // Pass URL
 				}
 			}
 		default:
