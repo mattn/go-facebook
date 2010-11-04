@@ -6,7 +6,7 @@ import (
 )
 
 type Tagged struct {
-	Posts   []News
+	Posts  []News
 	Paging Paging
 }
 
