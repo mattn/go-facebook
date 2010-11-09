@@ -16,6 +16,7 @@ news.go\
 feed.go\
 privacy.go\
 data.go\
-tagged.go
+tagged.go\
+post.go
 
 include $(GOROOT)/src/Make.pkg
