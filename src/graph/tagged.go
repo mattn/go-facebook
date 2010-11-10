@@ -1,15 +1,15 @@
 package facebook
 
 import (
-	"os"
-	"time"
+/*	"os"
+	"time"*/
 )
 
 type Tagged struct {
 	Posts  []News
 	Paging Paging
 }
-
+/*
 func NewTagged() DataParser {
 	var t Tagged
 	return t
@@ -61,3 +61,4 @@ func (t Tagged) ParseData(value []interface{}) (err os.Error) {
 func (t Tagged) SavePaging(p Paging) {
 	t.Paging = p
 }
+*/

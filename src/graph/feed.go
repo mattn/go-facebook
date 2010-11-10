@@ -1,15 +1,16 @@
 package facebook
 
-import (
+import ( /*
 	"os"
 	"time"
+*/
 )
 
 type Feed struct {
 	News   []News
 	Paging Paging
 }
-
+/*
 func NewFeed() DataParser {
 	var f Feed
 	return f
@@ -53,3 +54,4 @@ func (f Feed) ParseData(value []interface{}) (err os.Error) {
 func (f Feed) SavePaging(p Paging) {
 	f.Paging = p
 }
+*/

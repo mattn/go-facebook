@@ -1,10 +1,11 @@
 package facebook
 
 import (
+	"os"
 	"time"
 )
 
-type Posts struct {
+type Post struct {
 	// The post ID
 	ID string
 	// An object containing the ID and name of the user who posted the message
@@ -14,7 +15,7 @@ type Posts struct {
 	// The message
 	Message string
 	// If available, a link to the picture included with this post
-	Picture Picture
+	Picture *Picture
 	// The link attached to this post
 	Link string
 	// The name of the link
@@ -51,8 +52,79 @@ type Posts struct {
 	CreatedTime *time.Time
 	// The time of the last comment on this post
 	UpdatedTime *time.Time
+
+	// Connections
+	// All of the comments on this post (this is no real connection, data is passed with the post)
+	Comments []Comment
 }
 
-// All of the comments on this post
-func (p *Post) GetComments() (comments []Comment) {
+func GetPost(ID string) (post Post, err os.Error) {
+	b, err := fetchBody(ID)
+	data, err := getJsonMap(b)
+	err = post.parseData(data)
+	return
+}
+
+func GetPosts(url string) (posts []Post, err os.Error) {
+	b, err := fetchPage(url)
+	if err != nil {
+		return
+	}
+	m, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	data := m["data"].([]interface{})
+	posts = make([]Post, len(data))
+	for i, v := range data {
+		err = posts[i].parseData(v.(map[string]interface{}))
+	}
+	return
+}
+
+func (p *Post) parseData(value map[string]interface{}) (err os.Error) {
+	for key, val := range value {
+		switch key {
+		case "id":
+			p.ID = val.(string)
+		case "from":
+			p.From = parseObject(val.(map[string]interface{}))
+		case "to":
+			data := val.(map[string]interface{})
+			p.To = parseObjects(data["data"].([]interface{}))
+		case "message":
+			p.Message = val.(string)
+		case "picture":
+			p.Picture = NewPicture(val.(string))
+		case "link":
+			p.Link = val.(string)
+		case "name":
+			p.Name = val.(string)
+		case "caption":
+			p.Caption = val.(string)
+		case "description":
+			p.Description = val.(string)
+		case "source":
+			p.Source = val.(string)
+		case "icon":
+			p.Icon = val.(string)
+		case "attribution":
+			p.Attribution = val.(string)
+		case "actions":
+			p.Actions = parseLinks(val.([]interface{}))
+		case "privacy":
+			// TODO: Privacy				
+		case "likes":
+			p.Likes = val.(float64)
+		case "created_time":
+			p.CreatedTime, err = parseTime(val.(string))
+		case "updated_time":
+			p.UpdatedTime, err = parseTime(val.(string))
+		// Connections
+		case "comments":
+			data := val.(map[string]interface{})
+			p.Comments, _ = parseComments(data)
+		}
+	}
+	return
 }

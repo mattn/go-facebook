@@ -59,6 +59,12 @@ func getJsonMap(body []byte) (data map[string]interface{}, err os.Error) {
 		return
 	}
 	data = values.(map[string]interface{})
+	if e, ok := data["error"]; ok == true {
+		error := e.(map[string]interface{})
+		t := error["type"].(string)
+		message := error["message"].(string)
+		err = os.NewError(t + ": " + message)
+	}
 	return
 }
 
@@ -81,9 +87,12 @@ func fetchPage(url string) (body []byte, err os.Error) {
 func parseTime(value string) (t *time.Time, err os.Error) {
 	t, err = time.Parse("RFC3339", value)
 	if err != nil {
-		t, err = time.Parse("January 2, 2006", value)
+		t, err = time.Parse("2006-01-02T15:04:05+0000", value)
 		if err != nil {
-			t, err = time.Parse("Jan 2006", value)
+			t, err = time.Parse("January 2, 2006", value)
+			if err != nil {
+				t, err = time.Parse("Jan 2006", value)
+			}
 		}
 	}
 	return

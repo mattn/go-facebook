@@ -1,15 +1,16 @@
 package facebook
 
-import (
+import ( /*
 	"os"
 	"time"
+*/
 )
 
 type Home struct {
 	News   []News
 	Paging Paging
 }
-
+/*
 func NewHome() DataParser {
 	var h Home
 	return h
@@ -53,3 +54,4 @@ func (h Home) ParseData(value []interface{}) (err os.Error) {
 func (h Home) SavePaging(p Paging) {
 	h.Paging = p
 }
+*/

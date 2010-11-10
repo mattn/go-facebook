@@ -15,7 +15,6 @@ comment.go\
 news.go\
 feed.go\
 privacy.go\
-data.go\
 tagged.go\
 post.go
 

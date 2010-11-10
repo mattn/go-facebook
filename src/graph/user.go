@@ -56,11 +56,17 @@ type User struct {
 	SignificantOther string
 	// Timezone
 	Timezone string
+	// An anonymous, but unique identifier for the user. Available to everyone on Facebook.
+	ThirdPartyID string
+	// The last time the user's profile was updated. Available to everyone on Facebook.
+	LastUpdated *time.Time
+	// The user's locale. Publicly available. A JSON string containing the ISO Language Code and ISO Country Code.
+	Locale string
 
 	// ##### Connections #####
 	// TODO: Replace all strings with actual Connection structs
 	// The News Feed. Requires read_stream permission
-	Home Home
+	Home []Post
 	// Wall. Requires read_stream permission to see non-public posts.
 	Feed Feed
 	// Photos, videos and posts in which the user has been tagged. Requires read_stream permission.
@@ -68,7 +74,7 @@ type User struct {
 	// Own posts. Requires read_stream permission to see non-public posts.
 	Posts string
 	// Profile picture
-	Picture Picture
+	Picture *Picture
 	// Friends of the user
 	Friends string
 	// Activities listed on the profile page
@@ -119,7 +125,6 @@ type User struct {
 	PlatformRequests string
 
 	// Not documented in the API but streamed
-	Locale          string
 	UpdatedTime     *time.Time
 	FanCount        float64
 	Mission         string
@@ -196,14 +201,14 @@ func FetchUser(name string) (user User, err os.Error) {
 			user.SignificantOther = value.(string)
 		case "timezone":
 			user.Timezone = value.(string)
-
-		// Connections
-		case "picture":
-			user.Picture = NewPicture(value.(string))
-
-		// Not documented in the API but streamed	
+		case "third_party_id":
+			user.ThirdPartyID = value.(string)
+		case "last_updated":
+			user.LastUpdated, err = parseTime(value.(string))
 		case "locale":
 			user.Locale = value.(string)
+
+		// Not documented in the API but streamed
 		case "mission":
 			user.Mission = value.(string)
 		case "category":
@@ -228,11 +233,14 @@ func FetchUser(name string) (user User, err os.Error) {
 			for k, v := range metadata["connections"].(map[string]interface{}) {
 				switch k {
 				case "home":
-					err = FetchData(user.Home, v.(string)) // Pass URL
+					// TODO: You can only access the "home" connection for the current user.
+					//user.Home, err = GetPosts(v.(string)) // Pass URL
 				case "feed":
-					err = FetchData(user.Feed, v.(string)) // Pass URL
+					//err = FetchData(user.Feed, v.(string)) // Pass URL
 				case "tagged":
-					err = FetchData(user.Tagged, v.(string)) // Pass URL
+					//err = FetchData(user.Tagged, v.(string)) // Pass URL
+				case "picture":
+					user.Picture = NewPicture(v.(string)) // Pass URL
 				}
 			}
 		default:

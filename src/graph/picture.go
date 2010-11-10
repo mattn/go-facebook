@@ -6,7 +6,8 @@ type Picture struct {
 	URL string
 }
 
-func NewPicture(url string) (pic Picture) {
+func NewPicture(url string) (pic *Picture) {
+	pic = new(Picture)
 	pic.URL = url
 	return
 }
