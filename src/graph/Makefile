@@ -18,6 +18,8 @@ privacy.go\
 tagged.go\
 post.go\
 group.go\
-venue.go
+venue.go\
+event.go\
+invitation.go
 
 include $(GOROOT)/src/Make.pkg
