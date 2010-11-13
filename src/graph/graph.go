@@ -33,6 +33,22 @@ func parseObjects(value []interface{}) (objs []Object) {
 	return
 }
 
+func getData(URL string) (value []interface{}, err os.Error) {
+	b, err := fetchPage(URL)
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	value, ok := data["data"].([]interface{})
+	if !ok {
+		err = os.NewError("getData: Couldn't parse data,")
+	}
+	return
+}
+
 type Link struct {
 	Name string
 	URL  string
