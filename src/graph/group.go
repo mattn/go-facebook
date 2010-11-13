@@ -44,9 +44,8 @@ func GetGroup(ID string) (g Group, err os.Error) {
 	return
 }
 
-
 /*
- * Parses Post data. Returns nil for err if no error appeared.
+ * Parses Group data. Returns nil for err if no error appeared.
  */
 func (g *Group) parseData(value map[string]interface{}) (err os.Error) {
 	for key, val := range value {
