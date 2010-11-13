@@ -17,6 +17,7 @@ feed.go\
 privacy.go\
 tagged.go\
 post.go\
-group.go
+group.go\
+venue.go
 
 include $(GOROOT)/src/Make.pkg
