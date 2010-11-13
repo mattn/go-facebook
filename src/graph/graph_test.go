@@ -21,6 +21,10 @@ type PostTest struct {
 	Message string
 }
 
+type GroupTest struct {
+	ID string
+}
+
 var PageTests = []PageTest{
 	{"19292868552", "Facebook Platform"},
 	{"20531316728", "Facebook"},
@@ -33,6 +37,10 @@ var UserTests = []UserTest{
 
 var PostTests = []PostTest{
 	{"19292868552_118464504835613", "We're getting ready for f8! Check out the latest on the f8 Page, including a video from the first event, when Platform launched :: http://bit.ly/ahHl7j"},
+}
+
+var GroupTests = []GroupTest{
+	{"2204501798"},
 }
 
 func TestPage(t *testing.T) {
@@ -64,15 +72,28 @@ func TestUser(t *testing.T) {
 func TestPosts(t *testing.T) {
 	for _, v := range PostTests {
 		t.Logf("Fetching facebook post %s\n", v.ID)
-		u, err := GetPost(v.ID)
+		p, err := GetPost(v.ID)
 		if err != nil {
 			t.Errorf("Error: %s\n", err.String())
 		}
-		if u.ID != v.ID {
-			t.Errorf("Error: %s expected %s \n", u.ID, v.ID)
+		if p.ID != v.ID {
+			t.Errorf("Error: %s expected %s \n", p.ID, v.ID)
 		}
-		if u.Message != v.Message {
-			t.Errorf("Error: %s expected %s \n", u.Message, u.Message)
+		if p.Message != v.Message {
+			t.Errorf("Error: %s expected %s \n", p.Message, v.Message)
+		}
+	}
+}
+
+func TestGroups(t *testing.T) {
+	for _, v := range GroupTests {
+		t.Logf("Fetching facebook group %s\n", v.ID)
+		g, err := GetGroup(v.ID)
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		if g.ID != v.ID {
+			t.Errorf("Error: %s expected %s \n", g.ID, v.ID)
 		}
 	}
 }
@@ -94,5 +115,11 @@ func BenchmarkUser(b *testing.B) {
 func BenchmarkPost(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		GetPost("19292868552_118464504835613")
+	}
+}
+
+func BenchmarkGroup(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		GetGroup("2204501798")
 	}
 }

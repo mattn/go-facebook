@@ -68,7 +68,7 @@ type User struct {
 	// The News Feed. Requires read_stream permission
 	Home []Post
 	// Wall. Requires read_stream permission to see non-public posts.
-	Feed Feed
+	Feed []Post
 	// Photos, videos and posts in which the user has been tagged. Requires read_stream permission.
 	Tagged Tagged
 	// Own posts. Requires read_stream permission to see non-public posts.
