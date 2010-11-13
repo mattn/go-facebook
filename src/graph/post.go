@@ -5,6 +5,10 @@ import (
 	"time"
 )
 
+/*
+ * An individual entry in a profile's feed.
+ * The read_stream extended permission is required to access any information in a profile's feed that is not shared with everyone.
+ */
 type Post struct {
 	// The post ID
 	ID string
@@ -58,6 +62,9 @@ type Post struct {
 	Comments []Comment
 }
 
+/*
+ * Gets the Post with the provided ID.
+ */
 func GetPost(ID string) (post Post, err os.Error) {
 	b, err := fetchBody(ID)
 	data, err := getJsonMap(b)
@@ -65,6 +72,11 @@ func GetPost(ID string) (post Post, err os.Error) {
 	return
 }
 
+/*
+ * Gets posts from an facebook GraphAPI URL.
+ * At the moment url isn't checked.
+ * Returns a Post array, err is nil if no error appeared.
+ */
 func GetPosts(url string) (posts []Post, err os.Error) {
 	b, err := fetchPage(url)
 	if err != nil {
@@ -82,6 +94,9 @@ func GetPosts(url string) (posts []Post, err os.Error) {
 	return
 }
 
+/*
+ * Parses Post data. Returns nil for err if no error appeared.
+ */
 func (p *Post) parseData(value map[string]interface{}) (err os.Error) {
 	for key, val := range value {
 		switch key {
