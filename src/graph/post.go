@@ -63,41 +63,9 @@ type Post struct {
 }
 
 /*
- * Gets the Post with the provided ID.
- */
-func GetPost(ID string) (post Post, err os.Error) {
-	b, err := fetchBody(ID)
-	data, err := getJsonMap(b)
-	err = post.parseData(data)
-	return
-}
-
-/*
- * Gets posts from an facebook GraphAPI URL.
- * At the moment url isn't checked.
- * Returns a Post array, err is nil if no error appeared.
- */
-func GetPosts(url string) (posts []Post, err os.Error) {
-	b, err := fetchPage(url)
-	if err != nil {
-		return
-	}
-	m, err := getJsonMap(b)
-	if err != nil {
-		return
-	}
-	data := m["data"].([]interface{})
-	posts = make([]Post, len(data))
-	for i, v := range data {
-		err = posts[i].parseData(v.(map[string]interface{}))
-	}
-	return
-}
-
-/*
  * Parses Post data. Returns nil for err if no error appeared.
  */
-func (p *Post) parseData(value map[string]interface{}) (err os.Error) {
+func parsePost(value map[string]interface{}) (p Post, err os.Error) {
 	for key, val := range value {
 		switch key {
 		case "id":

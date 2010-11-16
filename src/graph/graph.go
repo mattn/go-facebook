@@ -12,6 +12,7 @@ type Graph struct {
 	groups map[string]Group
 	events map[string]Event
 	pages  map[string]Page
+	posts map[string]Post
 }
 
 // ### Groups ###
@@ -143,5 +144,69 @@ func (g *Graph) GetPage(id string) *Page {
 		return nil
 	}
 	p = g.pages[id]
+	return &p
+}
+
+// ### Posts ###
+
+/*
+ * Fetches the Post with the provided ID.
+ */
+func (g *Graph) FetchPost(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(id + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	g.posts[id], err = parsePost(data)
+	return
+}
+
+/*
+ * Fetches posts from an facebook GraphAPI URL.
+ * At the moment url isn't checked.
+ * Returns err is nil if no error appeared.
+ */
+func (g *Graph) FetchPosts(url string) (posts []Post, err os.Error) {
+	body, err := fetchPage(url)
+	if err != nil {
+		return
+	}
+	d, err := getJsonMap(body)
+	if err != nil {
+		return
+	}
+	for key, value := range d {
+		switch key {
+		case "data":
+			data := value.([]interface{})
+			for _, val := range data {
+				var post Post
+				post, err = parsePost(val.(map[string]interface{}))
+				g.posts[post.ID] = post
+			}
+		case "paging":
+		}
+	}
+	return
+}
+
+/* 
+ * Gets the Post with the provided ID.
+ */
+func (g *Graph) GetPost(id string) *Post {
+	p, ok := g.posts[id]
+	if ok {
+		return &p
+	}
+	err := g.FetchPost(id)
+	if err != nil {
+		return nil
+	}
+	p = g.posts[id]
 	return &p
 }
