@@ -17,7 +17,7 @@ type Graph struct {
 	applications map[string]Application
 	posts        map[string]Post
 	photos       map[string]Photo
-	// insights
+	insights     map[string]Insights
 	// notes
 	// subscriptions
 	// status messages
@@ -219,6 +219,37 @@ func (g *Graph) GetPost(id string) *Post {
 	}
 	p = g.posts[id]
 	return &p
+}
+
+// ### Insights ###
+
+// Fetches the Insights with the provided ID.
+func (g *Graph) FetchInsights(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(id + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	g.insights[id], err = parseInsights(id, data["data"].([]interface{}))
+	return
+}
+
+// Gets the Insights with the provided ID.
+func (g *Graph) GetInsights(id string) *Insights {
+	i, ok := g.insights[id]
+	if ok {
+		return &i
+	}
+	err := g.FetchInsights(id)
+	if err != nil {
+		return nil
+	}
+	i = g.insights[id]
+	return &i
 }
 
 // ### Photos ###
