@@ -27,22 +27,22 @@ type Event struct {
 	Privacy string
 	// The last time the event was updated
 	UpdatedTime *time.Time
-/*
-	// Connections
-	// This event's wall
-	Feed []Post
-	// All of the users who have been not yet responded to their invitation to this event
-	NoReply []Invitation
-	// All of the users who have been responded "Maybe" to their invitation to this event
-	Maybe []Invitation
-	// All of the users who have been invited to this event
-	Invited []Invitation
-	// All of the users who are attending this event
-	Attending []Invitation
-	// All of the users who declined their invitation to this event
-	Declined []Invitation
-	// The event's profile picture
-	Picture *Picture
+	/*
+		// Connections
+		// This event's wall
+		Feed []Post
+		// All of the users who have been not yet responded to their invitation to this event
+		NoReply []Invitation
+		// All of the users who have been responded "Maybe" to their invitation to this event
+		Maybe []Invitation
+		// All of the users who have been invited to this event
+		Invited []Invitation
+		// All of the users who are attending this event
+		Attending []Invitation
+		// All of the users who declined their invitation to this event
+		Declined []Invitation
+		// The event's profile picture
+		Picture *Picture
 	*/
 }
 
@@ -72,28 +72,28 @@ func parseEvent(value map[string]interface{}) (e Event, err os.Error) {
 			e.Privacy = val.(string)
 		case "updated_time":
 			e.UpdatedTime, err = parseTime(val.(string))
-		// Connections
+			// Connections
 			/*
-		case "metadata":
-			metadata := val.(map[string]interface{})
-			for k, v := range metadata["connections"].(map[string]interface{}) {
-				switch k {
-				case "feed":
-					e.Feed, err = GetPosts(v.(string))
-				case "noreply":
-					e.NoReply, err = GetInvitations(v.(string))
-				case "maybe":
-					e.Maybe, err = GetInvitations(v.(string))
-				case "invited":
-					e.Invited, err = GetInvitations(v.(string))
-				case "attending":
-					e.Attending, err = GetInvitations(v.(string))
-				case "declined":
-					e.Declined, err = GetInvitations(v.(string))
-				case "picture":
-					e.Picture = NewPicture(v.(string))
-				}
-			}
+				case "metadata":
+					metadata := val.(map[string]interface{})
+					for k, v := range metadata["connections"].(map[string]interface{}) {
+						switch k {
+						case "feed":
+							e.Feed, err = GetPosts(v.(string))
+						case "noreply":
+							e.NoReply, err = GetInvitations(v.(string))
+						case "maybe":
+							e.Maybe, err = GetInvitations(v.(string))
+						case "invited":
+							e.Invited, err = GetInvitations(v.(string))
+						case "attending":
+							e.Attending, err = GetInvitations(v.(string))
+						case "declined":
+							e.Declined, err = GetInvitations(v.(string))
+						case "picture":
+							e.Picture = NewPicture(v.(string))
+						}
+					}
 			*/
 
 		}

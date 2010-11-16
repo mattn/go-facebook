@@ -43,10 +43,12 @@ var GroupTests = []GroupTest{
 	{"2204501798"},
 }
 
-func TestPage(t *testing.T) {
+func TestGraph(t *testing.T) {
+	g := NewGraph()
 	for _, v := range PageTests {
 		t.Logf("Fetching facebook page %s\n", v.ID)
-		p, err := FetchPage(v.ID)
+		err := g.FetchPage(v.ID)
+		p := g.GetPage(v.ID)
 		if err != nil {
 			t.Errorf("Error: %s\n", err.String())
 		}
@@ -56,70 +58,12 @@ func TestPage(t *testing.T) {
 	}
 }
 
-func TestUser(t *testing.T) {
-	for _, v := range UserTests {
-		t.Logf("Fetching facebook user %s\n", v.Name)
-		u, err := FetchUser(v.Name)
-		if err != nil {
-			t.Errorf("Error: %s\n", err.String())
-		}
-		if u.ID != v.ID {
-			t.Errorf("Error: %s expected %s \n", u.ID, v.ID)
-		}
-	}
-}
-
-func TestPosts(t *testing.T) {
-	for _, v := range PostTests {
-		t.Logf("Fetching facebook post %s\n", v.ID)
-		p, err := GetPost(v.ID)
-		if err != nil {
-			t.Errorf("Error: %s\n", err.String())
-		}
-		if p.ID != v.ID {
-			t.Errorf("Error: %s expected %s \n", p.ID, v.ID)
-		}
-		if p.Message != v.Message {
-			t.Errorf("Error: %s expected %s \n", p.Message, v.Message)
-		}
-	}
-}
-
-func TestGroups(t *testing.T) {
-	for _, v := range GroupTests {
-		t.Logf("Fetching facebook group %s\n", v.ID)
-		g, err := GetGroup(v.ID)
-		if err != nil {
-			t.Errorf("Error: %s\n", err.String())
-		}
-		if g.ID != v.ID {
-			t.Errorf("Error: %s expected %s \n", g.ID, v.ID)
-		}
-	}
-}
 
 // Benchmarks
-
+/*
 func BenchmarkPage(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		FetchPage("19292868552")
 	}
 }
-
-func BenchmarkUser(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		FetchUser("btaylor")
-	}
-}
-
-func BenchmarkPost(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		GetPost("19292868552_118464504835613")
-	}
-}
-
-func BenchmarkGroup(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		GetGroup("2204501798")
-	}
-}
+*/

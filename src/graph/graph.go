@@ -12,7 +12,16 @@ type Graph struct {
 	groups map[string]Group
 	events map[string]Event
 	pages  map[string]Page
-	posts map[string]Post
+	posts  map[string]Post
+}
+
+func NewGraph() (g *Graph) {
+	g = new(Graph)
+	g.groups = make(map[string]Group)
+	g.events = make(map[string]Event)
+	g.pages = make(map[string]Page)
+	g.posts = make(map[string]Post)
+	return
 }
 
 // ### Groups ###
