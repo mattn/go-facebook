@@ -143,15 +143,7 @@ func (u *User) String() string {
 		"\n"
 }
 
-func FetchUser(name string) (user User, err os.Error) {
-	body, err := fetchBody(name + "?metadata=1")
-	if err != nil {
-		return
-	}
-	data, err := getJsonMap(body)
-	if err != nil {
-		return
-	}
+func parseUser(data map[string] interface{}) (user User, err os.Error) {
 	for key, value := range data {
 		switch key {
 		case "id":

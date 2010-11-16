@@ -161,37 +161,6 @@ func (g *Graph) GetApplication(id string) *Application {
 	return &a
 }
 
-// ### Pages ###
-
-// Fetches the Page with the provided ID.
-func (g *Graph) FetchPage(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
-	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
-	}
-	g.pages[id], err = parsePage(data)
-	return
-}
-
-// Gets the Page with the provided ID.
-func (g *Graph) GetPage(id string) *Page {
-	p, ok := g.pages[id]
-	if ok {
-		return &p
-	}
-	err := g.FetchPage(id)
-	if err != nil {
-		return nil
-	}
-	p = g.pages[id]
-	return &p
-}
-
 // ### Posts ###
 
 // Fetches the Post with the provided ID.
@@ -249,4 +218,71 @@ func (g *Graph) GetPost(id string) *Post {
 	}
 	p = g.posts[id]
 	return &p
+}
+
+// ### Pages ###
+
+// Fetches the Page with the provided ID.
+func (g *Graph) FetchPage(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(id + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	g.pages[id], err = parsePage(data)
+	return
+}
+
+// Gets the Page with the provided ID.
+func (g *Graph) GetPage(id string) *Page {
+	p, ok := g.pages[id]
+	if ok {
+		return &p
+	}
+	err := g.FetchPage(id)
+	if err != nil {
+		return nil
+	}
+	p = g.pages[id]
+	return &p
+}
+
+// ### Users ###
+
+// Fetches the User with the provided ID or name.
+func (g *Graph) FetchUser(name string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(name + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	var user User
+	user, err = parseUser(data)
+	if err != nil {
+		return
+	}
+	g.users[user.ID] = user
+	return
+}
+
+// Gets the User with the provided ID.
+func (g *Graph) GetUser(id string) *User {
+	u, ok := g.users[id]
+	if ok {
+		return &u
+	}
+	err := g.FetchUser(id)
+	if err != nil {
+		return nil
+	}
+	u = g.users[id]
+	return &u
 }
