@@ -12,7 +12,6 @@ friends.go\
 paging.go\
 comment.go\
 privacy.go\
-tagged.go\
 post.go\
 group.go\
 venue.go\
