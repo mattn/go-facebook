@@ -12,7 +12,6 @@ friends.go\
 home.go\
 paging.go\
 comment.go\
-news.go\
 feed.go\
 privacy.go\
 tagged.go\
@@ -20,6 +19,7 @@ post.go\
 group.go\
 venue.go\
 event.go\
-invitation.go
+invitation.go\
+application.go
 
 include $(GOROOT)/src/Make.pkg
