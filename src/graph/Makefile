@@ -18,6 +18,7 @@ venue.go\
 event.go\
 invitation.go\
 application.go\
-tools.go
+tools.go\
+photo.go
 
 include $(GOROOT)/src/Make.pkg

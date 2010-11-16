@@ -16,7 +16,7 @@ type Graph struct {
 	events       map[string]Event
 	applications map[string]Application
 	posts        map[string]Post
-	// photos
+	photos       map[string]Photo
 	// insights
 	// notes
 	// subscriptions
@@ -36,6 +36,7 @@ func NewGraph() (g *Graph) {
 	g.events = make(map[string]Event)
 	g.applications = make(map[string]Application)
 	g.posts = make(map[string]Post)
+	g.photos = make(map[string]Photo)
 
 	g.pages = make(map[string]Page)
 	g.users = make(map[string]User)
@@ -217,6 +218,37 @@ func (g *Graph) GetPost(id string) *Post {
 		return nil
 	}
 	p = g.posts[id]
+	return &p
+}
+
+// ### Photos ###
+
+// Fetches the Photo with the provided ID.
+func (g *Graph) FetchPhoto(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(id + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	g.photos[id], err = parsePhoto(data)
+	return
+}
+
+// Gets the Photo with the provided ID.
+func (g *Graph) GetPhoto(id string) *Photo {
+	p, ok := g.photos[id]
+	if ok {
+		return &p
+	}
+	err := g.FetchPhoto(id)
+	if err != nil {
+		return nil
+	}
+	p = g.photos[id]
 	return &p
 }
 
