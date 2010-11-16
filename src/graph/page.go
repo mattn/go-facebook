@@ -39,7 +39,7 @@ func (p *Page) String() string {
 		strconv.Ftoa64(p.FanCount, 'e', -1) + "\n"
 }
 
-func parsePage(data map[string] interface{}) (p Page, err os.Error) {
+func parsePage(data map[string]interface{}) (p Page, err os.Error) {
 	for key, value := range data {
 		switch key {
 		case "website":

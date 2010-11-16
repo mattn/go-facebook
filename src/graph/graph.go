@@ -1,7 +1,7 @@
 package facebook
 
 import (
-  "os"
+	"os"
 )
 
 const (
@@ -10,9 +10,11 @@ const (
 
 type Graph struct {
 	groups map[string]Group
-	pages  map[string]Page
 	events map[string]Event
+	pages  map[string]Page
 }
+
+// ### Groups ###
 
 /*
  * Fetches the Group with the provided ID.
@@ -47,33 +49,7 @@ func (g *Graph) GetGroup(id string) *Group {
 	return &gr
 }
 
-func (g *Graph) FetchPage(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
-	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
-	}
-	g.pages[id], err = parsePage(data)
-	return
-}
-
-func (g *Graph) GetPage(id string) *Page {
-	p, ok := g.pages[id]
-	if ok {
-		return &p
-	}
-	err := g.FetchPage(id)
-	if err != nil {
-		return nil
-	}
-	p = g.pages[id]
-	return &p
-}
-
+// ### Events ###
 
 /*
  * Fetches the Event with the provided ID.
@@ -95,7 +71,27 @@ func (g *Graph) FetchEvent(id string) (err os.Error) {
 /*
  * Fetches Events from an URL.
  */
-func FetchEvents(url string) (es []Event, err os.Error) {
+func (g *Graph) FetchEvents(url string) (err os.Error) {
+	body, err := fetchPage(url)
+	if err != nil {
+		return
+	}
+	d, err := getJsonMap(body)
+	if err != nil {
+		return
+	}
+	for key, value := range d {
+		switch key {
+		case "data":
+			data := value.([]interface{})
+			for _, val := range data {
+				var event Event
+				event, err = parseEvent(val.(map[string]interface{}))
+				g.events[event.ID] = event
+			}
+		case "paging":
+		}
+	}
 	return
 }
 
@@ -112,5 +108,40 @@ func (g *Graph) GetEvent(id string) *Event {
 		return nil
 	}
 	p = g.events[id]
+	return &p
+}
+
+// ### Pages ###
+
+/*
+ * Fetches the Page with the provided ID.
+ */
+func (g *Graph) FetchPage(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(id + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	g.pages[id], err = parsePage(data)
+	return
+}
+
+/* 
+ * Gets the Page with the provided ID.
+ */
+func (g *Graph) GetPage(id string) *Page {
+	p, ok := g.pages[id]
+	if ok {
+		return &p
+	}
+	err := g.FetchPage(id)
+	if err != nil {
+		return nil
+	}
+	p = g.pages[id]
 	return &p
 }
