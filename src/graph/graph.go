@@ -14,6 +14,34 @@ const (
 	GRAPHURL = "http://graph.facebook.com/"
 )
 
+type Graph struct {
+	groups map[string]Group
+}
+
+/*
+ * Gets the Group with the provided ID.
+ */
+func (g *Graph) FetchGroup(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(ID + "?metadata=1") // Get metadata
+	data, err := getJsonMap(b)
+	g.groups[ID].parseData(data)
+	return
+}
+
+func (g *Graph) GetGroup(id string) *Group {
+	gr, ok := g.groups[id]
+	if ok {
+		return &gr
+	}
+	err := g.FetchGroup(id)
+	if err != nil {
+		return nil
+	}
+	return &g.groups[id]
+}
+
+
 type Object struct {
 	ID   string
 	Name string

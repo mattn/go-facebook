@@ -5,6 +5,12 @@ import (
 	"time"
 )
 
+const (
+	GROUP_PRIVACY_OPEN   = "OPEN"
+	GROUP_PRIVACY_CLOSED = "CLOSED"
+	GROUP_PRIVACY_SECRET = "SECRET"
+)
+
 // A Facebook group.
 type Group struct {
 	// The group ID. Publicly accessible.
@@ -34,17 +40,6 @@ type Group struct {
 }
 
 /*
- * Gets the Group with the provided ID.
- */
-func GetGroup(ID string) (g Group, err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(ID + "?metadata=1") // Get metadata
-	data, err := getJsonMap(b)
-	err = g.parseData(data)
-	return
-}
-
-/*
  * Parses Group data. Returns nil for err if no error appeared.
  */
 func (g *Group) parseData(value map[string]interface{}) (err os.Error) {
@@ -63,12 +58,11 @@ func (g *Group) parseData(value map[string]interface{}) (err os.Error) {
 		case "link":
 			g.Link = val.(string)
 		case "privacy":
-			// TODO: Privacy		
+			g.Privacy = val.(string)
 		case "updated_time":
 			g.UpdatedTime, err = parseTime(val.(string))
 		// Connections
 		case "metadata":
-			// TODO: get and parse connections
 			metadata := val.(map[string]interface{})
 			for k, v := range metadata["connections"].(map[string]interface{}) {
 				switch k {
