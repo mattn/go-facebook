@@ -52,17 +52,7 @@ type Application struct {
 	*/
 }
 
-/*
- * Gets the application with the provided ID.
- */
-func GetApplication(ID string) (app Application, err os.Error) {
-	b, err := fetchBody(ID)
-	data, err := getJsonMap(b)
-	err = app.parseData(data)
-	return
-}
-
-func (app *Application) parseData(value map[string]interface{}) (err os.Error) {
+func parseApplication(value map[string]interface{}) (app Application, err os.Error) {
 	for key, val := range value {
 		switch key {
 		case "id":

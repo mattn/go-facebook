@@ -9,10 +9,23 @@ const (
 )
 
 type Graph struct {
+	// messages
+	// threads
 	groups map[string]Group
 	events map[string]Event
-	pages  map[string]Page
+	applications map[string] Application
 	posts  map[string]Post
+	// photos
+	// insights
+	// notes
+	// subscriptions
+	// status messages
+	pages  map[string]Page
+	users map[string] User
+	// videos
+	// albums
+	// links
+	// checkins
 }
 
 func NewGraph() (g *Graph) {
@@ -119,6 +132,42 @@ func (g *Graph) GetEvent(id string) *Event {
 	}
 	p = g.events[id]
 	return &p
+}
+
+// ### Applications ###
+
+
+/*
+ * Fetches the Application with the provided ID.
+ */
+func (g *Graph) FetchApplication(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(id + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	g.applications[id], err = parseApplication(data)
+	return
+}
+
+/* 
+ * Gets the Application with the provided ID.
+ */
+func (g *Graph) GetApplication(id string) *Application {
+	a, ok := g.applications[id]
+	if ok {
+		return &a
+	}
+	err := g.FetchApplication(id)
+	if err != nil {
+		return nil
+	}
+	a = g.applications[id]
+	return &a
 }
 
 // ### Pages ###
