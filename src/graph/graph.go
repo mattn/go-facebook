@@ -9,6 +9,7 @@ const (
 )
 
 type Graph struct {
+	// Facebook GraphAPI objects
 	// messages
 	// threads
 	groups       map[string]Group
@@ -30,10 +31,15 @@ type Graph struct {
 
 func NewGraph() (g *Graph) {
 	g = new(Graph)
+
 	g.groups = make(map[string]Group)
 	g.events = make(map[string]Event)
-	g.pages = make(map[string]Page)
+	g.applications = make(map[string]Application)
 	g.posts = make(map[string]Post)
+
+	g.pages = make(map[string]Page)
+	g.users = make(map[string]User)
+
 	return
 }
 
