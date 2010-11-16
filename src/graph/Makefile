@@ -9,7 +9,6 @@ picture.go\
 education.go\
 work.go\
 friends.go\
-home.go\
 paging.go\
 comment.go\
 feed.go\
@@ -20,6 +19,7 @@ group.go\
 venue.go\
 event.go\
 invitation.go\
-application.go
+application.go\
+tools.go
 
 include $(GOROOT)/src/Make.pkg

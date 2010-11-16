@@ -39,41 +39,33 @@ func (p *Page) String() string {
 		strconv.Ftoa64(p.FanCount, 'e', -1) + "\n"
 }
 
-func FetchPage(id string) (page Page, err os.Error) {
-	body, err := fetchBody(id + "?metadata=1")
-	if err != nil {
-		return
-	}
-	data, err := getJsonMap(body)
-	if err != nil {
-		return
-	}
+func (p *Page) parseData(value map[string] interface{}) {
 	for key, value := range data {
 		switch key {
 		case "website":
-			page.Website = value.(string)
+			p.Website = value.(string)
 		case "picture":
-			page.Picture = value.(string)
+			p.Picture = value.(string)
 		case "fan_count":
-			page.FanCount = value.(float64)
+			p.FanCount = value.(float64)
 		case "mission":
-			page.Mission = value.(string)
+			p.Mission = value.(string)
 		case "category":
-			page.Category = value.(string)
+			p.Category = value.(string)
 		case "name":
-			page.Name = value.(string)
+			p.Name = value.(string)
 		case "username":
-			page.Username = value.(string)
+			p.Username = value.(string)
 		case "link":
-			page.Link = value.(string)
+			p.Link = value.(string)
 		case "id":
-			page.ID = value.(string)
+			p.ID = value.(string)
 		case "products":
-			page.Products = value.(string)
+			p.Products = value.(string)
 		case "founded":
-			page.Founded, err = parseTime(value.(string))
+			p.Founded, err = parseTime(value.(string))
 		case "company_overview":
-			page.CompanyOverview = value.(string)
+			p.CompanyOverview = value.(string)
 		case "type":
 			// TODO: Look into type
 		case "metadata":
@@ -82,5 +74,4 @@ func FetchPage(id string) (page Page, err os.Error) {
 			debugInterface(value, key, "Page")
 		}
 	}
-	return
 }
