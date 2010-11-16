@@ -27,7 +27,7 @@ type Event struct {
 	Privacy string
 	// The last time the event was updated
 	UpdatedTime *time.Time
-
+/*
 	// Connections
 	// This event's wall
 	Feed []Post
@@ -43,6 +43,7 @@ type Event struct {
 	Declined []Invitation
 	// The event's profile picture
 	Picture *Picture
+	*/
 }
 
 /*
@@ -72,6 +73,7 @@ func parseEvent(value map[string]interface{}) (e Event, err os.Error) {
 		case "updated_time":
 			e.UpdatedTime, err = parseTime(val.(string))
 		// Connections
+			/*
 		case "metadata":
 			metadata := val.(map[string]interface{})
 			for k, v := range metadata["connections"].(map[string]interface{}) {
@@ -92,6 +94,7 @@ func parseEvent(value map[string]interface{}) (e Event, err os.Error) {
 					e.Picture = NewPicture(v.(string))
 				}
 			}
+			*/
 
 		}
 	}

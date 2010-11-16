@@ -29,7 +29,7 @@ type Group struct {
 	Privacy string
 	// The last time the group was updated. Publicly accessible. Contains a IETF RFC 3339 datetime.
 	UpdatedTime *time.Time
-
+/*
 	// Connections
 	// This group's wall. Publicly available.
 	Feed []Post
@@ -37,6 +37,7 @@ type Group struct {
 	Members []Object
 	// The profile picture of this group. Publicly available. Returns a HTTP 302 with the URL of the user's profile picture
 	Picture *Picture
+	*/
 }
 
 /*
@@ -62,6 +63,7 @@ func parseGroup(value map[string]interface{}) (g Group, err os.Error) {
 		case "updated_time":
 			g.UpdatedTime, err = parseTime(val.(string))
 		// Connections
+			/*
 		case "metadata":
 			metadata := val.(map[string]interface{})
 			for k, v := range metadata["connections"].(map[string]interface{}) {
@@ -77,6 +79,7 @@ func parseGroup(value map[string]interface{}) (g Group, err os.Error) {
 					g.Picture = NewPicture(v.(string))
 				}
 			}
+			*/
 
 		}
 	}

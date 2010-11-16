@@ -20,7 +20,7 @@ type Application struct {
 	Category string
 	// A link to application dashboard on Facebook. Publicly available. Contains an URL.
 	Link string
-
+/*
 	// Connections
 	// The application's wall. Publicly available
 	Feed []Post
@@ -49,6 +49,7 @@ type Application struct {
 	// Subscriptions []Subscription // TODO
 	// Usage metrics for this application. Requires an application access token.
 	// Insights []Insight // TODO
+	*/
 }
 
 /*
@@ -75,6 +76,7 @@ func (app *Application) parseData(value map[string]interface{}) (err os.Error) {
 		case "link":
 			app.Link = val.(string)
 		// Connections
+			/*
 		case "metadata":
 			metadata := val.(map[string]interface{})
 			for k, v := range metadata["connections"].(map[string]interface{}) {
@@ -92,7 +94,7 @@ func (app *Application) parseData(value map[string]interface{}) (err os.Error) {
 				case "events":
 				}
 			}
-
+			*/
 		}
 	}
 	return

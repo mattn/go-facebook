@@ -62,7 +62,7 @@ type User struct {
 	LastUpdated *time.Time
 	// The user's locale. Publicly available. A JSON string containing the ISO Language Code and ISO Country Code.
 	Locale string
-
+/*
 	// ##### Connections #####
 	// TODO: Replace all strings with actual Connection structs
 	// The News Feed. Requires read_stream permission
@@ -113,6 +113,7 @@ type User struct {
 	OutBox string
 	// Updates in this user's inbox. Requires read_mailbox permission
 	Updates string
+	*/
 	/* The Facebook pages owned by the current user. If the manage_pages permission has been granted,
 	 * this connection also yields access_tokens that can be used to query the Graph API on behalf of the page.
 	 */
@@ -227,6 +228,7 @@ func FetchUser(name string) (user User, err os.Error) {
 			// TODO: Look into type
 
 			// Parse metadata if requested
+			/*
 		case "metadata":
 			// TODO: get and parse connections
 			metadata := value.(map[string]interface{})
@@ -243,6 +245,7 @@ func FetchUser(name string) (user User, err os.Error) {
 					user.Picture = NewPicture(v.(string)) // Pass URL
 				}
 			}
+			*/
 		default:
 			debugInterface(value, key, "Person")
 		}
