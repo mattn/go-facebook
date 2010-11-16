@@ -11,17 +11,17 @@ const (
 type Graph struct {
 	// messages
 	// threads
-	groups map[string]Group
-	events map[string]Event
-	applications map[string] Application
-	posts  map[string]Post
+	groups       map[string]Group
+	events       map[string]Event
+	applications map[string]Application
+	posts        map[string]Post
 	// photos
 	// insights
 	// notes
 	// subscriptions
 	// status messages
-	pages  map[string]Page
-	users map[string] User
+	pages map[string]Page
+	users map[string]User
 	// videos
 	// albums
 	// links
@@ -39,9 +39,7 @@ func NewGraph() (g *Graph) {
 
 // ### Groups ###
 
-/*
- * Fetches the Group with the provided ID.
- */
+// Fetches the Group with the provided ID.
 func (g *Graph) FetchGroup(id string) (err os.Error) {
 	// TODO: Check for valid ID
 	b, err := fetchBody(id + "?metadata=1") // Get metadata
@@ -56,9 +54,7 @@ func (g *Graph) FetchGroup(id string) (err os.Error) {
 	return
 }
 
-/*
- * Gets the Group with the provided ID.
- */
+// Gets the Group with the provided ID.
 func (g *Graph) GetGroup(id string) *Group {
 	gr, ok := g.groups[id]
 	if ok {
@@ -74,9 +70,7 @@ func (g *Graph) GetGroup(id string) *Group {
 
 // ### Events ###
 
-/*
- * Fetches the Event with the provided ID.
- */
+// Fetches the Event with the provided ID.
 func (g *Graph) FetchEvent(id string) (err os.Error) {
 	// TODO: Check for valid ID
 	b, err := fetchBody(id + "?metadata=1")
@@ -91,9 +85,7 @@ func (g *Graph) FetchEvent(id string) (err os.Error) {
 	return
 }
 
-/*
- * Fetches Events from an URL.
- */
+// Fetches Events from an URL.
 func (g *Graph) FetchEvents(url string) (err os.Error) {
 	body, err := fetchPage(url)
 	if err != nil {
@@ -118,9 +110,7 @@ func (g *Graph) FetchEvents(url string) (err os.Error) {
 	return
 }
 
-/* 
- * Gets the Event with the provided ID.
- */
+// Gets the Event with the provided ID.
 func (g *Graph) GetEvent(id string) *Event {
 	p, ok := g.events[id]
 	if ok {
@@ -136,10 +126,7 @@ func (g *Graph) GetEvent(id string) *Event {
 
 // ### Applications ###
 
-
-/*
- * Fetches the Application with the provided ID.
- */
+// Fetches the Application with the provided ID.
 func (g *Graph) FetchApplication(id string) (err os.Error) {
 	// TODO: Check for valid ID
 	b, err := fetchBody(id + "?metadata=1")
@@ -154,9 +141,7 @@ func (g *Graph) FetchApplication(id string) (err os.Error) {
 	return
 }
 
-/* 
- * Gets the Application with the provided ID.
- */
+// Gets the Application with the provided ID.
 func (g *Graph) GetApplication(id string) *Application {
 	a, ok := g.applications[id]
 	if ok {
@@ -172,9 +157,7 @@ func (g *Graph) GetApplication(id string) *Application {
 
 // ### Pages ###
 
-/*
- * Fetches the Page with the provided ID.
- */
+// Fetches the Page with the provided ID.
 func (g *Graph) FetchPage(id string) (err os.Error) {
 	// TODO: Check for valid ID
 	b, err := fetchBody(id + "?metadata=1")
@@ -189,9 +172,7 @@ func (g *Graph) FetchPage(id string) (err os.Error) {
 	return
 }
 
-/* 
- * Gets the Page with the provided ID.
- */
+// Gets the Page with the provided ID.
 func (g *Graph) GetPage(id string) *Page {
 	p, ok := g.pages[id]
 	if ok {
@@ -207,9 +188,7 @@ func (g *Graph) GetPage(id string) *Page {
 
 // ### Posts ###
 
-/*
- * Fetches the Post with the provided ID.
- */
+// Fetches the Post with the provided ID.
 func (g *Graph) FetchPost(id string) (err os.Error) {
 	// TODO: Check for valid ID
 	b, err := fetchBody(id + "?metadata=1")
@@ -224,8 +203,7 @@ func (g *Graph) FetchPost(id string) (err os.Error) {
 	return
 }
 
-/*
- * Fetches posts from an facebook GraphAPI URL.
+/* Fetches posts from an facebook GraphAPI URL.
  * At the moment url isn't checked.
  * Returns err is nil if no error appeared.
  */
@@ -253,9 +231,7 @@ func (g *Graph) FetchPosts(url string) (posts []Post, err os.Error) {
 	return
 }
 
-/* 
- * Gets the Post with the provided ID.
- */
+// Gets the Post with the provided ID.
 func (g *Graph) GetPost(id string) *Post {
 	p, ok := g.posts[id]
 	if ok {
