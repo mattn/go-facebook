@@ -42,7 +42,7 @@ type Group struct {
 /*
  * Parses Group data. Returns nil for err if no error appeared.
  */
-func (g *Group) parseData(value map[string]interface{}) (err os.Error) {
+func parseGroup(value map[string]interface{}) (g Group, err os.Error) {
 	for key, val := range value {
 		switch key {
 		case "id":

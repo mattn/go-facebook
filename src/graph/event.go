@@ -46,31 +46,9 @@ type Event struct {
 }
 
 /*
- * Gets the Event with the provided ID.
- */
-func GetEvent(ID string) (e Event, err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(ID + "?metadata=1") // Get metadata
-	data, err := getJsonMap(b)
-	err = e.parseData(data)
-	return
-}
-
-/*
- * Gets Events from an URL.
- */
-func GetEvents(url string) (es []Event, err os.Error) {
-	// TODO: Check for valid utl
-	b, err := fetchPage(url)
-	data, err := getJsonMap(b)
-	// TODO
-	return
-}
-
-/*
  * Parses Event data. Returns nil for err if no error appeared.
  */
-func (e *Event) parseData(value map[string]interface{}) (err os.Error) {
+func parseEvent(value map[string]interface{}) (e Event, err os.Error) {
 	for key, val := range value {
 		switch key {
 		case "id":
