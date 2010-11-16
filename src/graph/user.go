@@ -70,7 +70,7 @@ type User struct {
 	// Wall. Requires read_stream permission to see non-public posts.
 	Feed []Post
 	// Photos, videos and posts in which the user has been tagged. Requires read_stream permission.
-	Tagged Tagged
+	//Tagged TODO
 	// Own posts. Requires read_stream permission to see non-public posts.
 	Posts string
 	// Profile picture

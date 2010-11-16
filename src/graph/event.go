@@ -57,6 +57,17 @@ func GetEvent(ID string) (e Event, err os.Error) {
 }
 
 /*
+ * Gets Events from an URL.
+ */
+func GetEvents(url string) (es []Event, err os.Error) {
+	// TODO: Check for valid utl
+	b, err := fetchPage(url)
+	data, err := getJsonMap(b)
+	// TODO
+	return
+}
+
+/*
  * Parses Event data. Returns nil for err if no error appeared.
  */
 func (e *Event) parseData(value map[string]interface{}) (err os.Error) {
