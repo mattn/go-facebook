@@ -11,7 +11,6 @@ work.go\
 friends.go\
 paging.go\
 comment.go\
-feed.go\
 privacy.go\
 tagged.go\
 post.go\
