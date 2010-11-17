@@ -20,9 +20,9 @@ type Graph struct {
 	insights     map[string]Insights
 	notes        map[string]Note
 	// subscriptions // NOTE: Unsure if this will be used
-	// status messages
-	pages map[string]Page
-	users map[string]User
+	statusMessages map[string]StatusMessage
+	pages          map[string]Page
+	users          map[string]User
 	// videos
 	// albums
 	// links
@@ -39,7 +39,7 @@ func NewGraph() (g *Graph) {
 	g.photos = make(map[string]Photo)
 	g.insights = make(map[string]Insights)
 	g.notes = make(map[string]Note)
-
+	g.statusMessages = make(map[string]StatusMessage)
 	g.pages = make(map[string]Page)
 	g.users = make(map[string]User)
 
@@ -283,6 +283,37 @@ func (g *Graph) GetNote(id string) *Note {
 	}
 	n = g.notes[id]
 	return &n
+}
+
+// ### StatusMessages ###
+
+// Fetches the StatusMessage with the provided ID.
+func (g *Graph) FetchStatusMessage(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(id + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	g.statusMessages[id], err = parseStatusMessage(data)
+	return
+}
+
+// Gets the StatusMessage with the provided ID.
+func (g *Graph) GetStatusMessage(id string) *StatusMessage {
+	sm, ok := g.statusMessages[id]
+	if ok {
+		return &sm
+	}
+	err := g.FetchStatusMessage(id)
+	if err != nil {
+		return nil
+	}
+	sm = g.statusMessages[id]
+	return &sm
 }
 
 // ### Photos ###

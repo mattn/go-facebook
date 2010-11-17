@@ -22,6 +22,7 @@ tools.go\
 photo.go\
 insights.go\
 note.go\
-subscription.go
+subscription.go\
+statusmessage.go
 
 include $(GOROOT)/src/Make.pkg
