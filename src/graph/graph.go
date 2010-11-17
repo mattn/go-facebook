@@ -26,7 +26,7 @@ type Graph struct {
 	videos         map[string]Video
 	albums         map[string]Album
 	links          map[string]Link
-	// checkins
+	checkins       map[string]Checkin
 }
 
 func NewGraph() (g *Graph) {
@@ -45,7 +45,7 @@ func NewGraph() (g *Graph) {
 	g.videos = make(map[string]Video)
 	g.albums = make(map[string]Album)
 	g.links = make(map[string]Link)
-
+	g.checkins = make(map[string]Checkin)
 	return
 }
 
@@ -508,4 +508,35 @@ func (g *Graph) GetLink(id string) *Link {
 	}
 	l = g.links[id]
 	return &l
+}
+
+// ### Checkins ###
+
+// Fetches the Checkin with the provided ID or name.
+func (g *Graph) FetchCheckin(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(id + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	g.checkins[id], err = parseCheckin(data)
+	return
+}
+
+// Gets the Checkin with the provided ID.
+func (g *Graph) GetCheckin(id string) *Checkin {
+	c, ok := g.checkins[id]
+	if ok {
+		return &c
+	}
+	err := g.FetchCheckin(id)
+	if err != nil {
+		return nil
+	}
+	c = g.checkins[id]
+	return &c
 }
