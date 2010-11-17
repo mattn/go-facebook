@@ -25,6 +25,7 @@ note.go\
 subscription.go\
 statusmessage.go\
 video.go\
-album.go
+album.go\
+link.go
 
 include $(GOROOT)/src/Make.pkg

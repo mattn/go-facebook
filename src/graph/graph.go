@@ -25,7 +25,7 @@ type Graph struct {
 	users          map[string]User
 	videos         map[string]Video
 	albums         map[string]Album
-	// links
+	links          map[string]Link
 	// checkins
 }
 
@@ -44,6 +44,7 @@ func NewGraph() (g *Graph) {
 	g.users = make(map[string]User)
 	g.videos = make(map[string]Video)
 	g.albums = make(map[string]Album)
+	g.links = make(map[string]Link)
 
 	return
 }
@@ -476,4 +477,35 @@ func (g *Graph) GetAlbum(id string) *Album {
 	}
 	a = g.albums[id]
 	return &a
+}
+
+// ### Links ###
+
+// Fetches the Link with the provided ID or name.
+func (g *Graph) FetchLink(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(id + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	g.links[id], err = parseLink(data)
+	return
+}
+
+// Gets the Link with the provided ID.
+func (g *Graph) GetLink(id string) *Link {
+	l, ok := g.links[id]
+	if ok {
+		return &l
+	}
+	err := g.FetchLink(id)
+	if err != nil {
+		return nil
+	}
+	l = g.links[id]
+	return &l
 }
