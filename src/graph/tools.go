@@ -45,21 +45,21 @@ func getData(URL string) (value []interface{}, err os.Error) {
 	return
 }
 
-type Link struct {
+type URL struct {
 	Name string
 	URL  string
 }
 
-func parseLink(value map[string]interface{}) (link Link) {
-	link.Name = value["name"].(string)
-	link.URL = value["link"].(string)
+func parseURL(value map[string]interface{}) (url URL) {
+	url.Name = value["name"].(string)
+	url.URL = value["link"].(string)
 	return
 }
 
-func parseLinks(value []interface{}) (links []Link) {
-	links = make([]Link, len(value))
+func parseURLs(value []interface{}) (urls []URL) {
+	urls = make([]URL, len(value))
 	for i, v := range value {
-		links[i] = parseLink(v.(map[string]interface{}))
+		urls[i] = parseURL(v.(map[string]interface{}))
 	}
 	return
 }

@@ -37,7 +37,7 @@ type Post struct {
 	/* A list of available actions on the post (including commenting, liking, and an optional app-specified action),
 	 * encoded as objects with keys for the 'name' and 'link'.
 	 */
-	Actions []Link
+	Actions []URL
 	/* 
 	 * An object that defines the privacy setting for a post, video, or album. It contains the following fields:
 	 * value(string) : The privacy value for the object, specify one of EVERYONE, CUSTOM, ALL_FRIENDS, NETWORKS_FRIENDS, FRIENDS_OF_FRIENDS.
@@ -94,7 +94,7 @@ func parsePost(value map[string]interface{}) (p Post, err os.Error) {
 		case "attribution":
 			p.Attribution = val.(string)
 		case "actions":
-			p.Actions = parseLinks(val.([]interface{}))
+			p.Actions = parseURLs(val.([]interface{}))
 		case "privacy":
 			// TODO: Privacy				
 		case "likes":
