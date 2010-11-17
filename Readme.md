@@ -9,6 +9,8 @@ The package includes all none test go files in the folder src.
 ## License
 
 MIT-License, for more information look into the LICENSE file.
+The documentation is mostly coppied from the Facebook documentation.
+For documentation license see http://developers.facebook.com/licensing/
 
 ## About
 
