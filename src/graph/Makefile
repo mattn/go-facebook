@@ -21,6 +21,7 @@ application.go\
 tools.go\
 photo.go\
 insights.go\
-note.go
+note.go\
+subscription.go
 
 include $(GOROOT)/src/Make.pkg
