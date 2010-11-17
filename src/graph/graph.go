@@ -19,7 +19,7 @@ type Graph struct {
 	photos       map[string]Photo
 	insights     map[string]Insights
 	notes        map[string]Note
-	// subscriptions
+	// subscriptions // NOTE: Unsure if this will be used
 	// status messages
 	pages map[string]Page
 	users map[string]User
@@ -37,6 +37,8 @@ func NewGraph() (g *Graph) {
 	g.applications = make(map[string]Application)
 	g.posts = make(map[string]Post)
 	g.photos = make(map[string]Photo)
+	g.insights = make(map[string]Insights)
+	g.notes = make(map[string]Note)
 
 	g.pages = make(map[string]Page)
 	g.users = make(map[string]User)
