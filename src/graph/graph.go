@@ -18,7 +18,7 @@ type Graph struct {
 	posts        map[string]Post
 	photos       map[string]Photo
 	insights     map[string]Insights
-	// notes
+	notes        map[string]Note
 	// subscriptions
 	// status messages
 	pages map[string]Page
@@ -250,6 +250,37 @@ func (g *Graph) GetInsights(id string) *Insights {
 	}
 	i = g.insights[id]
 	return &i
+}
+
+// ### Notes ###
+
+// Fetches the Note with the provided ID.
+func (g *Graph) FetchNote(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(id + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	g.notes[id], err = parseNote(data)
+	return
+}
+
+// Gets the Note with the provided ID.
+func (g *Graph) GetNote(id string) *Note {
+	n, ok := g.notes[id]
+	if ok {
+		return &n
+	}
+	err := g.FetchNote(id)
+	if err != nil {
+		return nil
+	}
+	n = g.notes[id]
+	return &n
 }
 
 // ### Photos ###

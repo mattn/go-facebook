@@ -20,6 +20,7 @@ invitation.go\
 application.go\
 tools.go\
 photo.go\
-insights.go
+insights.go\
+note.go
 
 include $(GOROOT)/src/Make.pkg
