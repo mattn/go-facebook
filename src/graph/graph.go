@@ -23,7 +23,7 @@ type Graph struct {
 	statusMessages map[string]StatusMessage
 	pages          map[string]Page
 	users          map[string]User
-	// videos
+	videos         map[string]Video
 	// albums
 	// links
 	// checkins
@@ -42,6 +42,7 @@ func NewGraph() (g *Graph) {
 	g.statusMessages = make(map[string]StatusMessage)
 	g.pages = make(map[string]Page)
 	g.users = make(map[string]User)
+	g.videos = make(map[string]Video)
 
 	return
 }
@@ -412,4 +413,35 @@ func (g *Graph) GetUser(id string) *User {
 	}
 	u = g.users[id]
 	return &u
+}
+
+// ### Videos ###
+
+// Fetches the Video with the provided ID or name.
+func (g *Graph) FetchVideo(id string) (err os.Error) {
+	// TODO: Check for valid ID
+	b, err := fetchBody(id + "?metadata=1")
+	if err != nil {
+		return
+	}
+	data, err := getJsonMap(b)
+	if err != nil {
+		return
+	}
+	g.videos[id], err = parseVideo(data)
+	return
+}
+
+// Gets the Video with the provided ID.
+func (g *Graph) GetVideo(id string) *Video {
+	v, ok := g.videos[id]
+	if ok {
+		return &v
+	}
+	err := g.FetchVideo(id)
+	if err != nil {
+		return nil
+	}
+	v = g.videos[id]
+	return &v
 }
