@@ -1,4 +1,4 @@
-package facebook
+package graph
 
 // A subscription to an application to get real-time updates for an Graph object type.
 // For more details, see the Real-time Overview.

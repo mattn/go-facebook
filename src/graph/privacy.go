@@ -1,4 +1,4 @@
-package facebook
+package graph
 
 const (
 	PRIVACY_EVERYONE           = "EVERYONE"

@@ -1,4 +1,4 @@
-package facebook
+package graph
 
 // Profile picture
 type Picture struct {

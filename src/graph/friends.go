@@ -1,4 +1,4 @@
-package facebook
+package graph
 
 type Friends []Object
 

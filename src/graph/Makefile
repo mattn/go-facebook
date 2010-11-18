@@ -1,6 +1,6 @@
 include $(GOROOT)/src/Make.inc
 
-TARG=net/facebook
+TARG=facebook/graph
 
 GOFILES=graph.go\
 user.go\

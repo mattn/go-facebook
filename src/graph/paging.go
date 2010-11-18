@@ -1,4 +1,4 @@
-package facebook
+package graph
 
 type Paging struct {
 	Previous string

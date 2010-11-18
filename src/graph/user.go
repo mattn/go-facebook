@@ -1,4 +1,4 @@
-package facebook
+package graph
 
 import (
 	"os"
@@ -143,7 +143,7 @@ func (u *User) String() string {
 		"\n"
 }
 
-func parseUser(data map[string] interface{}) (user User, err os.Error) {
+func parseUser(data map[string]interface{}) (user User, err os.Error) {
 	for key, value := range data {
 		switch key {
 		case "id":

@@ -1,4 +1,4 @@
-package facebook
+package graph
 
 const (
 	TYPE_EDU_HIGHSCHOOL     = "High School"
