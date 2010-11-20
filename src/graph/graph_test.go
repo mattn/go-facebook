@@ -32,7 +32,7 @@ var PageTests = []PageTest{
 }
 
 var UserTests = []UserTest{
-	{"220439", "btaylor"},
+	{"220439", "Bret Taylor"},
 }
 
 var PostTests = []PostTest{
@@ -43,8 +43,9 @@ var GroupTests = []GroupTest{
 	{"2204501798"},
 }
 
-func TestGraph(t *testing.T) {
-	g := NewGraph()
+var g = NewGraph()
+
+func TestPages(t *testing.T) {
 	for _, v := range PageTests {
 		t.Logf("Fetching facebook page %s\n", v.ID)
 		err := g.FetchPage(v.ID)
@@ -54,6 +55,45 @@ func TestGraph(t *testing.T) {
 		}
 		if p.Name != v.Name {
 			t.Errorf("Error: %s expected %s \n", p.Name, v.Name)
+		}
+	}
+}
+
+func TestUsers(t *testing.T) {
+	for _, v := range UserTests {
+		t.Logf("Fetching facebook user %s\n", v.ID)
+		err := g.FetchUser(v.ID)
+		p := g.GetUser(v.ID)
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		if p.Name != v.Name {
+			t.Errorf("Error: %s expected %s \n", p.Name, v.Name)
+		}
+	}
+}
+
+func TestPosts(t *testing.T) {
+	for _, v := range PostTests {
+		t.Logf("Fetching facebook user %s\n", v.ID)
+		err := g.FetchPost(v.ID)
+		p := g.GetPost(v.ID)
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		if p.Message != v.Message {
+			t.Errorf("Error: %s expected %s \n", p.Message, v.Message)
+		}
+	}
+}
+
+func TestGroups(t *testing.T) {
+	for _, v := range GroupTests {
+		t.Logf("Fetching facebook group %s\n", v.ID)
+		err := g.FetchGroup(v.ID)
+		g.GetGroup(v.ID)
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
 		}
 	}
 }
