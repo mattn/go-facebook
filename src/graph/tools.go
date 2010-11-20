@@ -69,11 +69,11 @@ func parseURLs(value []interface{}) (urls []URL) {
 	return
 }
 
-func getObject(id string) (data map[string] interface{}, err os.Error) {
+func getObject(id string) (data map[string]interface{}, err os.Error) {
 	return getObjByURL(GRAPHURL + id + "?metadata=1")
 }
-		
-func getObjByURL(url string) (data map[string] interface{}, err os.Error) {
+
+func getObjByURL(url string) (data map[string]interface{}, err os.Error) {
 	// TODO: Check for valid ID
 	resp, _, err := http.Get(url) // Response, final URL, error
 	if err != nil {
@@ -83,7 +83,7 @@ func getObjByURL(url string) (data map[string] interface{}, err os.Error) {
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return
-	}	
+	}
 	data, err = getJsonMap(b)
 	return
 }

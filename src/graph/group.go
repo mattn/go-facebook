@@ -29,9 +29,9 @@ type Group struct {
 	Privacy string
 	// The last time the group was updated. Publicly accessible. Contains a IETF RFC 3339 datetime.
 	UpdatedTime *time.Time
-	
+
 	// Connections
-	feed string
+	feed    string
 	members string
 	picture string
 }
@@ -47,12 +47,12 @@ func (g *Group) GetFeed() (p []Post, err os.Error) {
 
 // Get all of the users who are members of this group. Publicly available. Returned object contains friend id and name fields.
 func (g *Group) GetMembers() (obj []Object) {
-  return
+	return
 }
 
 // The profile picture of this group. Publicly available. Returns a HTTP 302 with the URL of the user's profile picture
 func (g *Group) GetPicture() (pic *Picture) {
-  return  
+	return
 }
 
 /*
@@ -78,18 +78,18 @@ func parseGroup(value map[string]interface{}) (g Group, err os.Error) {
 		case "updated_time":
 			g.UpdatedTime, err = parseTime(val.(string))
 			// Connections
-				case "metadata":
-					metadata := val.(map[string]interface{})
-					for k, v := range metadata["connections"].(map[string]interface{}) {
-						switch k {
-						case "feed":
-							g.feed = v.(string)
-						case "members":
-							g.members = v.(string)
-						case "picture":
-							g.picture = v.(string)
-						}
-					}
+		case "metadata":
+			metadata := val.(map[string]interface{})
+			for k, v := range metadata["connections"].(map[string]interface{}) {
+				switch k {
+				case "feed":
+					g.feed = v.(string)
+				case "members":
+					g.members = v.(string)
+				case "picture":
+					g.picture = v.(string)
+				}
+			}
 		}
 	}
 	return

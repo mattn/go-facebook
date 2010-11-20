@@ -55,7 +55,7 @@ func NewGraph() (g *Graph) {
 func (g *Graph) FetchGroup(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.groups[id], err = parseGroup(data)
 	return
@@ -81,7 +81,7 @@ func (g *Graph) GetGroup(id string) *Group {
 func (g *Graph) FetchEvent(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.events[id], err = parseEvent(data)
 	return
@@ -91,7 +91,7 @@ func (g *Graph) FetchEvent(id string) (err os.Error) {
 func (g *Graph) FetchEvents(url string) (err os.Error) {
 	d, err := getObjByURL(url)
 	if err != nil {
-	  return
+		return
 	}
 	for key, value := range d {
 		switch key {
@@ -128,7 +128,7 @@ func (g *Graph) GetEvent(id string) *Event {
 func (g *Graph) FetchApplication(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.applications[id], err = parseApplication(data)
 	return
@@ -154,7 +154,7 @@ func (g *Graph) GetApplication(id string) *Application {
 func (g *Graph) FetchPost(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.posts[id], err = parsePost(data)
 	return
@@ -167,7 +167,7 @@ func (g *Graph) FetchPost(id string) (err os.Error) {
 func (g *Graph) FetchPosts(url string) (err os.Error) {
 	posts, err := fetchPosts(url)
 	if err != nil {
-	  return
+		return
 	}
 	for _, v := range posts {
 		g.posts[v.ID] = v
@@ -195,7 +195,7 @@ func (g *Graph) GetPost(id string) *Post {
 func (g *Graph) FetchInsights(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.insights[id], err = parseInsights(id, data["data"].([]interface{}))
 	return
@@ -221,7 +221,7 @@ func (g *Graph) GetInsights(id string) *Insights {
 func (g *Graph) FetchNote(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.notes[id], err = parseNote(data)
 	return
@@ -247,7 +247,7 @@ func (g *Graph) GetNote(id string) *Note {
 func (g *Graph) FetchStatusMessage(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.statusMessages[id], err = parseStatusMessage(data)
 	return
@@ -273,7 +273,7 @@ func (g *Graph) GetStatusMessage(id string) *StatusMessage {
 func (g *Graph) FetchPhoto(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.photos[id], err = parsePhoto(data)
 	return
@@ -299,7 +299,7 @@ func (g *Graph) GetPhoto(id string) *Photo {
 func (g *Graph) FetchPage(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.pages[id], err = parsePage(data)
 	return
@@ -325,7 +325,7 @@ func (g *Graph) GetPage(id string) *Page {
 func (g *Graph) FetchUser(name string) (err os.Error) {
 	data, err := getObject(name)
 	if err != nil {
-	  return
+		return
 	}
 	var user User
 	user, err = parseUser(data)
@@ -356,7 +356,7 @@ func (g *Graph) GetUser(id string) *User {
 func (g *Graph) FetchVideo(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.videos[id], err = parseVideo(data)
 	return
@@ -382,7 +382,7 @@ func (g *Graph) GetVideo(id string) *Video {
 func (g *Graph) FetchAlbum(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.albums[id], err = parseAlbum(data)
 	return
@@ -408,7 +408,7 @@ func (g *Graph) GetAlbum(id string) *Album {
 func (g *Graph) FetchLink(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.links[id], err = parseLink(data)
 	return
@@ -434,7 +434,7 @@ func (g *Graph) GetLink(id string) *Link {
 func (g *Graph) FetchCheckin(id string) (err os.Error) {
 	data, err := getObject(id)
 	if err != nil {
-	  return
+		return
 	}
 	g.checkins[id], err = parseCheckin(data)
 	return

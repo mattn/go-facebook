@@ -238,8 +238,6 @@ func parseUser(data map[string]interface{}) (user User, err os.Error) {
 						}
 					}
 			*/
-		default:
-			debugInterface(value, key, "Person")
 		}
 	}
 	return

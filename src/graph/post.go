@@ -65,7 +65,7 @@ type Post struct {
 func fetchPosts(url string) (posts []Post, err os.Error) {
 	d, err := getObjByURL(url)
 	if err != nil {
-	  return
+		return
 	}
 	for key, value := range d {
 		switch key {
