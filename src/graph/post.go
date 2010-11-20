@@ -62,6 +62,27 @@ type Post struct {
 	Comments []Comment
 }
 
+func fetchPosts(url string) (posts []Post, err os.Error) {
+	d, err := getObjByURL(url)
+	if err != nil {
+	  return
+	}
+	for key, value := range d {
+		switch key {
+		case "data":
+			data := value.([]interface{})
+			posts = make([]Post, len(data))
+			for i, val := range data {
+				var post Post
+				post, err = parsePost(val.(map[string]interface{}))
+				posts[i] = post
+			}
+		case "paging":
+		}
+	}
+	return
+}
+
 /*
  * Parses Post data. Returns nil for err if no error appeared.
  */

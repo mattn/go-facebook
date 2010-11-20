@@ -29,8 +29,13 @@ func parseObjects(value []interface{}) (objs []Object) {
 	return
 }
 
-func getData(URL string) (value []interface{}, err os.Error) {
-	b, err := fetchPage(URL)
+func getData(url string) (value []interface{}, err os.Error) {
+	resp, _, err := http.Get(url) // Response, final URL, error
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return
 	}
@@ -64,9 +69,27 @@ func parseURLs(value []interface{}) (urls []URL) {
 	return
 }
 
+func getObject(id string) (data map[string] interface{}, err os.Error) {
+	return getObjByURL(GRAPHURL + id + "?metadata=1")
+}
+		
+func getObjByURL(url string) (data map[string] interface{}, err os.Error) {
+	// TODO: Check for valid ID
+	resp, _, err := http.Get(url) // Response, final URL, error
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}	
+	data, err = getJsonMap(b)
+	return
+}
+
 func getJsonMap(body []byte) (data map[string]interface{}, err os.Error) {
 	var values interface{}
-
 	if err = json.Unmarshal(body, &values); err != nil {
 		return
 	}
@@ -77,22 +100,6 @@ func getJsonMap(body []byte) (data map[string]interface{}, err os.Error) {
 		message := error["message"].(string)
 		err = os.NewError(t + ": " + message)
 	}
-	return
-}
-
-func fetchBody(method string) (body []byte, err os.Error) {
-	body, err = fetchPage(GRAPHURL + method)
-	return
-}
-
-func fetchPage(url string) (body []byte, err os.Error) {
-	resp, _, err := http.Get(url) // Response, final URL, error
-	if err != nil {
-		return
-	}
-	defer resp.Body.Close()
-
-	body, err = ioutil.ReadAll(resp.Body)
 	return
 }
 

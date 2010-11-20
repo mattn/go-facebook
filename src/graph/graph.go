@@ -53,14 +53,9 @@ func NewGraph() (g *Graph) {
 
 // Fetches the Group with the provided ID.
 func (g *Graph) FetchGroup(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1") // Get metadata
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.groups[id], err = parseGroup(data)
 	return
@@ -84,14 +79,9 @@ func (g *Graph) GetGroup(id string) *Group {
 
 // Fetches the Event with the provided ID.
 func (g *Graph) FetchEvent(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.events[id], err = parseEvent(data)
 	return
@@ -99,13 +89,9 @@ func (g *Graph) FetchEvent(id string) (err os.Error) {
 
 // Fetches Events from an URL.
 func (g *Graph) FetchEvents(url string) (err os.Error) {
-	body, err := fetchPage(url)
+	d, err := getObjByURL(url)
 	if err != nil {
-		return
-	}
-	d, err := getJsonMap(body)
-	if err != nil {
-		return
+	  return
 	}
 	for key, value := range d {
 		switch key {
@@ -140,14 +126,9 @@ func (g *Graph) GetEvent(id string) *Event {
 
 // Fetches the Application with the provided ID.
 func (g *Graph) FetchApplication(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.applications[id], err = parseApplication(data)
 	return
@@ -171,14 +152,9 @@ func (g *Graph) GetApplication(id string) *Application {
 
 // Fetches the Post with the provided ID.
 func (g *Graph) FetchPost(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.posts[id], err = parsePost(data)
 	return
@@ -188,26 +164,13 @@ func (g *Graph) FetchPost(id string) (err os.Error) {
  * At the moment url isn't checked.
  * Returns err is nil if no error appeared.
  */
-func (g *Graph) FetchPosts(url string) (posts []Post, err os.Error) {
-	body, err := fetchPage(url)
+func (g *Graph) FetchPosts(url string) (err os.Error) {
+	posts, err := fetchPosts(url)
 	if err != nil {
-		return
+	  return
 	}
-	d, err := getJsonMap(body)
-	if err != nil {
-		return
-	}
-	for key, value := range d {
-		switch key {
-		case "data":
-			data := value.([]interface{})
-			for _, val := range data {
-				var post Post
-				post, err = parsePost(val.(map[string]interface{}))
-				g.posts[post.ID] = post
-			}
-		case "paging":
-		}
+	for _, v := range posts {
+		g.posts[v.ID] = v
 	}
 	return
 }
@@ -230,14 +193,9 @@ func (g *Graph) GetPost(id string) *Post {
 
 // Fetches the Insights with the provided ID.
 func (g *Graph) FetchInsights(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.insights[id], err = parseInsights(id, data["data"].([]interface{}))
 	return
@@ -261,14 +219,9 @@ func (g *Graph) GetInsights(id string) *Insights {
 
 // Fetches the Note with the provided ID.
 func (g *Graph) FetchNote(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.notes[id], err = parseNote(data)
 	return
@@ -292,14 +245,9 @@ func (g *Graph) GetNote(id string) *Note {
 
 // Fetches the StatusMessage with the provided ID.
 func (g *Graph) FetchStatusMessage(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.statusMessages[id], err = parseStatusMessage(data)
 	return
@@ -323,14 +271,9 @@ func (g *Graph) GetStatusMessage(id string) *StatusMessage {
 
 // Fetches the Photo with the provided ID.
 func (g *Graph) FetchPhoto(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.photos[id], err = parsePhoto(data)
 	return
@@ -354,14 +297,9 @@ func (g *Graph) GetPhoto(id string) *Photo {
 
 // Fetches the Page with the provided ID.
 func (g *Graph) FetchPage(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.pages[id], err = parsePage(data)
 	return
@@ -385,14 +323,9 @@ func (g *Graph) GetPage(id string) *Page {
 
 // Fetches the User with the provided ID or name.
 func (g *Graph) FetchUser(name string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(name + "?metadata=1")
+	data, err := getObject(name)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	var user User
 	user, err = parseUser(data)
@@ -421,14 +354,9 @@ func (g *Graph) GetUser(id string) *User {
 
 // Fetches the Video with the provided ID or name.
 func (g *Graph) FetchVideo(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.videos[id], err = parseVideo(data)
 	return
@@ -452,14 +380,9 @@ func (g *Graph) GetVideo(id string) *Video {
 
 // Fetches the Album with the provided ID or name.
 func (g *Graph) FetchAlbum(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.albums[id], err = parseAlbum(data)
 	return
@@ -483,14 +406,9 @@ func (g *Graph) GetAlbum(id string) *Album {
 
 // Fetches the Link with the provided ID or name.
 func (g *Graph) FetchLink(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.links[id], err = parseLink(data)
 	return
@@ -514,14 +432,9 @@ func (g *Graph) GetLink(id string) *Link {
 
 // Fetches the Checkin with the provided ID or name.
 func (g *Graph) FetchCheckin(id string) (err os.Error) {
-	// TODO: Check for valid ID
-	b, err := fetchBody(id + "?metadata=1")
+	data, err := getObject(id)
 	if err != nil {
-		return
-	}
-	data, err := getJsonMap(b)
-	if err != nil {
-		return
+	  return
 	}
 	g.checkins[id], err = parseCheckin(data)
 	return

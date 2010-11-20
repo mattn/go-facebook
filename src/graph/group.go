@@ -29,15 +29,30 @@ type Group struct {
 	Privacy string
 	// The last time the group was updated. Publicly accessible. Contains a IETF RFC 3339 datetime.
 	UpdatedTime *time.Time
-	/*
-		// Connections
-		// This group's wall. Publicly available.
-		Feed []Post
-		// All of the users who are members of this group. Publicly available. An array of JSON objects containing friend id and name fields.
-		Members []Object
-		// The profile picture of this group. Publicly available. Returns a HTTP 302 with the URL of the user's profile picture
-		Picture *Picture
-	*/
+	
+	// Connections
+	feed string
+	members string
+	picture string
+}
+
+// Gets group's wall. Publicly available.
+func (g *Group) GetFeed() (p []Post, err os.Error) {
+	if g.feed == "" {
+		err = os.NewError("Error: Group.GetFeed: The Feed URL is empty")
+		return
+	}
+	return fetchPosts(g.feed)
+}
+
+// Get all of the users who are members of this group. Publicly available. Returned object contains friend id and name fields.
+func (g *Group) GetMembers() (obj []Object) {
+  return
+}
+
+// The profile picture of this group. Publicly available. Returns a HTTP 302 with the URL of the user's profile picture
+func (g *Group) GetPicture() (pic *Picture) {
+  return  
 }
 
 /*
@@ -63,24 +78,18 @@ func parseGroup(value map[string]interface{}) (g Group, err os.Error) {
 		case "updated_time":
 			g.UpdatedTime, err = parseTime(val.(string))
 			// Connections
-			/*
 				case "metadata":
 					metadata := val.(map[string]interface{})
 					for k, v := range metadata["connections"].(map[string]interface{}) {
 						switch k {
 						case "feed":
-							g.Feed, err = GetPosts(v.(string))
+							g.feed = v.(string)
 						case "members":
-							data, err := getData(v.(string))
-							if err == nil {
-								g.Members = parseObjects(data)
-							}
+							g.members = v.(string)
 						case "picture":
-							g.Picture = NewPicture(v.(string))
+							g.picture = v.(string)
 						}
 					}
-			*/
-
 		}
 	}
 	return

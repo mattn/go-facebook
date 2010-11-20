@@ -1,7 +1,7 @@
 package graph
 
 import (
-	"os"
+//	"os"
 )
 
 type Comment struct {
@@ -10,7 +10,7 @@ type Comment struct {
 	Message     string
 	CreatedTime string
 }
-
+/*
 func GetComments(url string) (comments []Comment, paging Paging, err os.Error) {
 	body, err := fetchPage(url)
 	if err != nil {
@@ -33,7 +33,7 @@ func GetComments(url string) (comments []Comment, paging Paging, err os.Error) {
 	}
 	return
 }
-
+*/
 func parseComment(value map[string]interface{}) (comment Comment) {
 	comment.ID = value["id"].(string)
 	comment.From = parseObject(value["from"].(map[string]interface{}))

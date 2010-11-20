@@ -1,7 +1,7 @@
 package graph
 
 import (
-	"os"
+//	"os"
 )
 
 type Invitation struct {
@@ -10,7 +10,7 @@ type Invitation struct {
 	// rsvp_status, not_replied, attending, unsure or declined
 	RSVPStatus string
 }
-
+/*
 func GetInvitations(URL string) (invs []Invitation, err os.Error) {
 	// TODO: Check for valid ID
 	b, err := fetchPage(URL)
@@ -25,7 +25,7 @@ func GetInvitations(URL string) (invs []Invitation, err os.Error) {
 	}
 	return
 }
-
+*/
 func (i *Invitation) parseData(value map[string]interface{}) {
 	i.Name = value["name"].(string)
 	i.ID = value["id"].(string)
