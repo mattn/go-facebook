@@ -39,20 +39,33 @@ type Group struct {
 // Gets group's wall. Publicly available.
 func (g *Group) GetFeed() (p []Post, err os.Error) {
 	if g.feed == "" {
-		err = os.NewError("Error: Group.GetFeed: The Feed URL is empty")
+		err = os.NewError("Error: Group.GetFeed: The Feed URL is empty.")
 		return
 	}
 	return fetchPosts(g.feed)
 }
 
 // Get all of the users who are members of this group. Publicly available. Returned object contains friend id and name fields.
-func (g *Group) GetMembers() (obj []Object) {
+func (g *Group) GetMembers() (objs []Object, err os.Error) {
+	if g.members == "" {
+		err = os.NewError("Error: Group.GetMembers: The Members URL is empty.")
+		return
+	}
+	value, err := getData(g.members)
+	if err != nil {
+		return
+	}
+	objs = parseObjects(value)
 	return
 }
 
 // The profile picture of this group. Publicly available. Returns a HTTP 302 with the URL of the user's profile picture
-func (g *Group) GetPicture() (pic *Picture) {
-	return
+func (g *Group) GetPicture() (pic *Picture, err os.Error) {
+	if g.picture == "" {
+		err = os.NewError("Error: Group.GetPicture: The Picture URL is empty.")
+		return
+	}
+	return NewPicture(g.picture), nil
 }
 
 /*
