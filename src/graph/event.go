@@ -27,23 +27,77 @@ type Event struct {
 	Privacy string
 	// The last time the event was updated
 	UpdatedTime *time.Time
-	/*
-		// Connections
-		// This event's wall
-		Feed []Post
-		// All of the users who have been not yet responded to their invitation to this event
-		NoReply []Invitation
-		// All of the users who have been responded "Maybe" to their invitation to this event
-		Maybe []Invitation
-		// All of the users who have been invited to this event
-		Invited []Invitation
-		// All of the users who are attending this event
-		Attending []Invitation
-		// All of the users who declined their invitation to this event
-		Declined []Invitation
-		// The event's profile picture
-		Picture *Picture
-	*/
+
+	// Connections
+
+	feed      string
+	noReply   string
+	maybe     string
+	invited   string
+	attending string
+	declined  string
+	picture   string
+}
+
+// Gets the event's wall. Returns an array of Post objects.
+func (e *Event) GetFeed() (feed []Post, err os.Error) {
+	if e.feed == "" {
+		err = os.NewError("Error: Event.GetFeed: The feed URL is empty.")
+	}
+	return fetchPosts(e.feed)
+}
+
+// Gets all of the users who have not yet been responded to their invitation to this event.
+// Returns an array of Invitation objects.
+func (e *Event) GetNoReply() (invs []Invitation, err os.Error) {
+	if e.noReply == "" {
+		err = os.NewError("Error: Event.GetNoReply: The noreply URL is empty.")
+	}
+	return getInvitations(e.noReply)
+}
+
+// Gets all of the users who have been responded "Maybe" to their invitation to this event.
+// Returns an array of Invitation objects.
+func (e *Event) GetMaybe() (invs []Invitation, err os.Error) {
+	if e.noReply == "" {
+		err = os.NewError("Error: Event.GetMaybe: The maybe URL is empty.")
+	}
+	return getInvitations(e.maybe)
+}
+
+// Gets all of the users who have been invited to this event.
+// Returns an array of Invitation objects.
+func (e *Event) GetInvited() (invs []Invitation, err os.Error) {
+	if e.noReply == "" {
+		err = os.NewError("Error: Event.GetInvited: The invited URL is empty.")
+	}
+	return getInvitations(e.invited)
+}
+
+// Gets all of the users who are attending this event.
+// Returns an array of Invitation objects.
+func (e *Event) GetAttending() (invs []Invitation, err os.Error) {
+	if e.noReply == "" {
+		err = os.NewError("Error: Event.GetAttending: The attending URL is empty.")
+	}
+	return getInvitations(e.attending)
+}
+
+// Gets all of the users who declined their invitation to this event.
+// Returns an array of Invitation objects.
+func (e *Event) GetDeclined() (invs []Invitation, err os.Error) {
+	if e.noReply == "" {
+		err = os.NewError("Error: Event.GetDeclined: The declined URL is empty.")
+	}
+	return getInvitations(e.declined)
+}
+
+// The event's profile picture
+func (e *Event) GetPicture() (pic *Picture, err os.Error) {
+	if e.picture == "" {
+		err = os.NewError("Error: Event.GetPicture: The picture URL is empty.")
+	}
+	return NewPicture(e.picture)
 }
 
 /*
