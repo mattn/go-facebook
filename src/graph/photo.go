@@ -43,6 +43,21 @@ type Photo struct {
 	UpdatedTime *time.Time
 }
 
+func getPhotos(url string) (ps []Photo, err os.Error) {
+	data, err := getData(url)
+	if err != nil {
+		return
+	}
+	ps = make([]Photo, len(data))
+	for i, v := range data {
+		ps[i], err = parsePhoto(v.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
 /*
  * Parses Photo data. Returns nil for err if no error appeared.
  */
