@@ -24,6 +24,28 @@ type Video struct {
 	CreatedTime *time.Time
 	// The last time the video or its caption were updated. Available to everyone on Facebook by default. Contains a IETF RFC 3339 datetime.
 	UpdatedTime *time.Time
+
+	// Connections
+	comments string
+	picture  string
+}
+
+// Gets all of the comments on this Video. Available to everyone on Facebook.
+// Returns an array of objects containing id, from, message and created_time fields.
+func (v *Video) GetComments() (cs []Comment, err os.Error) {
+	if v.comments == "" {
+		err = os.NewError("Error: Video.GetComments: The comments URL is empty.")
+	}
+	return getComments(v.comments)
+}
+
+// Gets the image which represents the content of the video.
+// Publicly available. Returns an HTTP 302 URL string with the location set to the picture URL.
+func (v *Video) GetPicture() (pic *Picture, err os.Error) {
+	if v.picture == "" {
+		err = os.NewError("Error: Video.GetPicture: The picture URL is empty.")
+	}
+	return NewPicture(v.picture), err
 }
 
 func getVideos(url string) (vs []Video, err os.Error) {
