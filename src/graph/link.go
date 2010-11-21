@@ -31,6 +31,21 @@ type Link struct {
 	// TODO: Connections
 }
 
+func getLinks(url string) (ls []Link, err os.Error) {
+	data, err := getData(url)
+	if err != nil {
+		return
+	}
+	ls = make([]Link, len(data))
+	for i, v := range data {
+		ls[i], err = parseLink(v.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
 // Parses Link data. Returns nil for err if no error appeared.
 func parseLink(value map[string]interface{}) (l Link, err os.Error) {
 	for key, val := range value {
