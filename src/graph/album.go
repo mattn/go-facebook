@@ -100,6 +100,18 @@ func parseAlbum(value map[string]interface{}) (a Album, err os.Error) {
 			a.CreatedTime, err = parseTime(val.(string))
 		case "updated_time":
 			a.UpdatedTime, err = parseTime(val.(string))
+		case "metadata":
+			metadata := val.(map[string]interface{})
+			for k, va := range metadata["connections"].(map[string]interface{}) {
+				switch k {
+				case "photos":
+					a.photos = va.(string)
+				case "comments":
+					a.comments = va.(string)
+				case "picture":
+					a.picture = va.(string)
+				}
+			}
 		}
 	}
 	return

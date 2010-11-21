@@ -80,6 +80,14 @@ func parseLink(value map[string]interface{}) (l Link, err os.Error) {
 			l.Message = val.(string)
 		case "created_time":
 			l.CreatedTime, err = parseTime(val.(string))
+		case "metadata":
+			metadata := val.(map[string]interface{})
+			for k, va := range metadata["connections"].(map[string]interface{}) {
+				switch k {
+				case "comments":
+					l.comments = va.(string)
+				}
+			}
 		}
 	}
 	return

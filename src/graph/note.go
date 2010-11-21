@@ -85,6 +85,16 @@ func parseNote(value map[string]interface{}) (n Note, err os.Error) {
 			n.UpdatedTime, err = parseTime(val.(string))
 		case "icon":
 			n.Icon = val.(string)
+		case "metadata":
+			metadata := val.(map[string]interface{})
+			for k, v := range metadata["connections"].(map[string]interface{}) {
+				switch k {
+				case "comments":
+					n.comments = v.(string)
+				case "likes":
+					n.likes = v.(string)
+				}
+			}
 		}
 	}
 	return

@@ -85,6 +85,16 @@ func parseVideo(value map[string]interface{}) (v Video, err os.Error) {
 			v.CreatedTime, err = parseTime(val.(string))
 		case "updated_time":
 			v.UpdatedTime, err = parseTime(val.(string))
+		case "metadata":
+			metadata := val.(map[string]interface{})
+			for k, va := range metadata["connections"].(map[string]interface{}) {
+				switch k {
+				case "comments":
+					v.comments = va.(string)
+				case "picture":
+					v.picture = va.(string)
+				}
+			}
 		}
 	}
 	return

@@ -73,6 +73,16 @@ func parseStatusMessage(value map[string]interface{}) (sm StatusMessage, err os.
 			sm.Message = val.(string)
 		case "updated_time":
 			sm.UpdatedTime, err = parseTime(val.(string))
+		case "metadata":
+			metadata := val.(map[string]interface{})
+			for k, v := range metadata["connections"].(map[string]interface{}) {
+				switch k {
+				case "comments":
+					sm.comments = v.(string)
+				case "likes":
+					sm.likes = v.(string)
+				}
+			}
 		}
 	}
 	return
