@@ -39,6 +39,21 @@ type Event struct {
 	picture   string
 }
 
+func getEvents(url string) (es []Event, err os.Error) {
+	data, err := getData(url)
+	if err != nil {
+		return
+	}
+	es = make([]Event, len(data))
+	for i, v := range data {
+		es[i], err = parseEvent(v.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
 // Gets the event's wall. Returns an array of Post objects.
 func (e *Event) GetFeed() (feed []Post, err os.Error) {
 	if e.feed == "" {
