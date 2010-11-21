@@ -28,7 +28,17 @@ type Link struct {
 	// The time the message was published. Publicly accessible. Contains a IETF RFC 3339 datetime.
 	CreatedTime *time.Time
 
-	// TODO: Connections
+	// Connections
+	comments string
+}
+
+// Gets all of the comments on this link. Available to everyone on Facebook.
+// Returns an array of objects containing id, from, message and created_time fields.
+func (l *Link) GetComments() (cs []Comment, err os.Error) {
+	if l.comments == "" {
+		err = os.NewError("Error: Link.GetComments: The comments URL is empty.")
+	}
+	return getComments(l.comments)
 }
 
 func getLinks(url string) (ls []Link, err os.Error) {
