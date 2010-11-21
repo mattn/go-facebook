@@ -89,21 +89,12 @@ func (g *Graph) FetchEvent(id string) (err os.Error) {
 
 // Fetches Events from an URL.
 func (g *Graph) FetchEvents(url string) (err os.Error) {
-	d, err := getObjByURL(url)
+	events, err := getEvents(url)
 	if err != nil {
 		return
 	}
-	for key, value := range d {
-		switch key {
-		case "data":
-			data := value.([]interface{})
-			for _, val := range data {
-				var event Event
-				event, err = parseEvent(val.(map[string]interface{}))
-				g.events[event.ID] = event
-			}
-		case "paging":
-		}
+	for _, val := range events {
+		g.events[val.ID] = val
 	}
 	return
 }
