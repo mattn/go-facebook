@@ -25,6 +25,21 @@ type Note struct {
 	// TODO: Connections
 }
 
+func getNotes(url string) (ns []Note, err os.Error) {
+	data, err := getData(url)
+	if err != nil {
+		return
+	}
+	ns = make([]Note, len(data))
+	for i, v := range data {
+		ns[i], err = parseNote(v.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
 /*
  * Parses Note data. Returns nil for err if no error appeared.
  */
