@@ -22,17 +22,13 @@ type Application struct {
 	Link string
 
 	// Connections
-	feed  string
-	posts string
-
+	feed    string
+	posts   string
+	picture string
+	// The photos, videos, and posts in which this application has been tagged. Publicly available. An array of Post, Photo or Video objects
+	//Tagged TODO
+	links string
 	/*
-		/// The application's logo with maximum dimensions of 75x75 pixels suitable for embedding as the source of an image tag.
-		// Publicly available. An HTTP 302 with the location set to the picture URL.
-		Picture *Picture
-		// The photos, videos, and posts in which this application has been tagged. Publicly available. An array of Post, Photo or Video objects
-		//Tagged TODO
-		// The application's posted links. Publicly available.
-		Links []Link
 		// The photos this application has uploaded. Publicly available.
 		//Photos []Photo // TODO: Crate a Photo object
 		// The photo albums this page has created. Publicly available.
@@ -70,6 +66,23 @@ func (a *Application) GetPosts() (feed []Post, err os.Error) {
 	return fetchPosts(a.posts)
 }
 
+// Gets the application's logo with maximum dimensions of 75x75 pixels suitable for embedding as the source of an image tag.
+// Publicly available. Returns an HTTP 302 URL string with the location set to the picture URL.
+func (a *Application) GetPicture() (pic *Picture, err os.Error) {
+	if a.picture == "" {
+		err = os.NewError("Error: Application.GetPicture: The picture URL is empty.")
+	}
+	return NewPicture(a.picture), err
+}
+
+// Gets the application's posted links. Publicly available.
+// Returns an array of Link objects.
+func (a *Application) GetLinks() (ls []Link, err os.Error) {
+	if a.links == "" {
+		err = os.NewError("Error: Application.GetLinks: The links URL is empty.")
+	}
+	return getLinks(a.links)
+}
 
 func parseApplication(value map[string]interface{}) (app Application, err os.Error) {
 	for key, val := range value {
