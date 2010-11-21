@@ -28,7 +28,37 @@ type Album struct {
 	// The last time the photo album was updated. Publicly available. Contains a IETF RFC 3339 datetime.
 	UpdatedTime *time.Time
 
-	// TODO: Connections
+	// Connections
+	photos   string
+	comments string
+	picture  string
+}
+
+// Gets the photos contained in this album. Publicly available.
+// Returns an array of Photo objects.
+func (a *Album) GetPhotos() (ps []Photo, err os.Error) {
+	if a.photos == "" {
+		err = os.NewError("Error: Album.GetPhotos: The photos URL is empty.")
+	}
+	return getPhotos(a.photos)
+}
+
+// Gets the comments made on this album. Available to everyone on Facebook.
+// Returns an array of objects containing id, from, message and created_time fields.
+func (a *Album) GetComments() (cs []Comment, err os.Error) {
+	if a.comments == "" {
+		err = os.NewError("Error: Album.GetComments: The comments URL is empty.")
+	}
+	return getComments(a.comments)
+}
+
+// Gets the album's cover photo. Publicly available.
+// Returns an HTTP 302 URL string with the location set to the picture URL.
+func (a *Album) GetPicture() (pic *Picture, err os.Error) {
+	if a.picture == "" {
+		err = os.NewError("Error: Album.GetPicture: The picture URL is empty.")
+	}
+	return NewPicture(a.picture), err
 }
 
 func getAlbums(url string) (as []Album, err os.Error) {
