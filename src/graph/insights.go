@@ -3,6 +3,7 @@ package graph
 import (
 	"os"
 	"time"
+	"strings"
 )
 
 /* Statistics about applications, pages, and domains.
@@ -19,12 +20,21 @@ type Insights struct {
 	Insights []Insight
 }
 
-func parseInsights(id string, value []interface{}) (is Insights, err os.Error) {
-	is.ID = id
+func getInsights(url string) (is Insights, err os.Error) {
+	data, err := getData(url)
+	if err != nil {
+		return
+	}
+	is, err = parseInsights(data)
+	return
+}
+
+func parseInsights(value []interface{}) (is Insights, err os.Error) {
 	is.Insights = make([]Insight, len(value))
 	for i, v := range value {
 		is.Insights[i], err = parseInsight(v.(map[string]interface{}))
 	}
+	is.ID = strings.Split(is.Insights[0].ID, "/", -1)[0]
 	return
 }
 

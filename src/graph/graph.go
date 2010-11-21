@@ -188,7 +188,7 @@ func (g *Graph) FetchInsights(id string) (err os.Error) {
 	if err != nil {
 		return
 	}
-	g.insights[id], err = parseInsights(id, data["data"].([]interface{}))
+	g.insights[id], err = parseInsights(data["data"].([]interface{}))
 	return
 }
 
