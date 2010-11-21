@@ -97,7 +97,7 @@ func (e *Event) GetPicture() (pic *Picture, err os.Error) {
 	if e.picture == "" {
 		err = os.NewError("Error: Event.GetPicture: The picture URL is empty.")
 	}
-	return NewPicture(e.picture)
+	return NewPicture(e.picture), err
 }
 
 /*
@@ -127,29 +127,26 @@ func parseEvent(value map[string]interface{}) (e Event, err os.Error) {
 		case "updated_time":
 			e.UpdatedTime, err = parseTime(val.(string))
 			// Connections
-			/*
-				case "metadata":
-					metadata := val.(map[string]interface{})
-					for k, v := range metadata["connections"].(map[string]interface{}) {
-						switch k {
-						case "feed":
-							e.Feed, err = GetPosts(v.(string))
-						case "noreply":
-							e.NoReply, err = GetInvitations(v.(string))
-						case "maybe":
-							e.Maybe, err = GetInvitations(v.(string))
-						case "invited":
-							e.Invited, err = GetInvitations(v.(string))
-						case "attending":
-							e.Attending, err = GetInvitations(v.(string))
-						case "declined":
-							e.Declined, err = GetInvitations(v.(string))
-						case "picture":
-							e.Picture = NewPicture(v.(string))
-						}
-					}
-			*/
-
+		case "metadata":
+			metadata := val.(map[string]interface{})
+			for k, v := range metadata["connections"].(map[string]interface{}) {
+				switch k {
+				case "feed":
+					e.feed = v.(string)
+				case "noreply":
+					e.noReply = v.(string)
+				case "maybe":
+					e.maybe = v.(string)
+				case "invited":
+					e.invited = v.(string)
+				case "attending":
+					e.attending = v.(string)
+				case "declined":
+					e.declined = v.(string)
+				case "picture":
+					e.picture = v.(string)
+				}
+			}
 		}
 	}
 	return
