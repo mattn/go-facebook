@@ -168,3 +168,27 @@ func parsePost(value map[string]interface{}) (p Post, err os.Error) {
 	}
 	return
 }
+
+// ### Publishing ###
+// Requires read_stream and publish_stream permission
+func PublishPost(id, accessToken, message, link, picture, name, caption, description, privacy string, actions []URL) (err os.Error) {
+	data := make(map[string]string)
+	data["access_token"] = accessToken
+	data["message"] = message
+	data["link"] = link
+	data["picture"] = picture
+	data["name"] = name
+	data["caption"] = caption
+	data["description"] = description
+	data["actions"] += "["
+	for i, v := range actions {
+		data["actions"] += "{\"name\": \"" + v.Name + "\", \"link\": \"" + v.URL + "\"}"
+		if i < len(actions) {
+			data["actions"] += ","
+		}
+	}
+	data["actions"] += "]"
+	data["privacy"] = privacy
+	err = post(GRAPHURL+id+"/feed", data)
+	return
+}
