@@ -31,6 +31,21 @@ type Album struct {
 	// TODO: Connections
 }
 
+func getAlbums(url string) (as []Album, err os.Error) {
+	data, err := getData(url)
+	if err != nil {
+		return
+	}
+	as = make([]Album, len(data))
+	for i, v := range data {
+		as[i], err = parseAlbum(v.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
 // Parses Album data. Returns nil for err if no error appeared.
 func parseAlbum(value map[string]interface{}) (a Album, err os.Error) {
 	for key, val := range value {
