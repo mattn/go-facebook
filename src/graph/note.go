@@ -22,7 +22,32 @@ type Note struct {
 	// The icon that Facebook displays with notes. Available to everyone on Facebook by default. Contains a valid URL
 	Icon string
 
-	// TODO: Connections
+	// Connections
+	comments string
+	likes    string
+}
+
+// Gets all of the comments on this Note. Available to everyone on Facebook.
+// Returns an array of objects containing id, from, message and created_time fields.
+func (n *Note) GetComments() (cs []Comment, err os.Error) {
+	if n.comments == "" {
+		err = os.NewError("Error: Note.GetComments: The comments URL is empty.")
+	}
+	return getComments(n.comments)
+}
+
+// Gets users who like the note. Available to everyone on Facebook.
+// Returns an array of objects containing the id and name fields.
+func (n *Note) GetLikes() (likes []Object, err os.Error) {
+	if n.likes == "" {
+		err = os.NewError("Error: Note.GetLikes: The likes URL is empty.")
+	}
+	data, err := getData(n.likes)
+	if err != nil {
+		return
+	}
+	likes = parseObjects(data)
+	return
 }
 
 func getNotes(url string) (ns []Note, err os.Error) {
