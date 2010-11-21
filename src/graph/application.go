@@ -27,19 +27,15 @@ type Application struct {
 	picture string
 	// The photos, videos, and posts in which this application has been tagged. Publicly available. An array of Post, Photo or Video objects
 	//Tagged TODO
-	links    string
-	photos   string
-	albums   string
-	statuses string
-	videos   string
-	notes    string
-	events   string
-	/*
-		// All of the subscriptions this application has for real-time notifications. Requires an application access token.
-		// Subscriptions []Subscription // TODO
-		// Usage metrics for this application. Requires an application access token.
-		// Insights []Insight // TODO
-	*/
+	links         string
+	photos        string
+	albums        string
+	statuses      string
+	videos        string
+	notes         string
+	events        string
+	subscriptions string
+	insights      string
 }
 
 // Gets the application's wall posts. Publicly available.
@@ -132,6 +128,23 @@ func (a *Application) GetEvents() (es []Event, err os.Error) {
 	return getEvents(a.events)
 }
 
+// Gets all of the subscriptions this application has for real-time notifications. Requires an application access token.
+// Returns an array of Subscription objects.
+func (a *Application) GetSubscriptions() (s []Subscription, err os.Error) {
+	if a.subscriptions == "" {
+		err = os.NewError("Error: Application.GetSubscriptions: The subscriptions URL is empty.")
+	}
+	return getSubscriptions(a.subscriptions)
+}
+
+// Gets the usage metrics for this application. Requires an application access token.
+// Returns an array of Insights objects.
+func (a *Application) GetInsights() (is Insights, err os.Error) {
+	if a.insights == "" {
+		err = os.NewError("Error: Application.GetInsights: The insights URL is empty.")
+	}
+	return getInsights(a.insights)
+}
 
 func parseApplication(value map[string]interface{}) (app Application, err os.Error) {
 	for key, val := range value {
