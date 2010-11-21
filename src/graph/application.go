@@ -20,12 +20,12 @@ type Application struct {
 	Category string
 	// A link to application dashboard on Facebook. Publicly available. Contains an URL.
 	Link string
+
+	// Connections
+	feed  string
+	posts string
+
 	/*
-		// Connections
-		// The application's wall. Publicly available
-		Feed []Post
-		// The applications's own posts. Publicly available.
-		Posts []Post
 		/// The application's logo with maximum dimensions of 75x75 pixels suitable for embedding as the source of an image tag.
 		// Publicly available. An HTTP 302 with the location set to the picture URL.
 		Picture *Picture
@@ -51,6 +51,25 @@ type Application struct {
 		// Insights []Insight // TODO
 	*/
 }
+
+// Gets the application's wall posts. Publicly available.
+// Returns an array of Post objects.
+func (a *Application) GetFeed() (feed []Post, err os.Error) {
+	if a.feed == "" {
+		err = os.NewError("Error: Application.GetFeed: The feed URL is empty.")
+	}
+	return fetchPosts(a.feed)
+}
+
+// Gets the applications's own posts. Publicly available.
+// Returns an array of Post objects.
+func (a *Application) GetPosts() (feed []Post, err os.Error) {
+	if a.posts == "" {
+		err = os.NewError("Error: Application.GetPosts: The posts URL is empty.")
+	}
+	return fetchPosts(a.posts)
+}
+
 
 func parseApplication(value map[string]interface{}) (app Application, err os.Error) {
 	for key, val := range value {
