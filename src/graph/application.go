@@ -27,12 +27,10 @@ type Application struct {
 	picture string
 	// The photos, videos, and posts in which this application has been tagged. Publicly available. An array of Post, Photo or Video objects
 	//Tagged TODO
-	links string
+	links  string
+	photos string
+	albums string
 	/*
-		// The photos this application has uploaded. Publicly available.
-		//Photos []Photo // TODO: Crate a Photo object
-		// The photo albums this page has created. Publicly available.
-		// Albums []Album // TODO: Create a Album Object
 		// The application's status updates. Publicly available.
 		// Statuses []Status // TODO
 		// The videos this application has created. Publicly available.
@@ -82,6 +80,24 @@ func (a *Application) GetLinks() (ls []Link, err os.Error) {
 		err = os.NewError("Error: Application.GetLinks: The links URL is empty.")
 	}
 	return getLinks(a.links)
+}
+
+// Gets the photos this application has uploaded. Publicly available.
+// Returns an array of Photo objects.
+func (a *Application) GetPhotos() (ps []Photo, err os.Error) {
+	if a.photos == "" {
+		err = os.NewError("Error: Application.GetPhotos: The photos URL is empty.")
+	}
+	return getPhotos(a.photos)
+}
+
+// Gets the photo albums this page has created. Publicly available.
+// Returns an array of Album objects.
+func (a *Application) GetAlbums() (as []Album, err os.Error) {
+	if a.albums == "" {
+		err = os.NewError("Error: Application.GetAlbums: The albums URL is empty.")
+	}
+	return getAlbums(a.albums)
 }
 
 func parseApplication(value map[string]interface{}) (app Application, err os.Error) {
