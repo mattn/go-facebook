@@ -26,6 +26,21 @@ type Video struct {
 	UpdatedTime *time.Time
 }
 
+func getVideos(url string) (vs []Video, err os.Error) {
+	data, err := getData(url)
+	if err != nil {
+		return
+	}
+	vs = make([]Video, len(data))
+	for i, v := range data {
+		vs[i], err = parseVideo(v.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
 // Parses Video data. Returns nil for err if no error appeared.
 func parseVideo(value map[string]interface{}) (v Video, err os.Error) {
 	for key, val := range value {
