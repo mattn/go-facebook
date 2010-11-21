@@ -16,7 +16,32 @@ type StatusMessage struct {
 	// The time the message was published. Publicly available to everyone on Facebook by default. Contains a IETF RFC 3339 datetime.
 	UpdatedTime *time.Time
 
-	// TODO: Connections
+	// Connections
+	comments string
+	likes    string
+}
+
+// Gets all of the comments on this Message. Available to everyone on Facebook.
+// Returns an array of objects containing id, from, message and created_time fields.
+func (m *StatusMessage) GetComments() (cs []Comment, err os.Error) {
+	if m.comments == "" {
+		err = os.NewError("Error: Message.GetComments: The comments URL is empty.")
+	}
+	return getComments(m.comments)
+}
+
+// Gets users who like the message. Available to everyone on Facebook.
+// Returns an array of objects containing the id and name fields.
+func (m *StatusMessage) GetLikes() (likes []Object, err os.Error) {
+	if m.likes == "" {
+		err = os.NewError("Error: Message.GetLikes: The likes URL is empty.")
+	}
+	data, err := getData(m.likes)
+	if err != nil {
+		return
+	}
+	likes = parseObjects(data)
+	return
 }
 
 func getStatusMessages(url string) (sms []StatusMessage, err os.Error) {
