@@ -41,6 +41,43 @@ type Photo struct {
 
 	// The last time the photo or its caption was updated. Available to everyone on Facebook by default. Contains a IETF RFC 3339 datetime.
 	UpdatedTime *time.Time
+
+	// Connections
+	comments string
+	likes    string
+	picture  string
+}
+
+// Gets all of the comments on this Photo. Available to everyone on Facebook.
+// Returns an array of objects containing id, from, message and created_time fields.
+func (p *Photo) GetComments() (cs []Comment, err os.Error) {
+	if p.comments == "" {
+		err = os.NewError("Error: Photo.GetComments: The comments URL is empty.")
+	}
+	return getComments(p.comments)
+}
+
+// Gets the likes on this Photo. Available to everyone on Facebook.
+// Returns an array of objects containing the id and name fields.
+func (p *Photo) GetLikes() (likes []Object, err os.Error) {
+	if p.likes == "" {
+		err = os.NewError("Error: Photo.GetLikes: The likes URL is empty.")
+	}
+	data, err := getData(p.likes)
+	if err != nil {
+		return
+	}
+	likes = parseObjects(data)
+	return
+}
+
+// Gets the album-sized view of the photo. Available to everyone on Facebook by default.
+// Publicly available. Returns an HTTP 302 URL string with the location set to the picture URL.
+func (p *Photo) GetPicture() (pic *Picture, err os.Error) {
+	if p.picture == "" {
+		err = os.NewError("Error: Photo.GetPicture: The picture URL is empty.")
+	}
+	return NewPicture(p.picture), err
 }
 
 func getPhotos(url string) (ps []Photo, err os.Error) {
