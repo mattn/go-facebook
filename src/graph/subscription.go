@@ -1,5 +1,9 @@
 package graph
 
+import (
+	"os"
+)
+
 // A subscription to an application to get real-time updates for an Graph object type.
 // For more details, see the Real-time Overview.
 type Subscription struct {
@@ -11,4 +15,36 @@ type Subscription struct {
 	CallbackURL string
 	// Whether or not the subscription is active or not. Available to everyone in Facebook by default.
 	Active bool
+}
+
+func getSubscriptions(url string) (s []Subscription, err os.Error) {
+	data, err := getData(url)
+	if err != nil {
+		return
+	}
+	s = make([]Subscription, len(data))
+	for i, v := range data {
+		s[i], err = parseSubscription(v.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
+// Parses Subscription data. Returns nil for err if no error appeared.
+func parseSubscription(value map[string]interface{}) (s Subscription, err os.Error) {
+	for key, val := range value {
+		switch key {
+		case "object":
+			s.Object = val.(string)
+		case "fields":
+			//
+		case "callback_url":
+			s.CallbackURL = val.(string)
+		case "active":
+			s.Active = val.(bool)
+		}
+	}
+	return
 }
