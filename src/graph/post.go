@@ -57,9 +57,12 @@ type Post struct {
 	// The time of the last comment on this post
 	UpdatedTime *time.Time
 
-	// Connections
-	// All of the comments on this post (this is no real connection, data is passed with the post)
+	// All of the comments on this post, not documented
 	Comments []Comment
+
+	// Connections
+	comments string
+	likes    string
 }
 
 func fetchPosts(url string) (posts []Post, err os.Error) {
@@ -80,6 +83,29 @@ func fetchPosts(url string) (posts []Post, err os.Error) {
 		case "paging":
 		}
 	}
+	return
+}
+
+// Gets all of the comments on this post. Available to everyone on Facebook.
+// Returns an array of objects containing id, from, message and created_time fields.
+func (p *Post) GetComments() (cs []Comment, err os.Error) {
+	if p.comments == "" {
+		err = os.NewError("Error: Post.GetComments: The comments URL is empty.")
+	}
+	return getComments(p.comments)
+}
+
+// Gets the likes on this post. Available to everyone on Facebook.
+// Returns an array of objects containing the id and name fields.
+func (p *Post) GetLikes() (likes []Object, err os.Error) {
+	if p.likes == "" {
+		err = os.NewError("Error: Post.GetLikes: The likes URL is empty.")
+	}
+	data, err := getData(p.likes)
+	if err != nil {
+		return
+	}
+	likes = parseObjects(data)
 	return
 }
 
@@ -124,10 +150,20 @@ func parsePost(value map[string]interface{}) (p Post, err os.Error) {
 			p.CreatedTime, err = parseTime(val.(string))
 		case "updated_time":
 			p.UpdatedTime, err = parseTime(val.(string))
-		// Connections
 		case "comments":
 			data := val.(map[string]interface{})
 			p.Comments, _ = parseComments(data)
+		// Connections
+		case "metadata":
+			metadata := val.(map[string]interface{})
+			for k, v := range metadata["connections"].(map[string]interface{}) {
+				switch k {
+				case "comments":
+					p.comments = v.(string)
+				case "likes":
+					p.likes = v.(string)
+				}
+			}
 		}
 	}
 	return
