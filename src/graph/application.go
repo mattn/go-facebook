@@ -22,11 +22,10 @@ type Application struct {
 	Link string
 
 	// Connections
-	feed    string
-	posts   string
-	picture string
-	// The photos, videos, and posts in which this application has been tagged. Publicly available. An array of Post, Photo or Video objects
-	//Tagged TODO
+	feed          string
+	posts         string
+	picture       string
+	tagged        string
 	links         string
 	photos        string
 	albums        string
@@ -64,6 +63,42 @@ func (a *Application) GetPicture() (pic *Picture, err os.Error) {
 	}
 	return NewPicture(a.picture), err
 }
+
+// Gets the photos, videos, and posts in which this application has been tagged. Publicly available.
+// Returns an array of Post, Photo or Video objects.
+func (a *Application) GetTagged() (t []interface{}, err os.Error) {
+	if a.tagged == "" {
+		err = os.NewError("Error: Application.GetTagged: The tagged URL is empty.")
+	}
+	data, err := getData(a.tagged)
+	if err != nil {
+		return
+	}
+	t = make([]interface{}, len(data))
+	for i, v := range data {
+		tag := v.(map[string]interface{})
+		switch tag["type"].(string) {
+		case "status":
+			t[i], err = parsePost(tag)
+			if err != nil {
+				return
+			}
+		case "link":
+		case "photo":
+			t[i], err = parsePhoto(tag)
+			if err != nil {
+				return
+			}
+		case "video":
+			t[i], err = parseVideo(tag)
+			if err != nil {
+				return
+			}
+		}
+	}
+	return
+}
+
 
 // Gets the application's posted links. Publicly available.
 // Returns an array of Link objects.
