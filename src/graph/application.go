@@ -32,11 +32,9 @@ type Application struct {
 	albums   string
 	statuses string
 	videos   string
+	notes    string
+	events   string
 	/*
-		// The application's notes. Publicly available.
-		// Notes []Note // TODO
-		// The events this page is managing. Publicly available.
-		Events []Event
 		// All of the subscriptions this application has for real-time notifications. Requires an application access token.
 		// Subscriptions []Subscription // TODO
 		// Usage metrics for this application. Requires an application access token.
@@ -115,6 +113,25 @@ func (a *Application) GetVideos() (vs []Video, err os.Error) {
 	}
 	return getVideos(a.videos)
 }
+
+// Gets the application's notes. Publicly available.
+// Returns an array of Note objects.
+func (a *Application) GetNotes() (ns []Note, err os.Error) {
+	if a.notes == "" {
+		err = os.NewError("Error: Application.GetNotes: The notes URL is empty.")
+	}
+	return getNotes(a.notes)
+}
+
+// Gets the events this page is managing. Publicly available.
+// Returns an array of Event objects.
+func (a *Application) GetEvents() (es []Event, err os.Error) {
+	if a.events == "" {
+		err = os.NewError("Error: Application.GetEvents: The events URL is empty.")
+	}
+	return getEvents(a.events)
+}
+
 
 func parseApplication(value map[string]interface{}) (app Application, err os.Error) {
 	for key, val := range value {
