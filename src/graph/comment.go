@@ -1,7 +1,7 @@
 package graph
 
 import (
-//	"os"
+	"os"
 )
 
 type Comment struct {
@@ -10,30 +10,18 @@ type Comment struct {
 	Message     string
 	CreatedTime string
 }
-/*
-func GetComments(url string) (comments []Comment, paging Paging, err os.Error) {
-	body, err := fetchPage(url)
+
+func getComments(url string) (comments []Comment, err os.Error) {
+	data, err := getData(url)
 	if err != nil {
 		return
 	}
-	d, err := getJsonMap(body)
-	if err != nil {
-		return
-	}
-	for key, value := range d {
-		switch key {
-		case "data":
-			data := value.([]interface{})
-			for i, val := range data {
-				comments[i] = parseComment(val.(map[string]interface{}))
-			}
-		case "paging":
-			paging = parsePaging(value.(map[string]interface{}))
-		}
+	for i, val := range data {
+		comments[i] = parseComment(val.(map[string]interface{}))
 	}
 	return
 }
-*/
+
 func parseComment(value map[string]interface{}) (comment Comment) {
 	comment.ID = value["id"].(string)
 	comment.From = parseObject(value["from"].(map[string]interface{}))
