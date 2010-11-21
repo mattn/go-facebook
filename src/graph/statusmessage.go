@@ -19,6 +19,21 @@ type StatusMessage struct {
 	// TODO: Connections
 }
 
+func getStatusMessages(url string) (sms []StatusMessage, err os.Error) {
+	data, err := getData(url)
+	if err != nil {
+		return
+	}
+	sms = make([]StatusMessage, len(data))
+	for i, v := range data {
+		sms[i], err = parseStatusMessage(v.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
 /*
  * Parses StatusMessage data. Returns nil for err if no error appeared.
  */
