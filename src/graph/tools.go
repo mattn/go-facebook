@@ -117,6 +117,11 @@ func parseTime(value string) (t *time.Time, err os.Error) {
 	return
 }
 
+func post(url string, data map[string] string) (err os.Error) {
+      _, err = http.PostForm(url, data)
+      return
+}
+
 func debugInterface(value interface{}, key, funcName string) {
 	var str string
 	switch value.(type) {
