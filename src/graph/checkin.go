@@ -27,6 +27,21 @@ type Checkin struct {
 	CreatedTime *time.Time
 }
 
+func getCheckins(url string) (cs []Checkin, err os.Error) {
+	data, err := getData(url)
+	if err != nil {
+		return
+	}
+	cs = make([]Checkin, len(data))
+	for i, v := range data {
+		cs[i], err = parseCheckin(v.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
 // Parses Checkin data. Returns nil for err if no error appeared.
 func parseCheckin(value map[string]interface{}) (c Checkin, err os.Error) {
 	for key, val := range value {
