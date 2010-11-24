@@ -28,7 +28,159 @@ type Page struct {
 	CompanyOverview string
 	Mission         string
 	Products        string
+	feed            string
+	picture         string
+	tagged          string
+	links           string
+	photos          string
+	groups          string // Not yet implemented
+	albums          string
+	statuses        string
+	videos          string
+	notes           string
+	posts           string
+	events          string
+	checkins        string
 }
+
+// Gets the page's wall. Available to everyone on Facebook.
+// Returns an array of Post objects.
+func (p *Page) GetWall() (ps []Post, err os.Error) {
+	if p.feed == "" {
+		err = os.NewError("Error: Page.GetWall: The feed URL is empty.")
+	}
+	return fetchPosts(p.feed)
+}
+
+// Gets the page's profile picture. Publicly available.
+// Returns an HTTP 302 URL string with the location set to the picture URL.
+func (p *Page) GetPicture() (pic *Picture, err os.Error) {
+	if p.picture == "" {
+		err = os.NewError("Error: Page.GetPicture: The picture URL is empty.")
+	}
+	return NewPicture(p.picture), err
+}
+
+// Gets the photos, videos, and posts in which this page has been tagged. Publicly available.
+// Returns an heterogeneous array of Photo, Video or Post objects.
+func (p *Page) GetTagged() (t []interface{}, err os.Error) {
+	if p.tagged == "" {
+		err = os.NewError("Error: Page.GetTagged: The tagged URL is empty.")
+	}
+	data, err := getData(p.tagged)
+	if err != nil {
+		return
+	}
+	t = make([]interface{}, len(data))
+	for i, v := range data {
+		tag := v.(map[string]interface{})
+		switch tag["type"].(string) {
+		case "status":
+			t[i], err = parsePost(tag)
+			if err != nil {
+				return
+			}
+		case "link":
+		case "photo":
+			t[i], err = parsePhoto(tag)
+			if err != nil {
+				return
+			}
+		case "video":
+			t[i], err = parseVideo(tag)
+			if err != nil {
+				return
+			}
+		}
+	}
+	return
+}
+
+// Gets the page's posted links. Publicly available.
+// Returns an array of Link objects.
+func (p *Page) GetLinks() (ls []Link, err os.Error) {
+	if p.links == "" {
+		err = os.NewError("Error: Page.GetLinks: The links URL is empty.")
+	}
+	return getLinks(p.links)
+}
+
+// Gets the photos this page has uploaded. Publicly available.
+// Returns an array of Photo objects.
+func (p *Page) GetPhotos() (ps []Photo, err os.Error) {
+	if p.photos == "" {
+		err = os.NewError("Error: Page.GetPhotos: The photos URL is empty.")
+	}
+	return getPhotos(p.photos)
+}
+
+// Gets the groups this page is a member of. Available to everyone on Facebook.
+// Returns an array of objects containing group id, version, name and unread fields.
+// TODO: function for GetGroups
+
+// Gets the page albums this page has created. Publicly available.
+// Returns an array of Album objects.
+func (p *Page) GetAlbums() (as []Album, err os.Error) {
+	if p.albums == "" {
+		err = os.NewError("Error: Page.GetAlbums: The albums URL is empty.")
+	}
+	return getAlbums(p.albums)
+}
+
+// Gets the page's status updates. Publicly available.
+// Returns an array of StatusMessage objects.
+func (p *Page) GetStatuses() (sms []StatusMessage, err os.Error) {
+	if p.statuses == "" {
+		err = os.NewError("Error: Page.GetStatuses: The statuses URL is empty.")
+	}
+	return getStatusMessages(p.statuses)
+}
+
+// Gets the videos this page has created. Publicly available.
+// Returns an array of Video objects.
+func (p *Page) GetVideos() (vs []Video, err os.Error) {
+	if p.videos == "" {
+		err = os.NewError("Error: Page.GetVideos: The videos URL is empty.")
+	}
+	return getVideos(p.videos)
+}
+
+// Gets the page's notes. Publicly available.
+// Returns an array of Note objects.
+func (p *Page) GetNotes() (ns []Note, err os.Error) {
+	if p.notes == "" {
+		err = os.NewError("Error: Page.GetNotes: The notes URL is empty.")
+	}
+	return getNotes(p.notes)
+}
+
+// Gets the page's own posts. Publicly available.
+// Returns an array of Post objects.
+func (p *Page) GetPosts() (feed []Post, err os.Error) {
+	if p.posts == "" {
+		err = os.NewError("Error: Page.GetPosts: The posts URL is empty.")
+	}
+	return fetchPosts(p.posts)
+}
+
+// Gets the events this page is managing. Publicly available.
+// Returns an array of Event objects.
+func (p *Page) GetEvents() (es []Event, err os.Error) {
+	if p.events == "" {
+		err = os.NewError("Error: Page.GetEvents: The events URL is empty.")
+	}
+	return getEvents(p.events)
+}
+
+// Gets Checkins made by friends of the current session user. Requires friends_checkins permissions.
+// Returns an array of Checkin objects.
+func (p *Page) GetCheckins() (cs []Checkin, err os.Error) {
+	if p.checkins == "" {
+		err = os.NewError("Error: Page.GetCheckins: The checkins URL is empty.")
+	}
+	return getCheckins(p.checkins)
+}
+
 
 func (p *Page) String() string {
 	return "ID: " + p.ID + "\tName: " + p.Name + "\tPicture: " + p.Picture +
