@@ -28,19 +28,21 @@ type Page struct {
 	CompanyOverview string
 	Mission         string
 	Products        string
-	feed            string
-	picture         string
-	tagged          string
-	links           string
-	photos          string
-	groups          string // Not yet implemented
-	albums          string
-	statuses        string
-	videos          string
-	notes           string
-	posts           string
-	events          string
-	checkins        string
+
+	// Connections
+	feed     string
+	picture  string
+	tagged   string
+	links    string
+	photos   string
+	groups   string // Not yet implemented
+	albums   string
+	statuses string
+	videos   string
+	notes    string
+	posts    string
+	events   string
+	checkins string
 }
 
 // Gets the page's wall. Available to everyone on Facebook.
@@ -218,12 +220,36 @@ func parsePage(data map[string]interface{}) (p Page, err os.Error) {
 			p.Founded, err = parseTime(value.(string))
 		case "company_overview":
 			p.CompanyOverview = value.(string)
-		case "type":
-			// TODO: Look into type
 		case "metadata":
-			// TODO: get and parse connections
-		default:
-			debugInterface(value, key, "Page")
+			metadata := value.(map[string]interface{})
+			for k, va := range metadata["connections"].(map[string]interface{}) {
+				switch k {
+				case "feed":
+					p.feed = va.(string)
+				case "picture":
+					p.picture = va.(string)
+				case "links":
+					p.links = va.(string)
+				case "photos":
+					p.photos = va.(string)
+				case "groups":
+					p.groups = va.(string)
+				case "albums":
+					p.albums = va.(string)
+				case "statuses":
+					p.statuses = va.(string)
+				case "videos":
+					p.videos = va.(string)
+				case "notes":
+					p.notes = va.(string)
+				case "posts":
+					p.notes = va.(string)
+				case "events":
+					p.events = va.(string)
+				case "checkins":
+					p.checkins = va.(string)
+				}
+			}
 		}
 	}
 	return
