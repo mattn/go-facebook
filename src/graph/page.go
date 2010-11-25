@@ -14,7 +14,7 @@ type Page struct {
 	// Name
 	Name string
 	// Profile picture
-	Picture string
+	picture string // Documented as a connection
 	// Category
 	Category string
 	// Number of fans the page has
@@ -30,8 +30,8 @@ type Page struct {
 	Products        string
 
 	// Connections
-	feed     string
-	picture  string
+	feed string
+	// picture  string does not exist as a connection
 	tagged   string
 	links    string
 	photos   string
@@ -49,16 +49,17 @@ type Page struct {
 // Returns an array of Post objects.
 func (p *Page) GetWall() (ps []Post, err os.Error) {
 	if p.feed == "" {
-		err = os.NewError("Error: Page.GetWall: The feed URL is empty.")
+		err = os.NewError("Error: Page.GetWall with ID " + p.ID + " feed URL is empty.")
 	}
 	return fetchPosts(p.feed)
 }
 
 // Gets the page's profile picture. Publicly available.
 // Returns an HTTP 302 URL string with the location set to the picture URL.
+// NOTE: This is not a connection but documented as one.
 func (p *Page) GetPicture() (pic *Picture, err os.Error) {
 	if p.picture == "" {
-		err = os.NewError("Error: Page.GetPicture: The picture URL is empty.")
+		err = os.NewError("Error: Page.GetPicture with ID " + p.ID + " picture URL is empty.")
 	}
 	return NewPicture(p.picture), err
 }
@@ -67,7 +68,7 @@ func (p *Page) GetPicture() (pic *Picture, err os.Error) {
 // Returns an heterogeneous array of Photo, Video or Post objects.
 func (p *Page) GetTagged() (t []interface{}, err os.Error) {
 	if p.tagged == "" {
-		err = os.NewError("Error: Page.GetTagged: The tagged URL is empty.")
+		err = os.NewError("Error: Page.GetTagged with ID " + p.ID + " tagged URL is empty.")
 	}
 	data, err := getData(p.tagged)
 	if err != nil {
@@ -102,7 +103,7 @@ func (p *Page) GetTagged() (t []interface{}, err os.Error) {
 // Returns an array of Link objects.
 func (p *Page) GetLinks() (ls []Link, err os.Error) {
 	if p.links == "" {
-		err = os.NewError("Error: Page.GetLinks: The links URL is empty.")
+		err = os.NewError("Error: Page.GetLinks with ID " + p.ID + " links URL is empty.")
 	}
 	return getLinks(p.links)
 }
@@ -111,7 +112,7 @@ func (p *Page) GetLinks() (ls []Link, err os.Error) {
 // Returns an array of Photo objects.
 func (p *Page) GetPhotos() (ps []Photo, err os.Error) {
 	if p.photos == "" {
-		err = os.NewError("Error: Page.GetPhotos: The photos URL is empty.")
+		err = os.NewError("Error: Page.GetPhotos with ID " + p.ID + " photos URL is empty.")
 	}
 	return getPhotos(p.photos)
 }
@@ -124,7 +125,7 @@ func (p *Page) GetPhotos() (ps []Photo, err os.Error) {
 // Returns an array of Album objects.
 func (p *Page) GetAlbums() (as []Album, err os.Error) {
 	if p.albums == "" {
-		err = os.NewError("Error: Page.GetAlbums: The albums URL is empty.")
+		err = os.NewError("Error: Page.GetAlbums with ID " + p.ID + " albums URL is empty.")
 	}
 	return getAlbums(p.albums)
 }
@@ -133,7 +134,7 @@ func (p *Page) GetAlbums() (as []Album, err os.Error) {
 // Returns an array of StatusMessage objects.
 func (p *Page) GetStatuses() (sms []StatusMessage, err os.Error) {
 	if p.statuses == "" {
-		err = os.NewError("Error: Page.GetStatuses: The statuses URL is empty.")
+		err = os.NewError("Error: Page.GetStatuses with ID " + p.ID + " statuses URL is empty.")
 	}
 	return getStatusMessages(p.statuses)
 }
@@ -142,7 +143,7 @@ func (p *Page) GetStatuses() (sms []StatusMessage, err os.Error) {
 // Returns an array of Video objects.
 func (p *Page) GetVideos() (vs []Video, err os.Error) {
 	if p.videos == "" {
-		err = os.NewError("Error: Page.GetVideos: The videos URL is empty.")
+		err = os.NewError("Error: Page.GetVideos with ID " + p.ID + " videos URL is empty.")
 	}
 	return getVideos(p.videos)
 }
@@ -151,7 +152,7 @@ func (p *Page) GetVideos() (vs []Video, err os.Error) {
 // Returns an array of Note objects.
 func (p *Page) GetNotes() (ns []Note, err os.Error) {
 	if p.notes == "" {
-		err = os.NewError("Error: Page.GetNotes: The notes URL is empty.")
+		err = os.NewError("Error: Page.GetNotes with ID " + p.ID + " notes URL is empty.")
 	}
 	return getNotes(p.notes)
 }
@@ -160,7 +161,7 @@ func (p *Page) GetNotes() (ns []Note, err os.Error) {
 // Returns an array of Post objects.
 func (p *Page) GetPosts() (feed []Post, err os.Error) {
 	if p.posts == "" {
-		err = os.NewError("Error: Page.GetPosts: The posts URL is empty.")
+		err = os.NewError("Error: Page.GetPosts with ID " + p.ID + " posts URL is empty.")
 	}
 	return fetchPosts(p.posts)
 }
@@ -169,7 +170,7 @@ func (p *Page) GetPosts() (feed []Post, err os.Error) {
 // Returns an array of Event objects.
 func (p *Page) GetEvents() (es []Event, err os.Error) {
 	if p.events == "" {
-		err = os.NewError("Error: Page.GetEvents: The events URL is empty.")
+		err = os.NewError("Error: Page.GetEvents with ID " + p.ID + " events URL is empty.")
 	}
 	return getEvents(p.events)
 }
@@ -178,14 +179,14 @@ func (p *Page) GetEvents() (es []Event, err os.Error) {
 // Returns an array of Checkin objects.
 func (p *Page) GetCheckins() (cs []Checkin, err os.Error) {
 	if p.checkins == "" {
-		err = os.NewError("Error: Page.GetCheckins: The checkins URL is empty.")
+		err = os.NewError("Error: Page.GetCheckins with ID " + p.ID + " checkins URL is empty.")
 	}
 	return getCheckins(p.checkins)
 }
 
 
 func (p *Page) String() string {
-	return "ID: " + p.ID + "\tName: " + p.Name + "\tPicture: " + p.Picture +
+	return "ID: " + p.ID + "\tName: " + p.Name + "\tPicture: " + p.picture +
 		"\tLink: " + p.Link + "\tCategory: " + p.Category + "\tWebsite: " +
 		p.Website + "\tUsername: " + p.Username + "\tFounded: " + p.Founded.String() +
 		"\tCompany overview: " + p.CompanyOverview + "\tMission: " + p.Mission +
@@ -199,7 +200,7 @@ func parsePage(data map[string]interface{}) (p Page, err os.Error) {
 		case "website":
 			p.Website = value.(string)
 		case "picture":
-			p.Picture = value.(string)
+			p.picture = value.(string)
 		case "fan_count":
 			p.FanCount = value.(float64)
 		case "mission":
@@ -226,8 +227,10 @@ func parsePage(data map[string]interface{}) (p Page, err os.Error) {
 				switch k {
 				case "feed":
 					p.feed = va.(string)
-				case "picture":
-					p.picture = va.(string)
+				/*
+					case "picture":
+						p.picture = va.(string)
+				*/
 				case "links":
 					p.links = va.(string)
 				case "photos":
