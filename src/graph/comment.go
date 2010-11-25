@@ -31,9 +31,18 @@ func parseComment(value map[string]interface{}) (comment Comment) {
 }
 
 func parseComments(value map[string]interface{}) (comments []Comment, count float64) {
+	if len(value) <= 0 {
+		return
+	}
 	count = value["count"].(float64)
-	data := value["data"].([]interface{})
-	comments = make([]Comment, int(count))
+	if count <= 0 {
+		return
+	}
+	data, ok := value["data"].([]interface{})
+	if !ok {
+		return
+	}
+	comments = make([]Comment, len(data))
 	for i, v := range data {
 		comments[i] = parseComment(v.(map[string]interface{}))
 	}
