@@ -41,6 +41,7 @@ func (l *Link) GetComments() (cs []Comment, err os.Error) {
 	return getComments(l.comments)
 }
 
+// Requires access token
 func getLinks(url string) (ls []Link, err os.Error) {
 	data, err := getData(url)
 	if err != nil {
