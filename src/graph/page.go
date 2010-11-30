@@ -139,7 +139,7 @@ func (p *Page) GetAlbums() (as []Album, err os.Error) {
 	return getAlbums(p.albums)
 }
 
-// Gets the page's status updates. Publicly available.
+// Gets the page's status updates. Publicly available. Requires access token.
 // Returns an array of StatusMessage objects.
 func (p *Page) GetStatuses() (sms []StatusMessage, err os.Error) {
 	if len(p.statuses) == 0 {
