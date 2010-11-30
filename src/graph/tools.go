@@ -24,12 +24,19 @@ func parseObject(value map[string]interface{}) (obj Object) {
 func parseObjects(value []interface{}) (objs []Object) {
 	objs = make([]Object, len(value))
 	for i, v := range value {
-		objs[i] = parseObject(v.(map[string]interface{}))
+		if v == nil {
+			// TODO: Do something about this  
+		} else {
+			objs[i] = parseObject(v.(map[string]interface{}))
+		}
 	}
 	return
 }
 
 func getData(url string) (value []interface{}, err os.Error) {
+	if len(url) == 0 {
+		return value, os.NewError("getData: url is empty.")
+	}
 	resp, _, err := http.Get(url) // Response, final URL, error
 	if err != nil {
 		return
@@ -74,7 +81,9 @@ func getObject(id string) (data map[string]interface{}, err os.Error) {
 }
 
 func getObjByURL(url string) (data map[string]interface{}, err os.Error) {
-	// TODO: Check for valid ID
+	if url == "" {
+		return data, os.NewError("getObjByURL: url is empty.")
+	}
 	resp, _, err := http.Get(url) // Response, final URL, error
 	if err != nil {
 		return
