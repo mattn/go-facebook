@@ -22,7 +22,7 @@ type Album struct {
 	// The privacy settings for the album. Available to everyone on Facebook.
 	Privacy string
 	// The number of photos in this album. Publicly available.
-	Count string
+	Count float64
 	// The time the photo album was initially created. Publicly available. Contains a IETF RFC 3339 datetime.
 	CreatedTime *time.Time
 	// The last time the photo album was updated. Publicly available. Contains a IETF RFC 3339 datetime.
@@ -95,7 +95,7 @@ func parseAlbum(value map[string]interface{}) (a Album, err os.Error) {
 		case "privacy":
 			a.Privacy = val.(string)
 		case "count":
-			a.Count = val.(string)
+			a.Count = val.(float64)
 		case "created_time":
 			a.CreatedTime, err = parseTime(val.(string))
 		case "updated_time":

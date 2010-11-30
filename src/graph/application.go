@@ -99,7 +99,6 @@ func (a *Application) GetTagged() (t []interface{}, err os.Error) {
 	return
 }
 
-
 // Gets the application's posted links. Publicly available.
 // Returns an array of Link objects.
 func (a *Application) GetLinks() (ls []Link, err os.Error) {
