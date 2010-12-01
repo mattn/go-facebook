@@ -193,16 +193,6 @@ func (p *Page) GetCheckins() (cs []Checkin, err os.Error) {
 	return getCheckins(p.checkins)
 }
 
-
-func (p *Page) String() string {
-	return "ID: " + p.ID + "\tName: " + p.Name + "\tPicture: " + p.picture +
-		"\tLink: " + p.Link + "\tCategory: " + p.Category + "\tWebsite: " +
-		p.Website + "\tUsername: " + p.Username + "\tFounded: " + p.Founded.String() +
-		"\tCompany overview: " + p.CompanyOverview + "\tMission: " + p.Mission +
-		"\tProducts: " + p.Products + "\tFan count:" +
-		strconv.Ftoa64(p.FanCount, 'e', -1) + "\n"
-}
-
 func parsePage(data map[string]interface{}) (p Page, err os.Error) {
 	for key, value := range data {
 		switch key {
