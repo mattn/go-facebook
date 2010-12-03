@@ -103,13 +103,13 @@ func getJsonMap(body []byte) (data map[string]interface{}, err os.Error) {
 		return
 	}
 	switch values.(type) {
-	  case bool:
-	    return data, os.NewError("JsonMap is false. Probably wrong UID request.")
-	  case map[string] interface{}:
-	    data = values.(map[string]interface{})
-	  default:
-	    return data, os.NewError("Unsupported JSON-Data. Body: " + string(body))
-	}	
+	case bool:
+		return data, os.NewError("JsonMap is false. Probably wrong UID request.")
+	case map[string]interface{}:
+		data = values.(map[string]interface{})
+	default:
+		return data, os.NewError("Unsupported JSON-Data. Body: " + string(body))
+	}
 	if e, ok := data["error"]; ok == true {
 		error := e.(map[string]interface{})
 		t := error["type"].(string)
