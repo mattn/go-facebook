@@ -27,6 +27,7 @@ statusmessage.go\
 video.go\
 album.go\
 link.go\
-checkin.go
+checkin.go\
+response.go
 
 include $(GOROOT)/src/Make.pkg
