@@ -23,7 +23,7 @@ type StatusMessage struct {
 
 func getStatusMessages(url string) (sms []StatusMessage, err os.Error) {
 	resp, err := GetResponse(url)
-	if err != nil || resp.Fail{
+	if err != nil || resp.Fail {
 		return
 	}
 	data := resp.Data

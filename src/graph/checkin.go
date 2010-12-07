@@ -29,7 +29,7 @@ type Checkin struct {
 
 func getCheckins(url string) (cs []Checkin, err os.Error) {
 	resp, err := GetResponse(url)
-	if err != nil || resp.Fail{
+	if err != nil || resp.Fail {
 		return
 	}
 	data := resp.Data

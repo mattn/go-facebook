@@ -9,10 +9,10 @@ import (
 
 type Response struct {
 	Data []interface{}
-	Map map[string] interface{}
-	
-	Url string
-	Fail bool	
+	Map  map[string]interface{}
+
+	Url     string
+	Fail    bool
 	Message string
 }
 
@@ -26,8 +26,8 @@ func GetResponse(url string) (r Response, err os.Error) {
 	defer resp.Body.Close()
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-	  return
-	}	
+		return
+	}
 	// Json
 	var values interface{}
 	err = json.Unmarshal(b, &values)
@@ -35,21 +35,20 @@ func GetResponse(url string) (r Response, err os.Error) {
 		return
 	}
 	switch values.(type) {
-	  case bool:
-	    r.Fail = values.(bool)
-	    r.Message = "Call for Response couldn't be handled correctly."
-	  case map[string] interface{}:
-	    r.Fail = false
-	    data := values.(map[string] interface{})
-	    if val, ok := data["data"]; ok {
-	      r.Data = val.([]interface{})
-	    } else {
-	      r.Map = data
-	    }
-	  default:
-	    r.Fail = true
-	    r.Message = "Unsupported returned JSON-Data."
+	case bool:
+		r.Fail = values.(bool)
+		r.Message = "Call for Response couldn't be handled correctly."
+	case map[string]interface{}:
+		r.Fail = false
+		data := values.(map[string]interface{})
+		if val, ok := data["data"]; ok {
+			r.Data = val.([]interface{})
+		} else {
+			r.Map = data
+		}
+	default:
+		r.Fail = true
+		r.Message = "Unsupported returned JSON-Data."
 	}
 	return
 }
-

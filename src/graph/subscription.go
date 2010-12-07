@@ -19,7 +19,7 @@ type Subscription struct {
 
 func getSubscriptions(url string) (s []Subscription, err os.Error) {
 	resp, err := GetResponse(url)
-	if err != nil || resp.Fail{
+	if err != nil || resp.Fail {
 		return
 	}
 	data := resp.Data

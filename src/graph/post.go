@@ -67,7 +67,7 @@ type Post struct {
 
 func fetchPosts(url string) (posts []Post, err os.Error) {
 	resp, err := GetResponse(url)
-	if err != nil || resp.Fail{
+	if err != nil || resp.Fail {
 		return
 	}
 	data := resp.Data

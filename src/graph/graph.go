@@ -25,7 +25,7 @@ func (g *Graph) Call(method string) (resp Response, err os.Error) {
 	}
 	resp, err = GetResponse(url)
 	if resp.Fail {
-		err = os.NewError("APICall to " + resp.Url + " failed with message: " + resp.Message + " and error: " + err.String() )
+		err = os.NewError("APICall to " + resp.Url + " failed with message: " + resp.Message + " and error: " + err.String())
 	}
 	return
 }
@@ -63,7 +63,7 @@ func (g *Graph) FetchPost(id string) (p *Post, err os.Error) {
 /* Fetches posts from an facebook GraphAPI URL.
  * Returns err is nil if no error appeared.
  */
-func (g *Graph) FetchPosts(url string) (*[]Post,os.Error) {
+func (g *Graph) FetchPosts(url string) (*[]Post, os.Error) {
 	var err os.Error
 	post, err := fetchPosts(url)
 	return &post, err
@@ -78,7 +78,7 @@ func (g *Graph) FetchInsights(id string) (i *Insights, err os.Error) {
 func (g *Graph) FetchNote(id string) (n *Note, err os.Error) {
 	resp, err := g.Call(id)
 	note, err := parseNote(resp.Map)
-	return &note,err
+	return &note, err
 }
 // Fetches the StatusMessage with the provided ID.
 func (g *Graph) FetchStatusMessage(id string) (sm *StatusMessage, err os.Error) {
@@ -124,7 +124,7 @@ func (g *Graph) FetchLink(id string) (l *Link, err os.Error) {
 	return &link, err
 }
 // Fetches the Checkin with the provided ID or name.
-func (g *Graph) FetchCheckin(id string) (c *Checkin,err os.Error) {
+func (g *Graph) FetchCheckin(id string) (c *Checkin, err os.Error) {
 	resp, err := g.Call(id)
 	checkin, err := parseCheckin(resp.Map)
 	return &checkin, err

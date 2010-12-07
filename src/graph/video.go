@@ -50,7 +50,7 @@ func (v *Video) GetPicture() (pic *Picture, err os.Error) {
 
 func getVideos(url string) (vs []Video, err os.Error) {
 	resp, err := GetResponse(url)
-	if err != nil || resp.Fail{
+	if err != nil || resp.Fail {
 		return
 	}
 	data := resp.Data
