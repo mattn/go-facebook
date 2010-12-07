@@ -12,10 +12,11 @@ type Comment struct {
 }
 
 func getComments(url string) (comments []Comment, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail {
 		return
 	}
+	data := resp.Data
 	for i, val := range data {
 		comments[i] = parseComment(val.(map[string]interface{}))
 	}

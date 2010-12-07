@@ -49,10 +49,11 @@ func (v *Video) GetPicture() (pic *Picture, err os.Error) {
 }
 
 func getVideos(url string) (vs []Video, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail{
 		return
 	}
+	data := resp.Data
 	vs = make([]Video, len(data))
 	for i, v := range data {
 		vs[i], err = parseVideo(v.(map[string]interface{}))

@@ -70,10 +70,11 @@ func (a *Application) GetTagged() (t []interface{}, err os.Error) {
 	if a.tagged == "" {
 		err = os.NewError("Error: Application.GetTagged: The tagged URL is empty.")
 	}
-	data, err := getData(a.tagged)
-	if err != nil {
+	resp, err := GetResponse(a.tagged)
+	if err != nil || resp.Fail {
 		return
 	}
+	data := resp.Data
 	t = make([]interface{}, len(data))
 	for i, v := range data {
 		tag := v.(map[string]interface{})

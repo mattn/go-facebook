@@ -40,10 +40,11 @@ type Event struct {
 }
 
 func getEvents(url string) (es []Event, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail {
 		return
 	}
+	data := resp.Data
 	es = make([]Event, len(data))
 	for i, v := range data {
 		es[i], err = parseEvent(v.(map[string]interface{}))

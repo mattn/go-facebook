@@ -66,22 +66,16 @@ type Post struct {
 }
 
 func fetchPosts(url string) (posts []Post, err os.Error) {
-	d, err := getObjByURL(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail{
 		return
 	}
-	for key, value := range d {
-		switch key {
-		case "data":
-			data := value.([]interface{})
-			posts = make([]Post, len(data))
-			for i, val := range data {
-				var post Post
-				post, err = parsePost(val.(map[string]interface{}))
-				posts[i] = post
-			}
-		case "paging":
-		}
+	data := resp.Data
+	posts = make([]Post, len(data))
+	for i, val := range data {
+		var post Post
+		post, err = parsePost(val.(map[string]interface{}))
+		posts[i] = post
 	}
 	return
 }
@@ -101,11 +95,11 @@ func (p *Post) GetLikes() (likes []Object, err os.Error) {
 	if p.likes == "" {
 		err = os.NewError("Error: Post.GetLikes: The likes URL is empty.")
 	}
-	data, err := getData(p.likes)
-	if err != nil {
+	resp, err := GetResponse(p.likes)
+	if err != nil || resp.Fail {
 		return
 	}
-	likes = parseObjects(data)
+	likes = parseObjects(resp.Data)
 	return
 }
 

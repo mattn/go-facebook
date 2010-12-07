@@ -50,6 +50,7 @@ type Page struct {
 func (p *Page) GetWall() (ps []Post, err os.Error) {
 	if len(p.feed) == 0 {
 		err = os.NewError("Error: Page.GetWall with ID " + p.ID + " feed URL is empty.")
+		return
 	}
 	return fetchPosts(p.feed)
 }
@@ -60,6 +61,7 @@ func (p *Page) GetWall() (ps []Post, err os.Error) {
 func (p *Page) GetPicture() (pic *Picture, err os.Error) {
 	if len(p.picture) == 0 {
 		err = os.NewError("Error: Page.GetPicture with ID " + p.ID + " picture URL is empty.")
+		return
 	}
 	return NewPicture(p.picture), err
 }
@@ -71,10 +73,11 @@ func (p *Page) GetTagged() (t []interface{}, err os.Error) {
 		err = os.NewError("Error: Page.GetTagged with ID " + p.ID + " tagged URL is empty.")
 		return
 	}
-	data, err := getData(p.tagged)
-	if err != nil {
+	resp, err := GetResponse(p.tagged)
+	if err != nil || resp.Fail {
 		return
 	}
+	data := resp.Data
 	t = make([]interface{}, len(data))
 	for i, v := range data {
 		tag := v.(map[string]interface{})
@@ -113,6 +116,7 @@ func (p *Page) GetTagged() (t []interface{}, err os.Error) {
 func (p *Page) GetLinks() (ls []Link, err os.Error) {
 	if len(p.links) == 0 {
 		err = os.NewError("Error: Page.GetLinks with ID " + p.ID + " links URL is empty.")
+		return
 	}
 	return getLinks(p.links)
 }
@@ -122,6 +126,7 @@ func (p *Page) GetLinks() (ls []Link, err os.Error) {
 func (p *Page) GetPhotos() (ps []Photo, err os.Error) {
 	if len(p.photos) == 0 {
 		err = os.NewError("Error: Page.GetPhotos with ID " + p.ID + " photos URL is empty.")
+		return
 	}
 	return getPhotos(p.photos)
 }
@@ -135,6 +140,7 @@ func (p *Page) GetPhotos() (ps []Photo, err os.Error) {
 func (p *Page) GetAlbums() (as []Album, err os.Error) {
 	if len(p.albums) == 0 {
 		err = os.NewError("Error: Page.GetAlbums with ID " + p.ID + " albums URL is empty.")
+		return
 	}
 	return getAlbums(p.albums)
 }
@@ -144,6 +150,7 @@ func (p *Page) GetAlbums() (as []Album, err os.Error) {
 func (p *Page) GetStatuses() (sms []StatusMessage, err os.Error) {
 	if len(p.statuses) == 0 {
 		err = os.NewError("Error: Page.GetStatuses with ID " + p.ID + " statuses URL is empty.")
+		return
 	}
 	return getStatusMessages(p.statuses)
 }
@@ -153,6 +160,7 @@ func (p *Page) GetStatuses() (sms []StatusMessage, err os.Error) {
 func (p *Page) GetVideos() (vs []Video, err os.Error) {
 	if len(p.videos) == 0 {
 		err = os.NewError("Error: Page.GetVideos with ID " + p.ID + " videos URL is empty.")
+		return
 	}
 	return getVideos(p.videos)
 }
@@ -162,6 +170,7 @@ func (p *Page) GetVideos() (vs []Video, err os.Error) {
 func (p *Page) GetNotes() (ns []Note, err os.Error) {
 	if len(p.notes) == 0 {
 		err = os.NewError("Error: Page.GetNotes with ID " + p.ID + " notes URL is empty.")
+		return
 	}
 	return getNotes(p.notes)
 }
@@ -171,6 +180,7 @@ func (p *Page) GetNotes() (ns []Note, err os.Error) {
 func (p *Page) GetPosts() (feed []Post, err os.Error) {
 	if len(p.posts) == 0 {
 		err = os.NewError("Error: Page.GetPosts with ID " + p.ID + " posts URL is empty.")
+		return
 	}
 	return fetchPosts(p.posts)
 }
@@ -180,6 +190,7 @@ func (p *Page) GetPosts() (feed []Post, err os.Error) {
 func (p *Page) GetEvents() (es []Event, err os.Error) {
 	if len(p.events) == 0 {
 		err = os.NewError("Error: Page.GetEvents with ID " + p.ID + " events URL is empty.")
+		return
 	}
 	return getEvents(p.events)
 }
@@ -189,6 +200,7 @@ func (p *Page) GetEvents() (es []Event, err os.Error) {
 func (p *Page) GetCheckins() (cs []Checkin, err os.Error) {
 	if len(p.checkins) == 0 {
 		err = os.NewError("Error: Page.GetCheckins with ID " + p.ID + " checkins URL is empty.")
+		return
 	}
 	return getCheckins(p.checkins)
 }
@@ -226,10 +238,6 @@ func parsePage(data map[string]interface{}) (p Page, err os.Error) {
 				switch k {
 				case "feed":
 					p.feed = va.(string)
-				/*
-					case "picture":
-						p.picture = va.(string)
-				*/
 				case "tagged":
 					p.tagged = va.(string)
 				case "links":

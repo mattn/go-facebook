@@ -62,10 +62,11 @@ func (a *Album) GetPicture() (pic *Picture, err os.Error) {
 }
 
 func getAlbums(url string) (as []Album, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail {
 		return
 	}
+	data := resp.Data
 	as = make([]Album, len(data))
 	for i, v := range data {
 		as[i], err = parseAlbum(v.(map[string]interface{}))

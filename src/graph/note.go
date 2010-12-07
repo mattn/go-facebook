@@ -42,19 +42,20 @@ func (n *Note) GetLikes() (likes []Object, err os.Error) {
 	if n.likes == "" {
 		err = os.NewError("Error: Note.GetLikes: The likes URL is empty.")
 	}
-	data, err := getData(n.likes)
-	if err != nil {
+	resp, err := GetResponse(n.likes)
+	if err != nil || resp.Fail {
 		return
 	}
-	likes = parseObjects(data)
+	likes = parseObjects(resp.Data)
 	return
 }
 
 func getNotes(url string) (ns []Note, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail {
 		return
 	}
+	data := resp.Data
 	ns = make([]Note, len(data))
 	for i, v := range data {
 		ns[i], err = parseNote(v.(map[string]interface{}))

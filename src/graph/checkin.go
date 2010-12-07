@@ -28,10 +28,11 @@ type Checkin struct {
 }
 
 func getCheckins(url string) (cs []Checkin, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail{
 		return
 	}
+	data := resp.Data
 	cs = make([]Checkin, len(data))
 	for i, v := range data {
 		cs[i], err = parseCheckin(v.(map[string]interface{}))

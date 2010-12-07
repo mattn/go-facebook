@@ -2,8 +2,6 @@ package graph
 
 import (
 	"testing"
-	"log"
-	"os"
 )
 
 // Tests
@@ -54,7 +52,7 @@ var EventTests = []EventTest{
 	{"331218348435", "Facebook Developer Garage Austin - SXSW Edition"},
 }
 
-var g = NewGraph(log.New(os.Stdout, "", log.Ldate|log.Ltime), "")
+var g = NewGraph("")
 
 func TestGroups(t *testing.T) {
 	for _, v := range GroupTests {

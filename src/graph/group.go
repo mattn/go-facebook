@@ -51,11 +51,11 @@ func (g *Group) GetMembers() (objs []Object, err os.Error) {
 		err = os.NewError("Error: Group.GetMembers: The Members URL is empty.")
 		return
 	}
-	value, err := getData(g.members)
-	if err != nil {
+	resp, err := GetResponse(g.members)
+	if err != nil || resp.Fail {
 		return
 	}
-	objs = parseObjects(value)
+	objs = parseObjects(resp.Data)
 	return
 }
 

@@ -43,10 +43,11 @@ func (l *Link) GetComments() (cs []Comment, err os.Error) {
 
 // Requires access token
 func getLinks(url string) (ls []Link, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail {
 		return
 	}
+	data := resp.Data
 	ls = make([]Link, len(data))
 	for i, v := range data {
 		ls[i], err = parseLink(v.(map[string]interface{}))

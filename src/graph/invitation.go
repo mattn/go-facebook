@@ -12,10 +12,11 @@ type Invitation struct {
 }
 
 func getInvitations(url string) (invs []Invitation, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail {
 		return
 	}
+	data := resp.Data
 	for i, v := range data {
 		invs[i] = parseInvitation(v.(map[string]interface{}))
 	}

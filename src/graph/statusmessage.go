@@ -21,6 +21,22 @@ type StatusMessage struct {
 	likes    string
 }
 
+func getStatusMessages(url string) (sms []StatusMessage, err os.Error) {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail{
+		return
+	}
+	data := resp.Data
+	sms = make([]StatusMessage, len(data))
+	for i, v := range data {
+		sms[i], err = parseStatusMessage(v.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
 // Gets all of the comments on this Message. Available to everyone on Facebook.
 // Returns an array of objects containing id, from, message and created_time fields.
 func (m *StatusMessage) GetComments() (cs []Comment, err os.Error) {
@@ -36,26 +52,11 @@ func (m *StatusMessage) GetLikes() (likes []Object, err os.Error) {
 	if m.likes == "" {
 		err = os.NewError("Error: Message.GetLikes: The likes URL is empty.")
 	}
-	data, err := getData(m.likes)
-	if err != nil {
+	resp, err := GetResponse(m.likes)
+	if err != nil || resp.Fail {
 		return
 	}
-	likes = parseObjects(data)
-	return
-}
-
-func getStatusMessages(url string) (sms []StatusMessage, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
-		return
-	}
-	sms = make([]StatusMessage, len(data))
-	for i, v := range data {
-		sms[i], err = parseStatusMessage(v.(map[string]interface{}))
-		if err != nil {
-			return
-		}
-	}
+	likes = parseObjects(resp.Data)
 	return
 }
 

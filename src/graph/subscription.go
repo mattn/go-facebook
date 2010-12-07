@@ -18,10 +18,11 @@ type Subscription struct {
 }
 
 func getSubscriptions(url string) (s []Subscription, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail{
 		return
 	}
+	data := resp.Data
 	s = make([]Subscription, len(data))
 	for i, v := range data {
 		s[i], err = parseSubscription(v.(map[string]interface{}))

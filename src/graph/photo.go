@@ -63,11 +63,11 @@ func (p *Photo) GetLikes() (likes []Object, err os.Error) {
 	if p.likes == "" {
 		err = os.NewError("Error: Photo.GetLikes: The likes URL is empty.")
 	}
-	data, err := getData(p.likes)
-	if err != nil {
+	resp, err := GetResponse(p.likes)
+	if err != nil || resp.Fail {
 		return
 	}
-	likes = parseObjects(data)
+	likes = parseObjects(resp.Data)
 	return
 }
 
@@ -81,10 +81,11 @@ func (p *Photo) GetPicture() (pic *Picture, err os.Error) {
 }
 
 func getPhotos(url string) (ps []Photo, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail {
 		return
 	}
+	data := resp.Data
 	ps = make([]Photo, len(data))
 	for i, v := range data {
 		ps[i], err = parsePhoto(v.(map[string]interface{}))

@@ -21,11 +21,11 @@ type Insights struct {
 }
 
 func getInsights(url string) (is Insights, err os.Error) {
-	data, err := getData(url)
-	if err != nil {
+	resp, err := GetResponse(url)
+	if err != nil || resp.Fail {
 		return
 	}
-	is, err = parseInsights(data)
+	is, err = parseInsights(resp.Data)
 	return
 }
 
