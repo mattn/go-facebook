@@ -2,6 +2,8 @@ package graph
 
 import (
 	"testing"
+	"log"
+	"os"
 )
 
 // Tests
@@ -25,6 +27,11 @@ type GroupTest struct {
 	ID string
 }
 
+type EventTest struct {
+	ID   string
+	Name string
+}
+
 var PageTests = []PageTest{
 	{"19292868552", "Facebook Platform"},
 	{"20531316728", "Facebook"},
@@ -43,32 +50,142 @@ var GroupTests = []GroupTest{
 	{"2204501798"},
 }
 
-var g = NewGraph()
+var EventTests = []EventTest{
+	{"331218348435", "Facebook Developer Garage Austin - SXSW Edition"},
+}
+
+var g = NewGraph(log.New(os.Stdout, "", log.Ldate|log.Ltime), "")
+
+func TestGroups(t *testing.T) {
+	for _, v := range GroupTests {
+		t.Logf("Fetching facebook group %s\n", v.ID)
+		_, err := g.FetchGroup(v.ID)
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+	}
+}
+
+func TestEvents(t *testing.T) {
+	for _, v := range EventTests {
+		t.Logf("Fetching facebook event %s\n", v.ID)
+		e, err := g.FetchEvent(v.ID)
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		if e.Name != v.Name {
+			t.Errorf("Error: %s expected %s \n", e.Name, v.Name)
+		}
+	}
+}
 
 func TestPages(t *testing.T) {
 	for _, v := range PageTests {
 		t.Logf("Fetching facebook page %s\n", v.ID)
-		err := g.FetchPage(v.ID)
-		p := g.GetPage(v.ID)
+		p, err := g.FetchPage(v.ID)
 		if err != nil {
 			t.Errorf("Error: %s\n", err.String())
 		}
 		if p.Name != v.Name {
 			t.Errorf("Error: %s expected %s \n", p.Name, v.Name)
 		}
+
+		// Continue with connections
+
+		// Check Wall
+		t.Logf("Fetching facebook Page's Wall.\n")
+		posts, err := p.GetWall()
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		for _, v := range posts {
+			if len(v.ID) == 0 {
+				t.Errorf("Error: Page.GetWall[i].ID is empty.")
+			}
+		}
+
+		// Picture
+		t.Logf("Fetching facebook Page's Picture.\n")
+		pic, err := p.GetPicture()
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		if len(pic.URL) == 0 {
+			t.Errorf("Error: Page.GetPicture.URL is empty.")
+		}
+
+		// Tagged
+		t.Logf("Fetching facebook Page's Tagged.\n")
+		tags, err := p.GetTagged()
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		for _, v := range tags {
+			switch v {
+			case nil:
+				t.Errorf("Error: Page.GetTagged[i] is empty.")
+			}
+		}
+
+		// Links, requires access token
+		/*
+			t.Logf("Fetching facebook Page's Links.\n")
+			links, err := p.GetLinks()
+			if err != nil {
+				t.Errorf("Error: %s\n", err.String())
+			}
+			for _, v := range links {
+				if len(v.Name) == 0 {
+					t.Errorf("Error: Page.GetLinks[i].Name is empty.")
+				}
+			}
+		*/
+		t.Logf("Fetching facebook Page's Photos.\n")
+		photos, err := p.GetPhotos()
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		for _, v := range photos {
+			if len(v.ID) == 0 {
+				t.Errorf("Error: Page.GetPhotos[i].ID is empty")
+			}
+		}
+
+		t.Logf("Fetching facebook Page's Albums.\n")
+		albums, err := p.GetAlbums()
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		for _, v := range albums {
+			if len(v.ID) == 0 {
+				t.Errorf("Error: Page.GetAlbums[i].ID is empty")
+			}
+		}
+
+		/* FIXME: Requires access token
+		t.Logf("Fetching facebook Page's Statuses.\n")
+		statuses, err := p.GetStatuses()
+		if err != nil {
+			t.Errorf("Error: %s\n", err.String())
+		}
+		for _, v := range statuses {
+			if len(v.ID) == 0 {
+				t.Errorf("Error: Page.GetStatuses[i].ID is empty")
+			}
+		}
+		*/
 	}
 }
 
 func TestUsers(t *testing.T) {
 	for _, v := range UserTests {
 		t.Logf("Fetching facebook user %s\n", v.ID)
-		err := g.FetchUser(v.ID)
-		p := g.GetUser(v.ID)
+		u, err := g.FetchUser(v.ID)
 		if err != nil {
 			t.Errorf("Error: %s\n", err.String())
 		}
-		if p.Name != v.Name {
-			t.Errorf("Error: %s expected %s \n", p.Name, v.Name)
+		if u.Name != v.Name {
+			t.Errorf("Error: %s expected %s \n", u.Name, v.Name)
 		}
 	}
 }
@@ -76,24 +193,12 @@ func TestUsers(t *testing.T) {
 func TestPosts(t *testing.T) {
 	for _, v := range PostTests {
 		t.Logf("Fetching facebook user %s\n", v.ID)
-		err := g.FetchPost(v.ID)
-		p := g.GetPost(v.ID)
+		p, err := g.FetchPost(v.ID)
 		if err != nil {
 			t.Errorf("Error: %s\n", err.String())
 		}
 		if p.Message != v.Message {
 			t.Errorf("Error: %s expected %s \n", p.Message, v.Message)
-		}
-	}
-}
-
-func TestGroups(t *testing.T) {
-	for _, v := range GroupTests {
-		t.Logf("Fetching facebook group %s\n", v.ID)
-		err := g.FetchGroup(v.ID)
-		g.GetGroup(v.ID)
-		if err != nil {
-			t.Errorf("Error: %s\n", err.String())
 		}
 	}
 }
