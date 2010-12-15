@@ -47,15 +47,14 @@ func parseURLs(value []interface{}) (urls []URL) {
 	}
 	return
 }
+
+var times = []string{"RFC3339", "2006-01-02T15:04:05+0000", "2006-01-02T15:04:05", "January 2, 2006", "Jan 2006"}
+
 func parseTime(value string) (t *time.Time, err os.Error) {
-	t, err = time.Parse("RFC3339", value)
-	if err != nil {
-		t, err = time.Parse("2006-01-02T15:04:05+0000", value)
-		if err != nil {
-			t, err = time.Parse("January 2, 2006", value)
-			if err != nil {
-				t, err = time.Parse("Jan 2006", value)
-			}
+	for _, v := range times {
+		t, err = time.Parse(v, value)
+		if err == nil {
+			return
 		}
 	}
 	return
