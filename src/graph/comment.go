@@ -18,16 +18,31 @@ func getComments(url string) (comments []Comment, err os.Error) {
 	}
 	data := resp.Data
 	for i, val := range data {
-		comments[i] = parseComment(val.(map[string]interface{}))
+		comment, err := parseComment(val.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+		comments[i] = comment
 	}
 	return
 }
 
-func parseComment(value map[string]interface{}) (comment Comment) {
-	comment.ID = value["id"].(string)
-	comment.From = parseObject(value["from"].(map[string]interface{}))
-	comment.Message = value["message"].(string)
-	comment.CreatedTime = value["created_time"].(string)
+func parseComment(value map[string]interface{}) (comment Comment, err os.Error) {
+	for k, v := range value {
+		switch k {
+		case "id":
+			comment.ID = v.(string)
+		case "from":
+			comment.From = parseObject(v.(map[string]interface{}))
+		case "message":
+			comment.Message = v.(string)
+		case "created_time":
+			comment.CreatedTime = v.(string)
+		default:
+			err = os.NewError("Unsupported field of type " + k + " with value " + v.(string))
+			return
+		}
+	}
 	return
 }
 
@@ -45,7 +60,11 @@ func parseComments(value map[string]interface{}) (comments []Comment, count floa
 	}
 	comments = make([]Comment, len(data))
 	for i, v := range data {
-		comments[i] = parseComment(v.(map[string]interface{}))
+		comment, err := parseComment(v.(map[string]interface{}))
+		if err != nil {
+			return
+		}
+		comments[i] = comment
 	}
 	return
 }
