@@ -62,58 +62,6 @@ type User struct {
 	LastUpdated *time.Time
 	// The user's locale. Publicly available. A JSON string containing the ISO Language Code and ISO Country Code.
 	Locale string
-	/*
-		// ##### Connections #####
-		// TODO: Replace all strings with actual Connection structs
-		// The News Feed. Requires read_stream permission
-		Home []Post
-		// Wall. Requires read_stream permission to see non-public posts.
-		Feed []Post
-		// Photos, videos and posts in which the user has been tagged. Requires read_stream permission.
-		//Tagged TODO
-		// Own posts. Requires read_stream permission to see non-public posts.
-		Posts string
-		// Profile picture
-		Picture *Picture
-		// Friends of the user
-		Friends string
-		// Activities listed on the profile page
-		Activities string
-		// Interests listed on the profile page
-		Interests string
-		// Music listed on the profile page
-		Music string
-		// Books listed on the profile page
-		Books string
-		// Movies listed on the profile page
-		Movies string
-		// Television listed on the profile pages
-		Television string
-		// Pages this user has liked. Requires user_likes or friend_likes permission
-		Likes string
-		// Photos this user is tagged in. Requires user_photo_video_tags, friend_photo_video_tags and user_photos or friend_photos permissions
-		Photos string
-		// Photo albums this user has created. Requires user_photos or friend_photos permission
-		Albums string
-		// Videos this user has been tagged in. Requires user_videos or friend_videos permission
-		Videos string
-		// Groups this user is a member of. Requires user_groups or friend_groups permission
-		Groups string
-		// Status updates. Requires read_stream permission
-		Statuses string
-		// Posted links. Requires read_stream permission
-		Links string
-		// Notes. Requires read_stream permission
-		Notes string
-		// Events this user is attending. Requires user_events or friend_events permission
-		Events string
-		// Threads in this user's inbox. Requires read_mailbox permission
-		InBox string
-		// Messages in this user's outbox. Requires read_mailbox permission
-		OutBox string
-		// Updates in this user's inbox. Requires read_mailbox permission
-		Updates string
-	*/
 	/* The Facebook pages owned by the current user. If the manage_pages permission has been granted,
 	 * this connection also yields access_tokens that can be used to query the Graph API on behalf of the page.
 	 */
@@ -134,6 +82,35 @@ type User struct {
 	Products        string
 	Founded         *time.Time
 	CompanyOverview string
+
+	// ##### Connections #####
+	home             string
+	feed             string
+	tagged           string
+	posts            string
+	picture          string
+	friends          string
+	activities       string
+	interests        string
+	music            string
+	books            string
+	television       string
+	likes            string
+	photos           string
+	albums           string
+	videos           string
+	groups           string
+	statuses         string
+	links            string
+	notes            string
+	events           string
+	inbox            string
+	outbox           string
+	updates          string
+	accounts         string
+	checkins         string
+	platformrequests string
+	friendlists      string
 }
 
 func (u *User) String() string {
@@ -217,27 +194,70 @@ func parseUser(data map[string]interface{}) (user User, err os.Error) {
 		case "fan_count":
 			user.FanCount = value.(float64)
 		case "type":
-			// TODO: Look into type
-
-			// Parse metadata if requested
-			/*
-				case "metadata":
-					// TODO: get and parse connections
-					metadata := value.(map[string]interface{})
-					for k, v := range metadata["connections"].(map[string]interface{}) {
-						switch k {
-						case "home":
-							// TODO: You can only access the "home" connection for the current user.
-							//user.Home, err = GetPosts(v.(string)) // Pass URL
-						case "feed":
-							//err = FetchData(user.Feed, v.(string)) // Pass URL
-						case "tagged":
-							//err = FetchData(user.Tagged, v.(string)) // Pass URL
-						case "picture":
-							user.Picture = NewPicture(v.(string)) // Pass URL
-						}
-					}
-			*/
+			// Ignore type here
+			// Connections
+		case "metadata":
+			metadata := value.(map[string]interface{})
+			for k, va := range metadata["connections"].(map[string]interface{}) {
+				switch k {
+				case "home":
+					user.home = va.(string)
+				case "feed":
+					user.feed = va.(string)
+				case "tagged":
+					user.tagged = va.(string)
+				case "posts":
+					user.posts = va.(string)
+				case "picture":
+					user.picture = va.(string)
+				case "friends":
+					user.friends = va.(string)
+				case "activities":
+					user.activities = va.(string)
+				case "interests":
+					user.interests = va.(string)
+				case "music":
+					user.music = va.(string)
+				case "books":
+					user.books = va.(string)
+				case "television":
+					user.television = va.(string)
+				case "likes":
+					user.likes = va.(string)
+				case "photos":
+					user.photos = va.(string)
+				case "albums":
+					user.albums = va.(string)
+				case "videos":
+					user.videos = va.(string)
+				case "groups":
+					user.groups = va.(string)
+				case "statuses":
+					user.statuses = va.(string)
+				case "links":
+					user.links = va.(string)
+				case "notes":
+					user.notes = va.(string)
+				case "events":
+					user.events = va.(string)
+				case "inbox":
+					user.inbox = va.(string)
+				case "outbox":
+					user.outbox = va.(string)
+				case "updates":
+					user.updates = va.(string)
+				case "accounts":
+					user.accounts = va.(string)
+				case "checkins":
+					user.checkins = va.(string)
+				case "platformrequests":
+					user.platformrequests = va.(string)
+				case "friendlists":
+					user.friendlists = va.(string)
+				default:
+					// TODO: Print/log unsupported field
+				}
+			}
 		}
 	}
 	return
