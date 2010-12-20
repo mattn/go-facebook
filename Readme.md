@@ -1,10 +1,11 @@
-# net/facebook
+# facebook/graph
+This package is a implementation of the Facebook GraphAPI.
 
-net/facebook implements the Facebook GraphAPI.
-The package includes all none test go files in the folder src.
+# facebook/oauth
+This package holds usefull tools for Facebook oauth-2.0
 
 ## Installation
-'sh make.bash' cleans, compiles and installs net/facebook.
+'sh make.bash' cleans, compiles and installs the package facebook.
 
 ## License
 
@@ -14,4 +15,4 @@ For documentation license see http://developers.facebook.com/licensing/
 
 ## About
 
-net/facebook was written by [Marcel Hauf](http://github.com/Agon).
+The facebook Go package was written by [Marcel Hauf](http://github.com/Agon).
