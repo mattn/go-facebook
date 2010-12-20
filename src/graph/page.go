@@ -46,13 +46,53 @@ type Page struct {
 }
 
 // Gets the page's wall. Available to everyone on Facebook.
-// Returns an array of Post objects.
-func (p *Page) GetWall() (ps []Post, err os.Error) {
+// Returns an array of postable objects (Video, Photo, Link, Status).
+func (p *Page) GetWall() (posts []interface{}, err os.Error) {
 	if len(p.feed) == 0 {
 		err = os.NewError("Error: Page.GetWall with ID " + p.ID + " feed URL is empty.")
 		return
 	}
-	return fetchPosts(p.feed)
+	resp, err := GetResponse(p.feed + "&metadata=1")
+	if err != nil || resp.Fail {
+		return
+	}
+	data := resp.Data
+	posts = make([]interface{}, len(data))
+	for i, val := range data {
+		d := val.(map[string]interface{})
+		t, ok := d["type"].(string)
+		if ok {
+			switch t {
+			case "link":
+				posts[i], err = parseLink(d)
+				if err != nil {
+					continue
+				}
+			case "video":
+				posts[i], err = parseVideo(d)
+				if err != nil {
+					continue
+				}
+			case "photo":
+				posts[i], err = parsePhoto(d)
+				if err != nil {
+					continue
+				}
+			case "status":
+				posts[i], err = parseStatusMessage(d)
+				if err != nil {
+					continue
+				}
+			default:
+				// Try to parse it as a Post object
+				posts[i], err = parsePost(d)
+				if err != nil {
+					return posts, os.NewError("Unsuppported Page.Wall type: " + t)
+				}
+			}
+		}
+	}
+	return
 }
 
 // Gets the page's profile picture. Publicly available.
@@ -85,7 +125,7 @@ func (p *Page) GetTagged() (t []interface{}, err os.Error) {
 		if ok {
 			switch tp {
 			case "status":
-				t[i], err = parsePost(tag)
+				t[i], err = parseStatusMessage(tag)
 				if err != nil {
 					return
 				}

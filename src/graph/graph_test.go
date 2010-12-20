@@ -92,15 +92,12 @@ func TestPages(t *testing.T) {
 
 		// Check Wall
 		t.Logf("Fetching facebook Page's Wall.\n")
-		posts, err := p.GetWall()
+		_, err = p.GetWall()
 		if err != nil {
 			t.Errorf("Error: %s\n", err.String())
 		}
-		for _, v := range posts {
-			if len(v.ID) == 0 {
-				t.Errorf("Error: Page.GetWall[i].ID is empty.")
-			}
-		}
+
+		// TODO: Test different types of posts
 
 		// Picture
 		t.Logf("Fetching facebook Page's Picture.\n")
@@ -191,12 +188,9 @@ func TestUsers(t *testing.T) {
 func TestPosts(t *testing.T) {
 	for _, v := range PostTests {
 		t.Logf("Fetching facebook user %s\n", v.ID)
-		p, err := g.FetchPost(v.ID)
+		_, err := g.FetchPost(v.ID)
 		if err != nil {
 			t.Errorf("Error: %s\n", err.String())
-		}
-		if p.Message != v.Message {
-			t.Errorf("Error: %s expected %s \n", p.Message, v.Message)
 		}
 	}
 }

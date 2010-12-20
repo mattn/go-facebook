@@ -107,6 +107,12 @@ func (p *Post) GetLikes() (likes []Object, err os.Error) {
  * Parses Post data. Returns nil for err if no error appeared.
  */
 func parsePost(value map[string]interface{}) (p Post, err os.Error) {
+	t, ok := value["type"].(string)
+	if ok { // If ok we can do a type check
+		if t != "post" {
+			return p, os.NewError(value["id"].(string) + " is not a Post object it is a " + t + " object.")
+		}
+	}
 	for key, val := range value {
 		switch key {
 		case "id":

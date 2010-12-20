@@ -55,9 +55,10 @@ func (g *Graph) FetchApplication(id string) (app *Application, err os.Error) {
 	return &applic, err
 }
 // Fetches the Post with the provided ID.
-func (g *Graph) FetchPost(id string) (p *Post, err os.Error) {
+// NOTE: It seems like Facebook returns different kinds of types as Post objects.
+func (g *Graph) FetchPost(id string) (p *interface{}, err os.Error) {
 	resp, err := g.Call(id)
-	post, err := parsePost(resp.Map)
+	post, err := parseUnknownObject(resp.Map)
 	return &post, err
 }
 /* Fetches posts from an facebook GraphAPI URL.
