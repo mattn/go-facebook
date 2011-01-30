@@ -1,6 +1,9 @@
 # facebook
 This package implements Facebook functions.
 
+# Old implementation
+The old Go implementation of the Facebook GraphAPI is in the oldImpl branch.
+
 ## Installation
 'sh make.bash' cleans, compiles and installs the package facebook.
 
