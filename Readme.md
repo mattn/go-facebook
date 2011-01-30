@@ -12,7 +12,7 @@ The old Go implementation of the Facebook GraphAPI is in the oldImpl branch.
 ### Cloning the repository:
 	git clone git://github.com/Agon/go-facebook.git
 	cd go-facebook
-	sh make.bash
+	make install
 
 ## Usage
 	import facebook "github.com/Agon/go-facebook"
