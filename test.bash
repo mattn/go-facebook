@@ -1,7 +1,2 @@
-cd src/graph
-gotest
-
-cd .. # ./src
-
-cd oauth
+cd src
 gotest

@@ -1,13 +1,4 @@
-cd src/oauth
+cd src
 make clean
 make
 make install
-
-cd ../..
-
-cd src/graph
-make clean
-make
-make install
-
-cd ../..

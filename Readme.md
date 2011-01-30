@@ -1,8 +1,5 @@
-# facebook/graph
-This package is a implementation of the Facebook GraphAPI.
-
-# facebook/oauth
-This package holds usefull tools for Facebook oauth-2.0
+# facebook
+This package implements Facebook functions.
 
 ## Installation
 'sh make.bash' cleans, compiles and installs the package facebook.
