@@ -7,17 +7,17 @@ The old Go implementation of the Facebook GraphAPI is in the oldImpl branch.
 ## Installation
 
 ### Using goinstall:
-	goinstall github.com/Agon/go-facebook
+	goinstall github.com/Agon/go-facebook/facebook
 
 ### Cloning the repository:
 	git clone git://github.com/Agon/go-facebook.git
-	cd go-facebook
+	cd go-facebook/facebook
 	make install
 
 ## Usage
-	import facebook "github.com/Agon/go-facebook"
+	import facebook "github.com/Agon/go-facebook/facebook"
 
-Examples can be found at ./src/examples/
+Examples can be found at ./facebook/examples/
 
 ## License
 
