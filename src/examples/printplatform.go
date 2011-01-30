@@ -1,7 +1,7 @@
 package main
 
 import (
-	"facebook"
+	"github.com/Agon/go-facebook"
 	"fmt"
 )
 

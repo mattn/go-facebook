@@ -5,13 +5,23 @@ This package implements Facebook functions.
 The old Go implementation of the Facebook GraphAPI is in the oldImpl branch.
 
 ## Installation
-'sh make.bash' cleans, compiles and installs the package facebook.
+
+### Using goinstall:
+	goinstall github.com/Agon/go-facebook
+
+### Cloning the repository:
+	git clone git://github.com/Agon/go-facebook.git
+	cd go-facebook
+	sh make.bash
+
+## Usage
+	import facebook "github.com/Agon/go-facebook"
+
+Examples can be found at ./src/examples/
 
 ## License
 
 MIT-License, for more information look into the LICENSE file.
-The documentation is mostly coppied from the Facebook documentation.
-For documentation license see http://developers.facebook.com/licensing/
 
 ## About
 
