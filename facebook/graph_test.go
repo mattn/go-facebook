@@ -33,6 +33,10 @@ var pages = []string{
 	"cocacola",
 }
 
+var albums = []string{
+	"99394368305", // Coca-Cola fan page wall photos
+}
+
 func TestCall(t *testing.T) {
 	for _, id := range ids {
 		t.Logf("Fetching Facebook object %s.\n", id)

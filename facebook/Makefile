@@ -8,6 +8,7 @@ user.go\
 work.go\
 object.go\
 page.go\
-education.go
+education.go\
+album.go
 
 include $(GOROOT)/src/Make.pkg
