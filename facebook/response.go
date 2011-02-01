@@ -7,7 +7,7 @@ import (
 )
 
 type Response struct {
-	Data     string
+	Data     []byte
 	Url      string
 	FinalUrl string
 }
@@ -24,7 +24,6 @@ func Get(url string) (r *Response, err os.Error) {
 		return nil, os.NewError("GetResponse(" + url + "): " + err.String())
 	}
 	r.FinalUrl = finalUrl
-	b, err := ioutil.ReadAll(resp.Body)
-	r.Data = string(b)
+	r.Data, err = ioutil.ReadAll(resp.Body)
 	return
 }
