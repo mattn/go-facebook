@@ -69,7 +69,6 @@ func GetUser(id string) (user *User, err os.Error) {
 	if err != nil {
 		return
 	}
-	println(resp.Data)
 	var value User
 	err = json.Unmarshal(resp.Data, &value)
 	user = &value

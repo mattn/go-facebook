@@ -28,6 +28,11 @@ var users = []string{
 	"btaylor",
 }
 
+var pages = []string{
+	"platform",
+	"cocacola",
+}
+
 func TestCall(t *testing.T) {
 	for _, id := range ids {
 		t.Logf("Fetching Facebook object %s.\n", id)

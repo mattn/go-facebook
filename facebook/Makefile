@@ -6,6 +6,7 @@ GOFILES=response.go\
 graph.go\
 user.go\
 work.go\
-object.go
+object.go\
+page.go
 
 include $(GOROOT)/src/Make.pkg
