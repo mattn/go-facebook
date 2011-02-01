@@ -24,6 +24,10 @@ var ids = []string{
 	"99394368305",
 }
 
+var users = []string{
+	"btaylor",
+}
+
 func TestCall(t *testing.T) {
 	for _, id := range ids {
 		t.Logf("Fetching Facebook object %s.\n", id)
