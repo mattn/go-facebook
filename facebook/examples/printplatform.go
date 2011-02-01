@@ -6,12 +6,10 @@ import (
 )
 
 func main() {
-	resp, err := facebook.Call("platform", map[string]string{})
+	platform, err := facebook.GetPage("platform")
 	if err != nil {
 		fmt.Println(err.String())
 		return
 	}
-	platform := resp.Data.(map[string]interface{})
-	info := "Name: " + platform["name"].(string) + "\n"
-	fmt.Print(info)
+	fmt.Printf("Name: %s\n", platform.Name)
 }
