@@ -25,7 +25,7 @@ type User struct {
 	// Work history list
 	Work []*Workplace
 	// Education history list
-	Educations []*Education
+	Education []*Education
 	// The contact email adress
 	Email string
 	// Link to the personal website
