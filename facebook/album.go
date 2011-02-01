@@ -39,3 +39,8 @@ func GetAlbum(id string) (album *Album, err os.Error) {
 	album = &value
 	return
 }
+
+func PostAlbum(profileID, name, description string) (err os.Error) {
+	_, err = Publish(profileID, "albums", map[string]string{"name": name, "description": description})
+	return
+}

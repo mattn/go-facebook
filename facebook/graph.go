@@ -33,8 +33,18 @@ func (g *Graph) Call(id string, params map[string]string) (*Response, os.Error) 
 	return Get(cmd)
 }
 
+func (g *Graph) Publish(profile, id string, params map[string]string) (*Response, os.Error) {
+	url := g.GetGraphUrl() + "/" + profile + "/" + id
+	// TODO: Parse reponse here to handle error reponses.
+	return Post(url, params)
+}
+
 var MainGraph = new(Graph)
 
 func Call(id string, params map[string]string) (*Response, os.Error) {
 	return MainGraph.Call(id, params)
+}
+
+func Publish(profile, id string, params map[string]string) (*Response, os.Error) {
+	return MainGraph.Publish(profile, id, params)
 }
