@@ -7,6 +7,7 @@ graph.go\
 user.go\
 work.go\
 object.go\
-page.go
+page.go\
+education.go
 
 include $(GOROOT)/src/Make.pkg
