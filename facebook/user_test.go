@@ -2,7 +2,6 @@ package facebook
 
 import (
 	"testing"
-	"fmt"
 )
 
 func TestGetUser(t *testing.T) {

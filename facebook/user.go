@@ -23,7 +23,7 @@ type User struct {
 	// Birthday
 	Birthday string
 	// Work history list
-	//Work []Workplace
+	Work []*Workplace
 	// Education history list
 	//Educations []Education
 	// The contact email adress
@@ -31,9 +31,9 @@ type User struct {
 	// Link to the personal website
 	Website string
 	// Hometown
-	//Hometown Object
+	Hometown *Object
 	// Current location
-	//Location Object
+	Location *Object
 	// Biography
 	Bio string
 	// Favorite quotes
