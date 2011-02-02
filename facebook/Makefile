@@ -14,6 +14,7 @@ metadata.go\
 activities.go\
 testusers.go\
 fbapp.go\
-item.go
+item.go\
+interests.go
 
 include $(GOROOT)/src/Make.pkg

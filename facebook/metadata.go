@@ -10,6 +10,21 @@ type Metadata struct {
 	Fields      []*Field
 }
 
+func (m *Metadata) GetInterests() (i *Interests, err os.Error) {
+	url, ok := m.Connections["interests"]
+	if !ok {
+		return
+	}
+	resp, err := Get(url)
+	if err != nil {
+		return
+	}
+	var value Interests
+	err = json.Unmarshal(resp.Data, &value)
+	i = &value
+	return
+}
+
 func (m *Metadata) GetActivities() (a *Activities, err os.Error) {
 	url, ok := m.Connections["activities"]
 	if !ok {

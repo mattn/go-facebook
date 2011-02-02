@@ -29,18 +29,31 @@ func MetadataTest(m *Metadata, t *testing.T) {
 	if err != nil {
 		t.Errorf("%s\n", err)
 	}
-	for _, a := range as.Data {
-		if len(a.Id) == 0 {
-			t.Errorf("Activity.ID is empty of metadata: %x\n", m)
-		}
-		if len(a.Name) == 0 {
-			t.Errorf("Activity.Name is empty of metadata: %x\n", m)
-		}
-		if len(a.Category) == 0 {
-			t.Errorf("Activity.Category is empty of metadata: %x\n", m)
-		}
-		if len(a.Created_Time) == 0 {
-			t.Errorf("Activity.Created_Time is empty of metadata: %x\n", m)
-		}
+	for _, item := range as.Data {
+		ItemTest(m, item, t)
+	}
+
+	//Interests
+	interests, err := m.GetInterests()
+	if err != nil {
+		t.Errorf("%s\n", err)
+	}
+	for _, item := range interests.Data {
+		ItemTest(m, item, t)
+	}
+}
+
+func ItemTest(m *Metadata, i *Item, t *testing.T) {
+	if len(i.Id) == 0 {
+		t.Errorf("Item.ID is empty of metadata: %x\n", m)
+	}
+	if len(i.Name) == 0 {
+		t.Errorf("Item.Name is empty of metadata: %x\n", m)
+	}
+	if len(i.Category) == 0 {
+		t.Errorf("Item.Category is empty of metadata: %x\n", m)
+	}
+	if len(i.Created_Time) == 0 {
+		t.Errorf("Item.Created_Time is empty of metadata: %x\n", m)
 	}
 }
