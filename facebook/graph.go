@@ -10,7 +10,7 @@ const (
 	UNSECURE  = "http://"
 )
 
-var RequestMetadata = map[string] string{"metadata":"1",}
+var RequestMetadata = map[string]string{"metadata": "1"}
 
 type Graph struct {
 	Https bool

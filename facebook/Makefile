@@ -10,6 +10,9 @@ object.go\
 page.go\
 education.go\
 album.go\
-metadata.go
+metadata.go\
+activities.go\
+testusers.go\
+fbapp.go
 
 include $(GOROOT)/src/Make.pkg

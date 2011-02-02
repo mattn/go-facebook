@@ -11,10 +11,10 @@ func TestGetPage(t *testing.T) {
 			t.Errorf("%s\n", err)
 		}
 		if page == nil {
-			t.Errorf("Page is nil of object: %s\n", page)
+			t.Errorf("Page is nil of object: %x\n", page)
 		}
 		if len(page.ID) == 0 {
-			t.Errorf("Page.ID is empty of object: %s\n", page)
+			t.Errorf("Page.ID is empty of object: %x\n", page)
 		}
 	}
 }
