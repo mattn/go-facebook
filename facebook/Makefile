@@ -13,6 +13,7 @@ album.go\
 metadata.go\
 activities.go\
 testusers.go\
-fbapp.go
+fbapp.go\
+item.go
 
 include $(GOROOT)/src/Make.pkg
