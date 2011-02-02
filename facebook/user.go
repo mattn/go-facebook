@@ -41,9 +41,9 @@ type User struct {
 	// Gender
 	Gender string
 	// Genders the user is interested in
-	Interested_In string
+	Interested_In []string
 	// Types of relationships the user is seeking for
-	Meeting_For string
+	Meeting_For []string
 	// Relationship status
 	Relationship_Status string
 	// Religion
@@ -51,11 +51,11 @@ type User struct {
 	// Political view
 	Political string
 	// Verification status
-	Verified string
+	Verified bool
 	// The user's significant other
-	Significant_Other string
+	Significant_Other *Object
 	// Timezone
-	Timezone string
+	Timezone float64
 	// An anonymous, but unique identifier for the user. Available to everyone on Facebook.
 	Third_Party_ID string
 	// The last time the user's profile was updated. Available to everyone on Facebook.
