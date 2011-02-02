@@ -25,8 +25,22 @@ func MetadataTest(m *Metadata, t *testing.T) {
 		t.Errorf("No metadata included.\n")
 	}
 	// Activities()
-	_, err := m.GetActivities()
+	as, err := m.GetActivities()
 	if err != nil {
 		t.Errorf("%s\n", err)
+	}
+	for _, a := range as.Data {
+		if len(a.Id) == 0 {
+			t.Errorf("Activity.ID is empty of metadata: %x\n", m)
+		}
+		if len(a.Name) == 0 {
+			t.Errorf("Activity.Name is empty of metadata: %x\n", m)
+		}
+		if len(a.Category) == 0 {
+			t.Errorf("Activity.Category is empty of metadata: %x\n", m)
+		}
+		if len(a.Created_Time) == 0 {
+			t.Errorf("Activity.Created_Time is empty of metadata: %x\n", m)
+		}
 	}
 }
