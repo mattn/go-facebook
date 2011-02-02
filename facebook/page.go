@@ -16,10 +16,12 @@ type Page struct {
 	Category string
 	// Number of users who like this page
 	Likes float64
+	// Metadata contains Connections
+	Metadata *Metadata
 }
 
 func GetPage(id string) (page *Page, err os.Error) {
-	resp, err := Call(id, map[string]string{})
+	resp, err := Call(id, RequestMetadata)
 	if err != nil {
 		return
 	}

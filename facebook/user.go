@@ -62,10 +62,13 @@ type User struct {
 	Updated_Time string
 	// The user's locale. Publicly available. A JSON string containing the ISO Language Code and ISO Country Code.
 	Locale string
+	// Metadata contains Connections
+	Metadata *Metadata
 }
 
+// Calls a Get request for a User object to the GraphAPI of Facebook including metadata.
 func GetUser(id string) (user *User, err os.Error) {
-	resp, err := Call(id, map[string]string{})
+	resp, err := Call(id, RequestMetadata)
 	if err != nil {
 		return
 	}
