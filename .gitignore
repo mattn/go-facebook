@@ -10,3 +10,4 @@ _test
 *.go~
 *.md~
 *.bash~
+*_test.go
