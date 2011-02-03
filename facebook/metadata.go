@@ -10,6 +10,21 @@ type Metadata struct {
 	Fields      []*Field
 }
 
+func (m *Metadata) GetFriends() (f *Friends, err os.Error) {
+	url, ok := m.Connections["friends"]
+	if !ok {
+		return nil, os.NewError("No Metadata.Connections[friends].")
+	}
+	resp, err := Get(url)
+	if err != nil {
+		return
+	}
+	var value Friends
+	err = json.Unmarshal(resp.Data, &value)
+	f = &value
+	return
+}
+
 func (m *Metadata) GetLikes() (l *Likes, err os.Error) {
 	url, ok := m.Connections["likes"]
 	if !ok {

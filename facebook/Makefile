@@ -20,6 +20,7 @@ music.go\
 books.go\
 movies.go\
 television.go\
-likes.go
+likes.go\
+friends.go
 
 include $(GOROOT)/src/Make.pkg
