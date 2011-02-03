@@ -63,7 +63,7 @@ type User struct {
 	// The user's locale. Publicly available. A JSON string containing the ISO Language Code and ISO Country Code.
 	Locale string
 	// Metadata contains Connections
-	Metadata *Metadata
+	*Metadata
 }
 
 // Calls a Get request for a User object to the GraphAPI of Facebook including metadata.

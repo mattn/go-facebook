@@ -15,6 +15,11 @@ activities.go\
 testusers.go\
 fbapp.go\
 item.go\
-interests.go
+interests.go\
+music.go\
+books.go\
+movies.go\
+television.go\
+likes.go
 
 include $(GOROOT)/src/Make.pkg

@@ -41,6 +41,51 @@ func MetadataTest(m *Metadata, t *testing.T) {
 	for _, item := range interests.Data {
 		ItemTest(m, item, t)
 	}
+
+	// Music
+	music, err := m.GetMusic()
+	if err != nil {
+		t.Errorf("%s\n", err)
+	}
+	for _, item := range music.Data {
+		ItemTest(m, item, t)
+	}
+
+	// Books
+	books, err := m.GetBooks()
+	if err != nil {
+		t.Errorf("%s\n", err)
+	}
+	for _, item := range books.Data {
+		ItemTest(m, item, t)
+	}
+
+	// Movies
+	movies, err := m.GetMovies()
+	if err != nil {
+		t.Errorf("%s\n", err)
+	}
+	for _, item := range movies.Data {
+		ItemTest(m, item, t)
+	}
+
+	// Television
+	television, err := m.GetTelevision()
+	if err != nil {
+		t.Errorf("%s\n", err)
+	}
+	for _, item := range television.Data {
+		ItemTest(m, item, t)
+	}
+
+	// Likes
+	likes, err := m.GetLikes()
+	if err != nil {
+		t.Errorf("%s\n", err)
+	}
+	for _, item := range likes.Data {
+		ItemTest(m, item, t)
+	}
 }
 
 func ItemTest(m *Metadata, i *Item, t *testing.T) {
