@@ -10,6 +10,20 @@ type Metadata struct {
 	Fields      []*Field
 }
 
+// size = small | normal | large
+func (m *Metadata) GetPicture(size string) (url string, err os.Error) {
+	url, ok := m.Connections["picture"]
+	if !ok {
+		return "", os.NewError("No Metadata.Connections[picture].")
+	}
+	url += "?type=" + size
+	resp, err := Get(url)
+	if err != nil {
+		return
+	}
+	return string(resp.Data), nil
+}
+
 func (m *Metadata) GetFriends() (f *Friends, err os.Error) {
 	url, ok := m.Connections["friends"]
 	if !ok {
