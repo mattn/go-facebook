@@ -19,6 +19,7 @@ func TestGet(t *testing.T) {
 	}
 }
 
+/* TODO: Test PostForm
 func TestPostForm(t *testing.T) {
 	resp, err := PostForm("https://graph.facebook.com/me/albums", map[string]string{"name": "Test album"})
 	if err != nil {
@@ -30,3 +31,4 @@ func TestPostForm(t *testing.T) {
 		t.Errorf("Error: Empty Response.Data.")
 	}
 }
+*/
