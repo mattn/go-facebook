@@ -19,8 +19,8 @@ func TestGet(t *testing.T) {
 	}
 }
 
-func TestPost(t *testing.T) {
-	resp, err := Post("https://graph.facebook.com/me/albums", map[string]string{"name": "Test album"})
+func TestPostForm(t *testing.T) {
+	resp, err := PostForm("https://graph.facebook.com/me/albums", map[string]string{"name": "Test album"})
 	if err != nil {
 		t.Errorf("Error: %s\n", err.String())
 	}

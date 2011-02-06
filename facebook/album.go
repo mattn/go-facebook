@@ -28,7 +28,7 @@ type Album struct {
 	// The last time the photo album was updated. Publicly available. Contains a IETF RFC 3339 datetime.
 	Updated_Time string
 	// Metadata contains Connections
-	Metadata *Metadata
+	*Metadata
 }
 
 func GetAlbum(id string) (album *Album, err os.Error) {

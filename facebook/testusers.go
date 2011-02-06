@@ -25,7 +25,7 @@ func (t *TestUserAPI) CreateTestUser(installed bool, permissions []string, appAc
 	params := map[string]string{"installed": fmt.Sprintf("%t", installed), "permissions": str, "access_token": appAccessToken}
 	// The secure url is required
 	url := SECURE + GRAPH_URL + "/" + t.appId + "/accounts/test-users"
-	resp, err := Post(url, params)
+	resp, err := PostForm(url, params)
 	if err != nil {
 		return
 	}
@@ -50,6 +50,9 @@ func (t *TestUserAPI) GetTestUsers() (tus *TestUsers, err os.Error) {
 	tus = &value
 	return
 }
+
+// TODO: TestUser Friend Requests
+// TODO: TestUser deleting
 
 type TestUsers struct {
 	Data []*TestUser

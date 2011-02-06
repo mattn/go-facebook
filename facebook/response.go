@@ -26,7 +26,7 @@ func Get(url string) (r *Response, err os.Error) {
 	return
 }
 
-func Post(url string, data map[string]string) (r *Response, err os.Error) {
+func PostForm(url string, data map[string]string) (r *Response, err os.Error) {
 	resp, err := http.PostForm(url, data)
 	if resp != nil {
 		defer resp.Body.Close()
