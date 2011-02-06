@@ -37,12 +37,16 @@ var albums = []string{
 	"99394368305", // Coca-Cola fan page wall photos
 }
 
+var posts = []string{
+	"19292868552_118464504835613",
+}
+
 func TestCall(t *testing.T) {
 	for _, id := range ids {
 		t.Logf("Fetching Facebook object %s.\n", id)
 		resp, err := Call(id, map[string]string{})
 		if err != nil {
-			t.Errorf("Error: %s\n", err.String())
+			t.Errorf("Error: %s\n", err)
 		}
 		if resp == nil {
 			t.Errorf("Error: The Response is empty.")

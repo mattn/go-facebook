@@ -1,5 +1,9 @@
 package facebook
 
 type Likes struct {
-	Data []*Item
+	*ItemCollection
+}
+
+type PostLikes struct {
+	*ObjectCollection
 }

@@ -8,10 +8,10 @@ func TestGetUser(t *testing.T) {
 	for _, id := range users {
 		user, err := GetUser(id)
 		if err != nil {
-			t.Errorf("%s\n", err)
+			t.Fatalf("Error with user %s: %s\n", id, err)
 		}
 		if user == nil {
-			t.Errorf("User is nil of object: %x\n", user)
+			t.Fatalf("User is nil of object: %x\n", user)
 		}
 		if len(user.ID) == 0 {
 			t.Errorf("User.ID is empty of object: %x\n", user)
@@ -22,78 +22,132 @@ func TestGetUser(t *testing.T) {
 
 func MetadataTest(m *Metadata, t *testing.T) {
 	if m == nil {
-		t.Errorf("No metadata included.\n")
+		t.Fatalf("No metadata included.\n")
 	}
+	t.Logf("Metadata test of type %s.", m.Type)
+
 	// Friends
 	friends, err := m.GetFriends()
 	if err != nil {
-		t.Errorf("%s\n", err)
-	}
-	for _, obj := range friends.Data {
-		ObjectTest(obj, t)
+		if err != NOFRIENDSURLERR {
+			t.Errorf("%s\n", err)
+		} else {
+			t.Logf("%s\n", err)
+		}
+	} else {
+		for _, obj := range friends.Objects() {
+			ObjectTest(obj, t)
+		}
 	}
 
 	// Activities
-	as, err := m.GetActivities()
+	activities, err := m.GetActivities()
 	if err != nil {
-		t.Errorf("%s\n", err)
-	}
-	for _, item := range as.Data {
-		ItemTest(m, item, t)
+		if err != NOACTIVITIESURLERR {
+			t.Errorf("%s\n", err)
+		} else {
+			t.Logf("%s\n", err)
+		}
+	} else {
+		for _, item := range activities.Items() {
+			ItemTest(m, item, t)
+		}
 	}
 
 	//Interests
 	interests, err := m.GetInterests()
 	if err != nil {
-		t.Errorf("%s\n", err)
-	}
-	for _, item := range interests.Data {
-		ItemTest(m, item, t)
+		if err != NOINTERESTSURLERR {
+			t.Errorf("%s\n", err)
+		} else {
+			t.Logf("%s\n", err)
+		}
+	} else {
+		for _, item := range interests.Items() {
+			ItemTest(m, item, t)
+		}
 	}
 
 	// Music
 	music, err := m.GetMusic()
 	if err != nil {
-		t.Errorf("%s\n", err)
-	}
-	for _, item := range music.Data {
-		ItemTest(m, item, t)
+		if err != NOMUSICURLERR {
+			t.Errorf("%s\n", err)
+		} else {
+			t.Logf("%s\n", err)
+		}
+	} else {
+		for _, item := range music.Items() {
+			ItemTest(m, item, t)
+		}
 	}
 
 	// Books
 	books, err := m.GetBooks()
 	if err != nil {
-		t.Errorf("%s\n", err)
-	}
-	for _, item := range books.Data {
-		ItemTest(m, item, t)
+		if err != NOBOOKSURLERR {
+			t.Errorf("%s\n", err)
+		} else {
+			t.Logf("%s\n", err)
+		}
+	} else {
+		for _, item := range books.Items() {
+			ItemTest(m, item, t)
+		}
 	}
 
 	// Movies
 	movies, err := m.GetMovies()
 	if err != nil {
-		t.Errorf("%s\n", err)
-	}
-	for _, item := range movies.Data {
-		ItemTest(m, item, t)
+		if err != NOMOVIESURLERR {
+			t.Errorf("%s\n", err)
+		} else {
+			t.Logf("%s\n", err)
+		}
+	} else {
+		for _, item := range movies.Items() {
+			ItemTest(m, item, t)
+		}
 	}
 
 	// Television
 	television, err := m.GetTelevision()
 	if err != nil {
-		t.Errorf("%s\n", err)
-	}
-	for _, item := range television.Data {
-		ItemTest(m, item, t)
+		if err != NOTELEVISIONURLERR {
+			t.Errorf("%s\n", err)
+		} else {
+			t.Logf("%s\n", err)
+		}
+	} else {
+		for _, item := range television.Items() {
+			ItemTest(m, item, t)
+		}
 	}
 
 	// Likes
 	likes, err := m.GetLikes()
 	if err != nil {
-		t.Errorf("%s\n", err)
-	}
-	for _, item := range likes.Data {
-		ItemTest(m, item, t)
+		if err != NOLIKESURLERR {
+			t.Errorf("%s\n", err)
+		} else {
+			t.Logf("%s\n", err)
+		}
+	} else {
+		if likes == nil {
+			t.Fatalf("Likes is nil and err is nil, this can't happen.")
+		}
+		switch likes.(type) {
+		case PostLikes:
+			l := likes.(PostLikes)
+			for _, obj := range l.Objects() {
+				ObjectTest(obj, t)
+			}
+		case Likes:
+			l := likes.(Likes)
+			for _, item := range l.Items() {
+				ItemTest(m, item, t)
+			}
+		}
 	}
 }
 

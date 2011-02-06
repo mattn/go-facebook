@@ -7,14 +7,15 @@ import (
 )
 
 type TestUserAPI struct {
-	appId string
+	appId          string
+	appAccessToken string
 }
 
-func NewTestUserAPI(app_id string) *TestUserAPI {
-	return &TestUserAPI{appId: app_id}
+func NewTestUserAPI(app_id string, appAccessToken string) *TestUserAPI {
+	return &TestUserAPI{appId: app_id, appAccessToken: appAccessToken}
 }
 
-func (t *TestUserAPI) CreateTestUser(installed bool, permissions []string, appAccessToken string) (user *TestUser, err os.Error) {
+func (t *TestUserAPI) CreateTestUser(installed bool, permissions []string) (user *TestUser, err os.Error) {
 	var str string
 	if len(permissions) > 0 {
 		for _, perm := range permissions {
@@ -22,7 +23,7 @@ func (t *TestUserAPI) CreateTestUser(installed bool, permissions []string, appAc
 		}
 		str = str[:len(str)-1] // Remove last ,
 	}
-	params := map[string]string{"installed": fmt.Sprintf("%t", installed), "permissions": str, "access_token": appAccessToken}
+	params := map[string]string{"installed": fmt.Sprintf("%t", installed), "permissions": str, "access_token": t.appAccessToken}
 	// The secure url is required
 	url := SECURE + GRAPH_URL + "/" + t.appId + "/accounts/test-users"
 	resp, err := PostForm(url, params)
@@ -40,7 +41,7 @@ func (t *TestUserAPI) CreateTestUser(installed bool, permissions []string, appAc
 }
 
 func (t *TestUserAPI) GetTestUsers() (tus *TestUsers, err os.Error) {
-	url := SECURE + GRAPH_URL + "/" + t.appId + "/accounts/test-users"
+	url := SECURE + GRAPH_URL + "/" + t.appId + "/accounts/test-users?access_token=" + t.appAccessToken
 	resp, err := Get(url)
 	if err != nil {
 		return

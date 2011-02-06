@@ -5,7 +5,18 @@ import (
 	"json"
 )
 
+var NOPICTUREURLERR = os.NewError("No Metadata.Connections[picture].")
+var NOFRIENDSURLERR = os.NewError("No Metadata.Connections[friends].")
+var NOLIKESURLERR = os.NewError("No Metadata.Connections[likes].")
+var NOTELEVISIONURLERR = os.NewError("No Metadata.Connections[television].")
+var NOMOVIESURLERR = os.NewError("No Metadata.Connections[movies].")
+var NOBOOKSURLERR = os.NewError("No Metadata.Connections[books].")
+var NOMUSICURLERR = os.NewError("No Metadata.Connections[music].")
+var NOINTERESTSURLERR = os.NewError("No Metadata.Connections[interests].")
+var NOACTIVITIESURLERR = os.NewError("No Metadata.Connections[activities].")
+
 type Metadata struct {
+	Type        string
 	Connections map[string]string
 	Fields      []*Field
 }
@@ -14,7 +25,7 @@ type Metadata struct {
 func (m *Metadata) GetPicture(size string) (url string, err os.Error) {
 	url, ok := m.Connections["picture"]
 	if !ok {
-		return "", os.NewError("No Metadata.Connections[picture].")
+		return "", NOPICTUREURLERR
 	}
 	url += "?type=" + size
 	resp, err := Get(url)
@@ -27,7 +38,7 @@ func (m *Metadata) GetPicture(size string) (url string, err os.Error) {
 func (m *Metadata) GetFriends() (f *Friends, err os.Error) {
 	url, ok := m.Connections["friends"]
 	if !ok {
-		return nil, os.NewError("No Metadata.Connections[friends].")
+		return nil, NOFRIENDSURLERR
 	}
 	resp, err := Get(url)
 	if err != nil {
@@ -39,25 +50,33 @@ func (m *Metadata) GetFriends() (f *Friends, err os.Error) {
 	return
 }
 
-func (m *Metadata) GetLikes() (l *Likes, err os.Error) {
+// Returns ever PostLikes or Likes object
+func (m *Metadata) GetLikes() (l interface{}, err os.Error) {
 	url, ok := m.Connections["likes"]
 	if !ok {
-		return nil, os.NewError("No Metadata.Connections[likes].")
+		return nil, NOLIKESURLERR
 	}
 	resp, err := Get(url)
 	if err != nil {
 		return
 	}
-	var value Likes
-	err = json.Unmarshal(resp.Data, &value)
-	l = &value
+	switch m.Type {
+	case "post":
+		var value PostLikes
+		err = json.Unmarshal(resp.Data, &value)
+		l = &value
+	default:
+		var value Likes
+		err = json.Unmarshal(resp.Data, &value)
+		l = &value
+	}
 	return
 }
 
 func (m *Metadata) GetTelevision() (t *Television, err os.Error) {
 	url, ok := m.Connections["television"]
 	if !ok {
-		return nil, os.NewError("No Metadata.Connections[television].")
+		return nil, NOTELEVISIONURLERR
 	}
 	resp, err := Get(url)
 	if err != nil {
@@ -72,7 +91,7 @@ func (m *Metadata) GetTelevision() (t *Television, err os.Error) {
 func (m *Metadata) GetMovies() (movies *Movies, err os.Error) {
 	url, ok := m.Connections["movies"]
 	if !ok {
-		return nil, os.NewError("No Metadata.Connections[movies].")
+		return nil, NOMOVIESURLERR
 	}
 	resp, err := Get(url)
 	if err != nil {
@@ -87,7 +106,7 @@ func (m *Metadata) GetMovies() (movies *Movies, err os.Error) {
 func (m *Metadata) GetBooks() (b *Books, err os.Error) {
 	url, ok := m.Connections["books"]
 	if !ok {
-		return nil, os.NewError("No Metadata.Connections[books].")
+		return nil, NOBOOKSURLERR
 	}
 	resp, err := Get(url)
 	if err != nil {
@@ -102,7 +121,7 @@ func (m *Metadata) GetBooks() (b *Books, err os.Error) {
 func (m *Metadata) GetMusic() (music *Music, err os.Error) {
 	url, ok := m.Connections["music"]
 	if !ok {
-		return nil, os.NewError("No Metadata.Connections[music].")
+		return nil, NOMUSICURLERR
 	}
 	resp, err := Get(url)
 	if err != nil {
@@ -117,7 +136,7 @@ func (m *Metadata) GetMusic() (music *Music, err os.Error) {
 func (m *Metadata) GetInterests() (i *Interests, err os.Error) {
 	url, ok := m.Connections["interests"]
 	if !ok {
-		return nil, os.NewError("No Metadata.Connections[interests].")
+		return nil, NOINTERESTSURLERR
 	}
 	resp, err := Get(url)
 	if err != nil {
@@ -132,7 +151,7 @@ func (m *Metadata) GetInterests() (i *Interests, err os.Error) {
 func (m *Metadata) GetActivities() (a *Activities, err os.Error) {
 	url, ok := m.Connections["activities"]
 	if !ok {
-		return nil, os.NewError("No Metadata.Connections[activities].")
+		return nil, NOACTIVITIESURLERR
 	}
 	resp, err := Get(url)
 	if err != nil {

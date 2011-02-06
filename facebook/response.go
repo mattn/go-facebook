@@ -4,7 +4,17 @@ import (
 	"os"
 	"http"
 	"io/ioutil"
+	"json"
 )
+
+type FBError struct {
+	Error *Error
+}
+
+type Error struct {
+	Type    string
+	Message string
+}
 
 type Response struct {
 	Data     []byte
@@ -23,7 +33,19 @@ func Get(url string) (r *Response, err os.Error) {
 	r = &Response{Url: url}
 	r.FinalUrl = finalUrl
 	r.Data, err = ioutil.ReadAll(resp.Body)
-	return
+	if err != nil {
+		return
+	}
+	// Check for error
+	var value FBError
+	err = json.Unmarshal(r.Data, &value)
+	if err == nil {
+		if value.Error != nil {
+			err = os.NewError(value.Error.Type + ": " + value.Error.Message)
+			return
+		}
+	}
+	return r, nil // Dont return the check of an Error error
 }
 
 func PostForm(url string, data map[string]string) (r *Response, err os.Error) {

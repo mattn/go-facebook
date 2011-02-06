@@ -10,7 +10,7 @@ type Album struct {
 	// The photo album ID. Publicly available.
 	ID string
 	// The profile that created this album. Publicly available. Contains the id and name fields.
-	From *Object
+	From *Item
 	// The title of the album. Publicly available.
 	Name string
 	// The description of the album. Available to everyone in Facebook.
