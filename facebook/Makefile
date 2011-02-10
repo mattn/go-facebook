@@ -22,6 +22,7 @@ movies.go\
 television.go\
 likes.go\
 friends.go\
-post.go
+post.go\
+signedrequest.go
 
 include $(GOROOT)/src/Make.pkg
