@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"os"
 	"json"
-	//"bytes"
 )
 
 type SRUser struct {
@@ -50,7 +49,6 @@ func ParseSignedRequest(input string) (sr *SignedRequest, err os.Error) {
 	if err != nil {
 		return
 	}
-	data = data[:len(data)] // TEMP: Bypass an illegal char at the end
 	var value SignedRequest
 	if err = json.Unmarshal(data, &value); err != nil {
 		return sr, os.NewError("Error: ParseSignedRequest: json.Unmarshal: " + err.String() + " in " + string(data))
@@ -60,14 +58,21 @@ func ParseSignedRequest(input string) (sr *SignedRequest, err os.Error) {
 	// TODO: Check SignedRequest with signature
 }
 
-func base64Decode(str string) ([]byte, os.Error) {
+func base64Decode(str string) (dbuf []byte, err os.Error) {
 	p := 4 - len(str)%4
 	str = str + string(strings.Repeat("=", p))
 
-	dbuf := make([]byte, base64.URLEncoding.DecodedLen(len(str)))
-	_, err := base64.URLEncoding.Decode(dbuf, []byte(str))
+	n := base64.URLEncoding.DecodedLen(len(str))
+	dbuf = make([]byte, n)
+	_, err = base64.URLEncoding.Decode(dbuf, []byte(str))
 	if err != nil {
-		return []byte{}, err
+		// Try again to bypass some broken Facebook base64urls
+		_, err = base64.URLEncoding.Decode(dbuf, []byte(str[:len(str)-8]))
+		if err != nil {
+			return
+		}
+		s := string(dbuf[0:n-p]) + "}"
+		return []byte(s), err
 	}
-	return dbuf[0 : len(dbuf)-p], err
+	return dbuf[0 : n-p], err
 }
