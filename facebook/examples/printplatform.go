@@ -8,7 +8,7 @@ import (
 func main() {
 	platform, err := facebook.GetPage("platform")
 	if err != nil {
-		fmt.Println(err.String())
+		fmt.Println(err)
 		return
 	}
 	fmt.Printf("Name: %s\n", platform.Name)

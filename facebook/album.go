@@ -1,9 +1,6 @@
 package facebook
 
-import (
-	"os"
-	"json"
-)
+import "encoding/json"
 
 // A photo album.
 type Album struct {
@@ -31,7 +28,7 @@ type Album struct {
 	*Metadata
 }
 
-func GetAlbum(id string) (album *Album, err os.Error) {
+func GetAlbum(id string) (album *Album, err error) {
 	resp, err := Call(id, RequestMetadata)
 	if err != nil {
 		return
@@ -42,7 +39,7 @@ func GetAlbum(id string) (album *Album, err os.Error) {
 	return
 }
 
-func PostAlbum(profileID, name, description string) (err os.Error) {
+func PostAlbum(profileID, name, description string) (err error) {
 	_, err = Publish(profileID, "albums", map[string]string{"name": name, "description": description})
 	return
 }

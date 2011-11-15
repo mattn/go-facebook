@@ -1,9 +1,5 @@
 package facebook
 
-import (
-	"os"
-)
-
 const (
 	GRAPH_URL = "graph.facebook.com"
 	SECURE    = "https://"
@@ -23,7 +19,7 @@ func (g *Graph) GetGraphUrl() string {
 	return UNSECURE + GRAPH_URL
 }
 
-func (g *Graph) Call(id string, params map[string]string) (*Response, os.Error) {
+func (g *Graph) Call(id string, params map[string]string) (*Response, error) {
 	cmd := g.GetGraphUrl() + "/" + id
 	if len(params) > 0 {
 		cmd += "?"
@@ -35,7 +31,7 @@ func (g *Graph) Call(id string, params map[string]string) (*Response, os.Error) 
 	return Get(cmd)
 }
 
-func (g *Graph) Publish(profile, id string, params map[string]string) (*Response, os.Error) {
+func (g *Graph) Publish(profile, id string, params map[string]string) (*Response, error) {
 	url := g.GetGraphUrl() + "/" + profile + "/" + id
 	// TODO: Parse reponse here to handle error reponses.
 	return PostForm(url, params)
@@ -43,10 +39,10 @@ func (g *Graph) Publish(profile, id string, params map[string]string) (*Response
 
 var MainGraph = new(Graph)
 
-func Call(id string, params map[string]string) (*Response, os.Error) {
+func Call(id string, params map[string]string) (*Response, error) {
 	return MainGraph.Call(id, params)
 }
 
-func Publish(profile, id string, params map[string]string) (*Response, os.Error) {
+func Publish(profile, id string, params map[string]string) (*Response, error) {
 	return MainGraph.Publish(profile, id, params)
 }

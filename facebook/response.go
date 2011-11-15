@@ -1,14 +1,15 @@
 package facebook
 
 import (
-	"os"
-	"http"
+	"encoding/json"
+	"errors"
 	"io/ioutil"
-	"json"
+	"net/http"
+	"net/url"
 )
 
 type FBError struct {
-	Error *Error
+	Err *Error
 }
 
 type Error struct {
@@ -22,16 +23,19 @@ type Response struct {
 	FinalUrl string
 }
 
-func Get(url string) (r *Response, err os.Error) {
-	resp, finalUrl, err := http.Get(url)
+func Get(requestUrl string) (r *Response, err error) {
+	resp, err := http.Get(requestUrl)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
 	if err != nil {
-		return nil, os.NewError("Get(" + url + "): " + err.String())
+		return nil, errors.New("Get(" + requestUrl + "): " + err.Error())
 	}
-	r = &Response{Url: url}
-	r.FinalUrl = finalUrl
+	if loc, err := resp.Location(); err == nil {
+		r = &Response{Url: requestUrl, FinalUrl: loc.String()}
+	} else {
+		r = &Response{Url: requestUrl, FinalUrl: requestUrl}
+	}
 	r.Data, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return
@@ -40,23 +44,31 @@ func Get(url string) (r *Response, err os.Error) {
 	var value FBError
 	err = json.Unmarshal(r.Data, &value)
 	if err == nil {
-		if value.Error != nil {
-			err = os.NewError(value.Error.Type + ": " + value.Error.Message)
+		if value.Err != nil {
+			err = errors.New(value.Err.Type + ": " + value.Err.Message)
 			return
 		}
 	}
 	return r, nil // Dont return the check of an Error error
 }
 
-func PostForm(url string, data map[string]string) (r *Response, err os.Error) {
-	resp, err := http.PostForm(url, data)
+func PostForm(requestUrl string, data map[string]string) (r *Response, err error) {
+	var postData url.Values
+	for k,v := range data {
+		postData[k] = []string{v}
+	}
+	resp, err := http.PostForm(requestUrl, postData)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
 	if err != nil {
-		return nil, os.NewError("Post(" + url + "): " + err.String())
+		return nil, errors.New("Post(" + requestUrl + "): " + err.Error())
 	}
-	r = &Response{Url: url, FinalUrl: url}
+	if loc, err := resp.Location(); err == nil {
+		r = &Response{Url: requestUrl, FinalUrl: loc.String()}
+	} else {
+		r = &Response{Url: requestUrl, FinalUrl: requestUrl}
+	}
 	r.Data, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return
@@ -65,8 +77,8 @@ func PostForm(url string, data map[string]string) (r *Response, err os.Error) {
 	var value FBError
 	err = json.Unmarshal(r.Data, &value)
 	if err == nil {
-		if value.Error != nil {
-			err = os.NewError(value.Error.Type + ": " + value.Error.Message)
+		if value.Err != nil {
+			err = errors.New(value.Err.Type + ": " + value.Err.Message)
 			return
 		}
 	}

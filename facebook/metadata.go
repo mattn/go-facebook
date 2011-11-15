@@ -1,19 +1,19 @@
 package facebook
 
 import (
-	"os"
-	"json"
+	"encoding/json"
+	"errors"
 )
 
-var NOPICTUREURLERR = os.NewError("No Metadata.Connections[picture].")
-var NOFRIENDSURLERR = os.NewError("No Metadata.Connections[friends].")
-var NOLIKESURLERR = os.NewError("No Metadata.Connections[likes].")
-var NOTELEVISIONURLERR = os.NewError("No Metadata.Connections[television].")
-var NOMOVIESURLERR = os.NewError("No Metadata.Connections[movies].")
-var NOBOOKSURLERR = os.NewError("No Metadata.Connections[books].")
-var NOMUSICURLERR = os.NewError("No Metadata.Connections[music].")
-var NOINTERESTSURLERR = os.NewError("No Metadata.Connections[interests].")
-var NOACTIVITIESURLERR = os.NewError("No Metadata.Connections[activities].")
+var NOPICTUREURLERR = errors.New("No Metadata.Connections[picture].")
+var NOFRIENDSURLERR = errors.New("No Metadata.Connections[friends].")
+var NOLIKESURLERR = errors.New("No Metadata.Connections[likes].")
+var NOTELEVISIONURLERR = errors.New("No Metadata.Connections[television].")
+var NOMOVIESURLERR = errors.New("No Metadata.Connections[movies].")
+var NOBOOKSURLERR = errors.New("No Metadata.Connections[books].")
+var NOMUSICURLERR = errors.New("No Metadata.Connections[music].")
+var NOINTERESTSURLERR = errors.New("No Metadata.Connections[interests].")
+var NOACTIVITIESURLERR = errors.New("No Metadata.Connections[activities].")
 
 type Metadata struct {
 	Type        string
@@ -22,7 +22,7 @@ type Metadata struct {
 }
 
 // size = small | normal | large
-func (m *Metadata) GetPicture(size string) (url string, err os.Error) {
+func (m *Metadata) GetPicture(size string) (url string, err error) {
 	url, ok := m.Connections["picture"]
 	if !ok {
 		return "", NOPICTUREURLERR
@@ -35,7 +35,7 @@ func (m *Metadata) GetPicture(size string) (url string, err os.Error) {
 	return string(resp.Data), nil
 }
 
-func (m *Metadata) GetFriends() (f *Friends, err os.Error) {
+func (m *Metadata) GetFriends() (f *Friends, err error) {
 	url, ok := m.Connections["friends"]
 	if !ok {
 		return nil, NOFRIENDSURLERR
@@ -51,7 +51,7 @@ func (m *Metadata) GetFriends() (f *Friends, err os.Error) {
 }
 
 // Returns ever PostLikes or Likes object
-func (m *Metadata) GetLikes() (l interface{}, err os.Error) {
+func (m *Metadata) GetLikes() (l interface{}, err error) {
 	url, ok := m.Connections["likes"]
 	if !ok {
 		return nil, NOLIKESURLERR
@@ -73,7 +73,7 @@ func (m *Metadata) GetLikes() (l interface{}, err os.Error) {
 	return
 }
 
-func (m *Metadata) GetTelevision() (t *Television, err os.Error) {
+func (m *Metadata) GetTelevision() (t *Television, err error) {
 	url, ok := m.Connections["television"]
 	if !ok {
 		return nil, NOTELEVISIONURLERR
@@ -88,7 +88,7 @@ func (m *Metadata) GetTelevision() (t *Television, err os.Error) {
 	return
 }
 
-func (m *Metadata) GetMovies() (movies *Movies, err os.Error) {
+func (m *Metadata) GetMovies() (movies *Movies, err error) {
 	url, ok := m.Connections["movies"]
 	if !ok {
 		return nil, NOMOVIESURLERR
@@ -103,7 +103,7 @@ func (m *Metadata) GetMovies() (movies *Movies, err os.Error) {
 	return
 }
 
-func (m *Metadata) GetBooks() (b *Books, err os.Error) {
+func (m *Metadata) GetBooks() (b *Books, err error) {
 	url, ok := m.Connections["books"]
 	if !ok {
 		return nil, NOBOOKSURLERR
@@ -118,7 +118,7 @@ func (m *Metadata) GetBooks() (b *Books, err os.Error) {
 	return
 }
 
-func (m *Metadata) GetMusic() (music *Music, err os.Error) {
+func (m *Metadata) GetMusic() (music *Music, err error) {
 	url, ok := m.Connections["music"]
 	if !ok {
 		return nil, NOMUSICURLERR
@@ -133,7 +133,7 @@ func (m *Metadata) GetMusic() (music *Music, err os.Error) {
 	return
 }
 
-func (m *Metadata) GetInterests() (i *Interests, err os.Error) {
+func (m *Metadata) GetInterests() (i *Interests, err error) {
 	url, ok := m.Connections["interests"]
 	if !ok {
 		return nil, NOINTERESTSURLERR
@@ -148,7 +148,7 @@ func (m *Metadata) GetInterests() (i *Interests, err os.Error) {
 	return
 }
 
-func (m *Metadata) GetActivities() (a *Activities, err os.Error) {
+func (m *Metadata) GetActivities() (a *Activities, err error) {
 	url, ok := m.Connections["activities"]
 	if !ok {
 		return nil, NOACTIVITIESURLERR

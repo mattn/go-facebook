@@ -1,9 +1,6 @@
 package facebook
 
-import (
-	"os"
-	"json"
-)
+import "encoding/json"
 
 // A Facebook Page.
 // http://developers.facebook.com/docs/reference/api/page
@@ -20,7 +17,7 @@ type Page struct {
 	Metadata *Metadata
 }
 
-func GetPage(id string) (page *Page, err os.Error) {
+func GetPage(id string) (page *Page, err error) {
 	resp, err := Call(id, RequestMetadata)
 	if err != nil {
 		return

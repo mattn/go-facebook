@@ -1,9 +1,9 @@
 package facebook
 
 import (
-	"os"
+	"encoding/json"
+	"errors"
 	"fmt"
-	"json"
 )
 
 type TestUserAPI struct {
@@ -15,7 +15,7 @@ func NewTestUserAPI(app_id string, appAccessToken string) *TestUserAPI {
 	return &TestUserAPI{appId: app_id, appAccessToken: appAccessToken}
 }
 
-func (t *TestUserAPI) CreateTestUser(installed bool, permissions []string) (user *TestUser, err os.Error) {
+func (t *TestUserAPI) CreateTestUser(installed bool, permissions []string) (user *TestUser, err error) {
 	var str string
 	if len(permissions) > 0 {
 		for _, perm := range permissions {
@@ -32,7 +32,7 @@ func (t *TestUserAPI) CreateTestUser(installed bool, permissions []string) (user
 	}
 	data := string(resp.Data)
 	if data == "Error code: 2900 (Too many test accounts)" {
-		return nil, os.NewError(data)
+		return nil, errors.New(data)
 	}
 	var value TestUser
 	err = json.Unmarshal(resp.Data, &value)
@@ -40,7 +40,7 @@ func (t *TestUserAPI) CreateTestUser(installed bool, permissions []string) (user
 	return
 }
 
-func (t *TestUserAPI) GetTestUsers() (tus *TestUsers, err os.Error) {
+func (t *TestUserAPI) GetTestUsers() (tus *TestUsers, err error) {
 	url := SECURE + GRAPH_URL + "/" + t.appId + "/accounts/test-users?access_token=" + t.appAccessToken
 	resp, err := Get(url)
 	if err != nil {

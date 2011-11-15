@@ -1,9 +1,6 @@
 package facebook
 
-import (
-	"json"
-	"os"
-)
+import "encoding/json"
 
 // A user profile.
 // http://developers.facebook.com/docs/reference/api/user
@@ -67,7 +64,7 @@ type User struct {
 }
 
 // Calls a Get request for a User object to the GraphAPI of Facebook including metadata.
-func GetUser(id string) (user *User, err os.Error) {
+func GetUser(id string) (user *User, err error) {
 	resp, err := Call(id, RequestMetadata)
 	if err != nil {
 		return

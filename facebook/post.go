@@ -1,9 +1,6 @@
 package facebook
 
-import (
-	"os"
-	"json"
-)
+import "encoding/json"
 
 /*
 * An individual entry in a profile's feed.
@@ -51,7 +48,7 @@ type Post struct {
 	*Metadata
 }
 
-func GetPost(id string) (post *Post, err os.Error) {
+func GetPost(id string) (post *Post, err error) {
 	resp, err := Call(id, RequestMetadata)
 	if err != nil {
 		return

@@ -1,10 +1,10 @@
 package facebook
 
 import (
-	"strings"
 	"encoding/base64"
-	"os"
-	"json"
+	"encoding/json"
+	"errors"
+	"strings"
 )
 
 type SRUser struct {
@@ -35,15 +35,15 @@ type SignedRequest struct {
 	Profile_id  float64
 }
 
-func ParseSignedRequest(input string) (sr *SignedRequest, err os.Error) {
+func ParseSignedRequest(input string) (sr *SignedRequest, err error) {
 	if len(input) == 0 {
-		return sr, os.NewError("ParseSignedRequest: Input string is empty.")
+		return sr, errors.New("ParseSignedRequest: Input string is empty.")
 	}
 	points := strings.Count(input, ".")
 	if points != 1 {
-		return sr, os.NewError("Wrong input format. String must be of format <signature>.<data>")
+		return sr, errors.New("Wrong input format. String must be of format <signature>.<data>")
 	}
-	d := strings.Split(input, ".", -1)
+	d := strings.Split(input, ".")
 	//signature := DecodeBase64URL(d[0])
 	data, err := base64Decode(d[1])
 	if err != nil {
@@ -51,14 +51,14 @@ func ParseSignedRequest(input string) (sr *SignedRequest, err os.Error) {
 	}
 	var value SignedRequest
 	if err = json.Unmarshal(data, &value); err != nil {
-		return sr, os.NewError("Error: ParseSignedRequest: json.Unmarshal: " + err.String() + " in " + string(data))
+		return sr, errors.New("Error: ParseSignedRequest: json.Unmarshal: " + err.Error() + " in " + string(data))
 	}
 	sr = &value
 	return
 	// TODO: Check SignedRequest with signature
 }
 
-func base64Decode(str string) (dbuf []byte, err os.Error) {
+func base64Decode(str string) (dbuf []byte, err error) {
 	p := 4 - len(str)%4
 	str = str + string(strings.Repeat("=", p))
 
